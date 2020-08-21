@@ -299,9 +299,9 @@ function infinitescroll_action()
     $apiurl = get_option('wpams_url_btn_label');
     $apikey = get_option('wpams_apikey_btn_label');
     
-    echo $categoryid = $_POST['catid'];
+    $categoryid = $_POST['catid'];
 
-    echo $page = $_POST['page'];
+    $page = $_POST['page'];
 
     //die();
 
@@ -328,15 +328,20 @@ function infinitescroll_action()
                 
                 foreach($json_value as $x_value) { 
 
-                        if(isset($x_value['name']))
-                        {
-                            echo "<h3>". $x_value['name'] ."</h3>";
-                            echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
-                        }
-                   
+                    if(isset($x_value['id']))
+                    {
+                        echo "<div class='productstyle'>";
+
+                            if(isset($x_value['name']))
+                            {
+                                echo "<p>". $x_value['name'] ."</p>";
+                                echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
+                            }
+                        echo "</div>";
+                    }    
                 }
             }
-         
+        //echo "<img src=". esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) . ">";
 
     die();
 }

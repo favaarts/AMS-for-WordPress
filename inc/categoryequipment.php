@@ -118,23 +118,50 @@ $url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets";
 
          $arrayResult = json_decode($json, true);
 
+          /*echo "<pre>";
+ var_dump($arrayResult['meta']);
+ echo "</pre>";
+ die;*/
+
+ //echo $arrayResult['meta']['equipment_items_count'];
+
+//echo "<img src=". plugins_url( 'assets/img/loader.svg', __FILE__ ).">";
+//echo "<img src=". esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) . ">";
+
             foreach($arrayResult as $json_value) {
                 
+                
+
                 foreach($json_value as $x_value) { 
 
-                        if(isset($x_value['name']))
-                        {
-                            echo "<a href='". $x_value['id']."' target='_blank'> <h3>". $x_value['name'] ."</h3> </a>";
-                            echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
-                        }
-                   
+                    if(isset($x_value['id']))
+                    {
+                        echo "<div class='productstyle'>";
+                            if(isset($x_value['name']))
+                            {
+                                echo "<a href='". $x_value['id']."' target='_blank'> <p>". $x_value['name'] ."</p> </a>";
+                                echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
+                                if($x_value['status_text'] == "Active")
+                                    echo "<p><span class='label label-success'>Available</span></p>";
+                                else
+                                {
+                                    echo "<p><span class='label label-danger'>Unavailable</span></p>";
+                                }
+                            }
+                        echo "</div>";
+                    }
                 }
+
+                
             }
           ?>
+          
     </div> 
     
 </div>
-
+    <div class="loaderdiv">
+        <a id="inifiniteLoader"  data-totalequipment="<?php echo $arrayResult['meta']['equipment_items_count']; ?>" ><img src="<?php echo esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) ?>" ></a>
+    <div>    
 </div>
 
 
@@ -146,27 +173,40 @@ function myscript() {
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 
-    var page = 2;    
-    jQuery(window).scroll(function () {
-        
-        
-        if (jQuery(window).scrollTop() +  jQuery(window).height() > jQuery(document).height() - 600)
-        {
-            
-            var data = {
-                'action': 'infinitescroll_action',
-                'page': page
-            };
-     
-            jQuery.post(amsjs_ajax_url.ajaxurl, data, function(response) {
-                if(jQuery.trim(response) != '') {
-                    //jQuery('.categorysearchdata').html(response);
-                    jQuery('.categorysearchdata').append(response);
-                    page++;
-                } 
-            });
-        }
-    });
+   var count = 2;
+   var total = jQuery("#inifiniteLoader").data("totalequipment");
+   $(window).scroll(function(){
+     if ($(window).scrollTop() == $(document).height() - $(window).height()){
+      if (count > total){
+        return false;
+      }else{
+        loadArticle(count);
+      }
+      count++;
+     }
+   });
+
+
+   function loadArticle(pageNumber){
+     $('a#inifiniteLoader').show('fast');
+     $.ajax({
+       url: amsjs_ajax_url.ajaxurl,
+       type:'POST',
+       data: "action=infinitescroll_action&page="+ pageNumber + '&loop_file=loop',
+       beforeSend: function(){
+        // Show image container
+        $("#inifiniteLoader").show();
+       },
+       success: function (html) {
+         jQuery('#inifiniteLoader').hide('1000');
+         
+         jQuery('.categorysearchdata').append(html);
+       }
+     });
+     return false;
+   }
+
+    
 
 });    
 </script>

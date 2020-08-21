@@ -12,7 +12,7 @@ wp.blocks.registerBlockType('wpdams-amsnetwork/amsnetwork-block', {
 
    attributes: { // The data this block will be storing
 
-      type: { type: 'string', default: 'default' }, // Notice box type for loading the appropriate CSS class. Default class is 'default'.
+      type: { type: 'string', default: 'amscategoryequipment' }, // Notice box type for loading the appropriate CSS class. Default class is 'default'.
 
       title: { type: 'string' }, // Notice box title in h4 tag
 
@@ -38,25 +38,7 @@ wp.blocks.registerBlockType('wpdams-amsnetwork/amsnetwork-block', {
             {
                className: 'amsblock-box amsblock-' + props.attributes.type
             },
-            el(
-               'select',
-               {
-                  onChange: updateType,
-                  value: props.attributes.type,
-               },
-               el("option", {value: "" }, "Select"),
-               el("option", {value: "amscategory" }, "Filter"),
-               el("option", {value: "amsequipment" }, "Equipment"),
-               el("option", {value: "amscategoryequipment" }, "Category Equipment")
-            ),
-            /*el(
-               wp.editor.RichText,
-               {
-                  type: 'p',
-                  value: props.attributes.title,
-                  onChange: updateTitle,
-               }
-            ),*/
+            
             el(
                wp.editor.RichText,
                {

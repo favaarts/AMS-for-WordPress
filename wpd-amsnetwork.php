@@ -2,7 +2,7 @@
 /*
 * Plugin Name: AMS for WordPress
 * Plugin URI: https://amsnetwork.ca
-* Author: amsnetwork.ca
+* Author: AMS Network
 * Author URI: https://amsnetwork.ca
 * Description: Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 * Version: 1.0.0

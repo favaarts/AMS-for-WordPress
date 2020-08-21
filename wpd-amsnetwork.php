@@ -73,7 +73,7 @@ function wpac_register_menu_page() {
 
     //add_theme_page( 'AMS System', 'AMS Settings', 'manage_options', 'wpams-settings', 'wpdams_settings_page_html', 30 );
 
-    add_submenu_page( 'settings.php','AMS Network', 'AMS Settings', 'manage_options', 'wpams-settings', 'wpdams_settings_page_html', 30 );
+    add_submenu_page( 'settings.php','AMS for WordPress', 'AMS Settings', 'manage_options', 'wpams-settings', 'wpdams_settings_page_html', 30 );
 
 }
 add_action('admin_menu', 'wpac_register_menu_page');

@@ -1,1 +1,1 @@
-# AMS for WordPress
+# AMS for WordPress.

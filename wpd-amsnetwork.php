@@ -1,6 +1,6 @@
 <?php
 /*
-* Plugin Name: WPD AMS Plugin
+* Plugin Name: AMS for WoedPress
 * Plugin URI: https://amsnetwork.ca
 * Author: amsnetwork.ca
 * Author URI: https://amsnetwork.ca

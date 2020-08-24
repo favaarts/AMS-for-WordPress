@@ -25,7 +25,7 @@ else
 {
     function sample_admin_notice__error() {
     $class = 'notice notice-error is-dismissible';
-    $message = __( 'Error! Please add subdomain and API key after active AMS Plugin.', 'sample-text-domain' );
+    $message = __( 'Error! Please add subdomain and API key after activating the AMS Plugin.', 'sample-text-domain' );
      
         printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) ); 
     }

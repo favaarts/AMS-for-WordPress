@@ -1,6 +1,6 @@
 <?php
 
-function amscategoryequipment_function( $slug ) {
+function amsevents_function( $slug ) {
     ob_start();  
     ?>
 
@@ -8,33 +8,13 @@ function amscategoryequipment_function( $slug ) {
 
  <?php
 
-// https://wpd.amsnetwork.ca/api/v3/assets?type=Equipment&access_token=de5cb03d9c6bb57d5cd41b0616e72716d53fb5f6ec34e6bb0b8ff05acf029dac&method=get&format=json
 $apiurl = get_option('wpams_url_btn_label');
 $apikey = get_option('wpams_apikey_btn_label');
-//$url = "".$apiurl."?access_token=".$apikey."&method=get&format=json";
-//$url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets&type=Equipment?access_token=".$apikey."&method=get&format=json";
-$i = 1;
 
-/*$url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets?type=Equipment&page=1&limit=10&access_token=".$apikey."&method=get&format=json";*/
-$url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets";
-
-//$url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets/filter?access_token=".$apikey."&method=get&format=json";
-
-
-//print_r(json_decode($json));
-/* echo "<pre>";
- var_dump($arrayResult);
- echo "</pre>";
- die;*/
-
-
- //=======
-
- //
+$url = "https://".$apiurl.".amsnetwork.ca/api/v3/programs";
 
 ?>
-    
-  
+
 <div class="entry-content main-content-wrap">
  
 <!-- ======================================================================
@@ -47,22 +27,21 @@ main-content main-content-three-col - this class is for three columns.
 ======================================================================  -->
 
 <div class="wp-block-columns main-content main-content-three-col" >
-    
 
-
-    <div class="wp-block-column left-col" >
+	<!-- Search section -->
+	<div class="wp-block-column left-col" >
         <div class="searchbox">
             <h4>Search Box</h4>
-            <input type="text" class="searrch-input" name="keyword" id="keyword" onkeyup="fetchequipment()"></input>
+            <input type="text" class="search-input" name="keyword" id="keyword" onkeyup="fetchequipment()"></input>
         </div>
 
         <?php
-        $carurl = $url ."/filter?access_token=".$apikey."&method=get&format=json";
+        $filterurl = $url ."/filter?access_token=".$apikey."&method=get&format=json";
 
 
-
+        // Request to get the categories 
         $catch = curl_init();
-        curl_setopt($catch,CURLOPT_URL,$carurl);
+        curl_setopt($catch,CURLOPT_URL,$filterurl);
         curl_setopt($catch,CURLOPT_RETURNTRANSFER,1);
         curl_setopt($catch,CURLOPT_CONNECTTIMEOUT, 4);
         $json = curl_exec($catch);
@@ -71,25 +50,23 @@ main-content main-content-three-col - this class is for three columns.
         }
         curl_close($catch);
 
-        $catArrayResult = json_decode($json, true);
+        $filArrayResult = json_decode($json, true);
 
-        
 
-         foreach($catArrayResult as $catjson_value) {
+        // Showing the statuses/filters (REEVALUATE HOW TO SHOW THESE FILTERS and FILTER through the events (put them at the top?))
+        foreach($filArrayResult as $catjson_value) {
                 
-                foreach($catjson_value as $cat => $cat_value) { 
+                foreach($catjson_value as $fil => $fil_value) { 
                  
-                    if($cat === 'categories') {
+                    if($fil === 'status') {
                         echo '<h4>Categories</h4>';
                          echo "<ul class='ul-cat-wrap'>";
-                        foreach($cat_value as $c => $c_value) {
+                        foreach($fil_value as $f => $f_value) {
                             echo "<li>";
                             ?>
 
-                            <a href='' onclick='return categorydata(<?= $c_value[0] ?>)'><?= $c_value[1]?></a>
+                            <a href='' onclick='return categorydata(<?= $f_value[0] ?>)'><?= $f_value[1]?></a>
 
-                            
-                            
                             <?php   
                             echo "</li>";
                         }
@@ -103,8 +80,7 @@ main-content main-content-three-col - this class is for three columns.
     </div>  
 
 
-
-
+    <!-- Main content, Programming of events -->
     <div class="categorysearchdata right-col" >
         <div class="right-col-wrap">
             
@@ -113,13 +89,12 @@ main-content main-content-three-col - this class is for three columns.
          <?php
         $categoryid = 834;
 
-        $producturl = $url ."?type=Equipment&category_ids=%5B".$categoryid."%5D&access_token=".$apikey."&method=get&format=json";
+        $programurl = $url ."?category_ids=%5B".$categoryid."%5D&access_token=".$apikey."&method=get&format=json";
 
-        /*echo $producturl;
-        die;*/
+       
 
         $ch = curl_init();
-        curl_setopt($ch,CURLOPT_URL,$producturl);
+        curl_setopt($ch,CURLOPT_URL,$programurl);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
         curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 4);
         $json = curl_exec($ch);
@@ -130,15 +105,6 @@ main-content main-content-three-col - this class is for three columns.
 
          $arrayResult = json_decode($json, true);
 
-          /*echo "<pre>";
- var_dump($arrayResult['meta']);
- echo "</pre>";
- die;*/
-
- //echo $arrayResult['meta']['equipment_items_count'];
-
-//echo "<img src=". plugins_url( 'assets/img/loader.svg', __FILE__ ).">";
-//echo "<img src=". esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) . ">";
 
             foreach($arrayResult as $json_value) {
                 
@@ -192,75 +158,13 @@ main-content main-content-three-col - this class is for three columns.
     </div> 
     
 </div>
-    <div class="loaderdiv">
-        <a id="inifiniteLoader"  data-totalequipment="<?php echo $arrayResult['meta']['equipment_items_count']; ?>" ><img src="<?php echo esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) ?>" ></a>
-    <div>    
-</div>
 
-
-
-
-<?php
-function myscript() {
-?>
-<script type="text/javascript">
-jQuery(document).ready(function($) {
-
-     /*console.log(amsjs_ajax_url.ajaxurl);
-     console.log("hello");*/
-
-   var count = 2;
-   var total = jQuery("#inifiniteLoader").data("totalequipment");
-   $(window).scroll(function(){
-     if ($(window).scrollTop() == $(document).height() - $(window).height()){
-      if (count > total){
-        return false;
-      }else{
-        loadArticle(count);
-      }
-      count++;
-     }
-   });
-
-
-   function loadArticle(pageNumber){
-     $('a#inifiniteLoader').show('fast');
-
-     console.log(amsjs_ajax_url.ajaxurl);
-     console.log("hello");
-
-     $.ajax({
-       url: amsjs_ajax_url.ajaxurl,
-       type:'POST',
-       data: "action=infinitescroll_action&page="+ pageNumber + '&loop_file=loop',
-       beforeSend: function(){
-        // Show image container
-        $("#inifiniteLoader").show();
-       },
-       success: function (html) {
-         jQuery('#inifiniteLoader').hide('1000');
-         
-         jQuery('.right-col-wrap').append(html);
-       }
-     });
-     return false;
-   }
-
-    
-
-});    
-</script>
-<?php
-}
-add_action('wp_footer', 'myscript');
-
-?>
-	
-<?php
+<?php 
+	// Calls the whole code above
     $ret = ob_get_contents();  
     ob_end_clean(); 
     return $ret; 
 }
-add_shortcode('amscategoryequipment', 'amscategoryequipment_function');
+add_shortcode('amsevents', 'amsevents_function');
 
 ?>

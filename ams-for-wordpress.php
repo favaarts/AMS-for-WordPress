@@ -1,8 +1,8 @@
 <?php
 /*
-* Plugin Name: AMS for WordPress
+* Plugin Name: AMS For Wordpress
 * Plugin URI: https://amsnetwork.ca
-* Author: AMS Network
+* Author: amsnetwork.ca
 * Author URI: https://amsnetwork.ca
 * Description: Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 * Version: 1.0.0
@@ -28,7 +28,7 @@ if( !function_exists('wpdams_plugin_scripts')) {
         wp_enqueue_style( 'slider', WPD_AMS_PLUGIN_DIR . 'assets/css/amsstyle.css',false,'1.1','all');
 
 
-        wp_enqueue_style('wpac-css', WPD_AMS_PLUGIN_DIR. 'assets/css/style.css');
+        //wp_enqueue_style('wpac-css', WPD_AMS_PLUGIN_DIR. 'assets/css/style.css');
         wp_enqueue_script('amsjsajax', WPD_AMS_PLUGIN_DIR. 'assets/js/main.js', 'jQuery', '1.0.0', true );
 
         wp_enqueue_script('amsblock-js', WPD_AMS_PLUGIN_DIR. 'assets/js/amsblock.js', 'jQuery', '1.0.0', true );
@@ -41,7 +41,11 @@ if( !function_exists('wpdams_plugin_scripts')) {
 }
 
 
-
+function wptuts_scripts_important()
+{
+     wp_enqueue_style('wpac-css', WPD_AMS_PLUGIN_DIR. 'assets/css/style.css',false,'10','all');
+}
+add_action( 'wp_enqueue_scripts', 'wptuts_scripts_important', 20 );
 
 
 function wpdams_settings_page_html() {
@@ -73,7 +77,7 @@ function wpac_register_menu_page() {
 
     //add_theme_page( 'AMS System', 'AMS Settings', 'manage_options', 'wpams-settings', 'wpdams_settings_page_html', 30 );
 
-    add_submenu_page( 'settings.php','AMS for WordPress', 'AMS Settings', 'manage_options', 'wpams-settings', 'wpdams_settings_page_html', 30 );
+    add_submenu_page( 'settings.php','AMS System', 'AMS Settings', 'manage_options', 'wpams-settings', 'wpdams_settings_page_html', 30 );
 
 }
 add_action('admin_menu', 'wpac_register_menu_page');
@@ -324,6 +328,7 @@ function infinitescroll_action()
 
         $arrayResult = json_decode($json, true);
 
+        
             foreach($arrayResult as $json_value) {
                 
                 foreach($json_value as $x_value) { 
@@ -334,13 +339,31 @@ function infinitescroll_action()
 
                             if(isset($x_value['name']))
                             {
-                                echo "<p>". $x_value['name'] ."</p>";
-                                echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
+                                echo "<p class='product-title'>". $x_value['name'] ."</p>";
+                                echo "<div class='product-img-wrap'>";
+                                echo "<img  src=".$x_value['photo']." alt=".$x_value['name'].">";
+                                echo "</div>";
+
+                                echo "<div class='bottom-fix'>"; 
+                                if($x_value['status_text'] == "Active")
+                                    echo "<p><span class='label label-success btn-common'>Available</span></p>";
+                                else
+                                {
+                                    echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
+                                }
                             }
+                            echo "<div class='price-main'>"; 
+                                    echo "<p>$ 10 </p>";
+                                 echo "</div>";
+                             echo "</div>";
+                            echo "<p class='price-non-mem'>Non-Member: $20.00 </p>";
+
+                        echo "</div>";   
                         echo "</div>";
                     }    
                 }
             }
+        
         //echo "<img src=". esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) . ">";
 
     die();

@@ -4,7 +4,7 @@ function amscategoryequipment_function( $slug ) {
     ob_start();  
     ?>
 
-<div id="category" class="category">
+<div id="category" class="category cat-wrap">
 
  <?php
 
@@ -35,16 +35,25 @@ $url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets";
 ?>
     
   
-<div class="entry-content">
-        
-<div class="wp-block-columns" >
+<div class="entry-content main-content-wrap">
+ 
+<!-- ======================================================================
+notes::
+
+main-content - this class is for two columns.
+
+main-content main-content-three-col - this class is for three columns.
+
+======================================================================  -->
+
+<div class="wp-block-columns main-content main-content-three-col" >
     
 
 
-    <div class="wp-block-column" style="flex-basis:33.33%">
+    <div class="wp-block-column left-col" >
         <div class="searchbox">
             <h4>Search Box</h4>
-            <input type="text" name="keyword" id="keyword" onkeyup="fetchequipment()"></input>
+            <input type="text" class="searrch-input" name="keyword" id="keyword" onkeyup="fetchequipment()"></input>
         </div>
 
         <?php
@@ -72,7 +81,7 @@ $url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets";
                  
                     if($cat === 'categories') {
                         echo '<h4>Categories</h4>';
-                         echo "<ul>";
+                         echo "<ul class='ul-cat-wrap'>";
                         foreach($cat_value as $c => $c_value) {
                             echo "<li>";
                             ?>
@@ -96,7 +105,10 @@ $url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets";
 
 
 
-    <div class="categorysearchdata" style="flex-basis:66.66%">
+    <div class="categorysearchdata right-col" >
+        <div class="right-col-wrap">
+            
+        
 
          <?php
         $categoryid = 834;
@@ -136,18 +148,33 @@ $url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets";
 
                     if(isset($x_value['id']))
                     {
+                        //productstyle  
+                        //
                         echo "<div class='productstyle'>";
+                        echo "<div>";
                             if(isset($x_value['name']))
                             {
-                                echo "<a href='". $x_value['id']."' target='_blank'> <p>". $x_value['name'] ."</p> </a>";
-                                echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
+                                echo "<a href='". $x_value['id']."' target='_blank'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                                 echo "<div class='product-img-wrap'>";
+                                    echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
+                                 echo "</div>";
+
+                                echo "<div class='bottom-fix'>"; 
                                 if($x_value['status_text'] == "Active")
-                                    echo "<p><span class='label label-success'>Available</span></p>";
-                                else
-                                {
-                                    echo "<p><span class='label label-danger'>Unavailable</span></p>";
+                                    echo "<p><span class='label label-success btn-common'>Available</span></p>";
+                                    else
+                                    {
+                                        echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
+                                    }
                                 }
-                            }
+
+                                 echo "<div class='price-main'>"; 
+                                    echo "<p>$ 10 </p>";
+                                 echo "</div>";
+                             echo "</div>";
+                            echo "<p class='price-non-mem'>Non-Member: $20.00 </p>";
+
+                        echo "</div>";    
                         echo "</div>";
                     }
                 }
@@ -155,7 +182,7 @@ $url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets";
                 
             }
           ?>
-          
+       </div>   
     </div> 
     
 </div>
@@ -173,6 +200,9 @@ function myscript() {
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 
+     /*console.log(amsjs_ajax_url.ajaxurl);
+     console.log("hello");*/
+
    var count = 2;
    var total = jQuery("#inifiniteLoader").data("totalequipment");
    $(window).scroll(function(){
@@ -189,6 +219,10 @@ jQuery(document).ready(function($) {
 
    function loadArticle(pageNumber){
      $('a#inifiniteLoader').show('fast');
+
+     console.log(amsjs_ajax_url.ajaxurl);
+     console.log("hello");
+
      $.ajax({
        url: amsjs_ajax_url.ajaxurl,
        type:'POST',
@@ -200,7 +234,7 @@ jQuery(document).ready(function($) {
        success: function (html) {
          jQuery('#inifiniteLoader').hide('1000');
          
-         jQuery('.categorysearchdata').append(html);
+         jQuery('.right-col-wrap').append(html);
        }
      });
      return false;

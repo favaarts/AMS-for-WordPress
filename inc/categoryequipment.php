@@ -151,10 +151,10 @@ main-content main-content-three-col - this class is for three columns.
                         //productstyle  
                         //
                         echo "<div class='productstyle'>";
-                        echo "<div>";
+                        
                             if(isset($x_value['name']))
                             {
-                                echo "<a href='". $x_value['id']."' target='_blank'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                                echo "<a href='javascript:void(0)' data-eqid=".urlencode($x_value['name'])."> <p class='product-title'>". $x_value['name'] ."</p> </a>";
                                  echo "<div class='product-img-wrap'>";
                                     echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
                                  echo "</div>";
@@ -166,15 +166,15 @@ main-content main-content-three-col - this class is for three columns.
                                     {
                                         echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
                                     }
+                                    echo "<div class='price-main'>"; 
+                                        echo "<p>$ 10 </p>";
+                                     echo "</div>";
+                                echo "</div>";    
                                 }
 
-                                 echo "<div class='price-main'>"; 
-                                    echo "<p>$ 10 </p>";
-                                 echo "</div>";
-                             echo "</div>";
                             echo "<p class='price-non-mem'>Non-Member: $20.00 </p>";
 
-                        echo "</div>";    
+                            
                         echo "</div>";
                     }
                 }
@@ -202,9 +202,47 @@ jQuery(document).ready(function($) {
 
      /*console.log(amsjs_ajax_url.ajaxurl);
      console.log("hello");*/
+     
+     
+    jQuery('.productstyle a').click(function(event) {
+        //console.log(jQuery(this).attr("data-eqid"));
+
+
+        event.preventDefault();
+        var prodictkey =  jQuery(this).attr("data-eqid");
+        jQuery('#inifiniteLoader').hide();
+
+        jQuery(window).unbind('scroll');
+
+        jQuery.ajax({
+            url: amsjs_ajax_url.ajaxurl,
+            type: 'post',
+            data : {
+                action : 'equipmentproductdetails_action',
+                prodictkey : prodictkey
+            },
+            success: function(result)
+            {
+                /*console.log(result);
+                return false;*/
+                jQuery('.right-col-wrap').html(result);
+            }
+        });
+    });
+    
+   //return false; 
+
+    $('#backproduct').live('click', function () {
+        event.preventDefault();  
+        window.history.go(-1);
+        window.location=history.go(-2);
+        $('.right-col-wrap').load($(this).attr('href'));
+    });
 
    var count = 2;
    var total = jQuery("#inifiniteLoader").data("totalequipment");
+
+
    $(window).scroll(function(){
      if ($(window).scrollTop() == $(document).height() - $(window).height()){
       if (count > total){
@@ -220,8 +258,8 @@ jQuery(document).ready(function($) {
    function loadArticle(pageNumber){
      $('a#inifiniteLoader').show('fast');
 
-     console.log(amsjs_ajax_url.ajaxurl);
-     console.log("hello");
+     /*console.log(amsjs_ajax_url.ajaxurl);
+     console.log("hello");*/
 
      $.ajax({
        url: amsjs_ajax_url.ajaxurl,

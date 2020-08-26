@@ -231,7 +231,7 @@ function ams_get_category_action()
                         
                             if(isset($x_value['name']))
                             {
-                                echo "<a href='javascript:void(0)' data-eqid=".urlencode($x_value['name'])."> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                                echo "<a href='javascript:void(0)' onclick='return equipmentdetails(".$x_value['id'].")'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
                                  echo "<div class='product-img-wrap'>";
                                     echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
                                  echo "</div>";
@@ -303,7 +303,7 @@ function search_category_action()
                         
                             if(isset($x_value['name']))
                             {
-                                echo "<a href='javascript:void(0)' data-eqid=".urlencode($x_value['name'])."> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                                echo "<a href='javascript:void(0)' onclick='return equipmentdetails(".$x_value['id'].")'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
                                  echo "<div class='product-img-wrap'>";
                                     echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
                                  echo "</div>";
@@ -385,7 +385,7 @@ function infinitescroll_action()
                             if(isset($x_value['name']))
                             {
 
-                                echo "<a href='javascript:void(0)' data-eqid=".urlencode($x_value['name'])."> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                                echo "<a href='javascript:void(0)' onclick='return equipmentdetails(".$x_value['id'].")'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
                                 echo "<div class='product-img-wrap'>";
                                 echo "<img  src=".$x_value['photo']." alt=".$x_value['name'].">";
                                 echo "</div>";
@@ -423,23 +423,21 @@ add_action('wp_ajax_nopriv_infinitescroll_action','infinitescroll_action');
 function equipmentproductdetails_action()
 {
     
-    
+    /*echo "fadsfsdf";
+    echo $prodictid = $_POST['prodictid'];
+
+    die;*/
+
+    $prodictid = $_POST['prodictid'];
     $apiurl = get_option('wpams_url_btn_label');
     $apikey = get_option('wpams_apikey_btn_label');
     
-    $prodname = $_POST['prodictkey'];
-    
 
-    $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/assets?type=Equipment&query_string=".$prodname."&access_token=".$apikey."&method=get&format=json";
+    $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/assets/".$prodictid."?type=Equipment&access_token=".$apikey."&method=get&format=json";
 
-    //die();
+    /*echo $producturl;
 
-        /*$producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/assets?type=Equipment&category_ids=%5B".$categoryid."%5D&access_token=".$apikey."&method=get&format=json";*/
-
-    //$producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/assets?type=Equipment&category_ids=%5B".$categoryid."%5D&page=".$page."&access_token=".$apikey."&method=get&format=json";
-
-        /*echo $producturl;
-        die;*/
+    die;*/
 
         $ch = curl_init();
         curl_setopt($ch,CURLOPT_URL,$producturl);
@@ -456,43 +454,30 @@ function equipmentproductdetails_action()
         
             foreach($arrayResult as $json_value) {
                 
-               
+                echo "<p class='product-title'>". $json_value['name'] ."</p>";
 
-                foreach($json_value as $x_value) { 
+                echo "<img src=".$json_value['photo_medium']." alt=".$json_value['name'].">";
 
-                    
-                    if(isset($x_value['id']))
-                    {
-                        echo "<div class='productdetails'>";
-
-                            if(isset($x_value['name']))
+                echo "<p class='product-title'>". $json_value['description'] ."</p>";
+                echo "<br>";
+                
+                echo "<br>";
+                echo "<div class='bottom-fix'>"; 
+                            if($json_value['status_text'] == "Active")
                             {
-
-
-                                echo "<p class='product-title'>". $x_value['name'] ."</p>";
-                                
-                                //echo "<img  src=".$x_value['photo']." alt=".$x_value['name'].">";
-                                echo "<img src=".$x_value['photo_medium']." alt=".$x_value['name'].">";
-                                
-                                echo "<p class='product-title'>". $x_value['description'] ."</p>";
-                                echo "<div class='bottom-fix'>"; 
-                                if($x_value['status_text'] == "Active")
-                                    echo "<p><span class='label label-success btn-common'>Available</span></p>";
-                                else
-                                {
-                                    echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
-                                }
-                                     echo "<div class='price-main'>"; 
-                                        echo "<p>$ 10 </p>";
-                                     echo "</div>";
-                                echo "</div>";
+                                echo "<bR>";
+                                echo "<p><span class='label label-success btn-common'>Available</span></p>";
+                            }    
+                            else
+                            {
+                                echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
                             }
-                           
-                            echo "<p class='price-non-mem'>Non-Member: $20.00 </p>";
-
-                        echo "</div>";
-                    }    
-                }
+                echo "</div>"; 
+                echo "<br>";
+                echo "<div class='price-main'>"; 
+                    echo "<p>$ 10 </p>";
+                echo "</div>";
+                
             }
         
         //echo "<img src=". esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) . ">";

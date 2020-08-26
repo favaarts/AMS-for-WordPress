@@ -81,12 +81,12 @@ main-content main-content-three-col - this class is for three columns.
                  
                     if($cat === 'categories') {
                         echo '<h4>Categories</h4>';
-                         echo "<ul class='ul-cat-wrap'>";
+                         echo "<ul class='ul-cat-wrap getcategoryid'>";
                         foreach($cat_value as $c => $c_value) {
                             echo "<li>";
                             ?>
 
-                            <a href='' onclick='return categorydata(<?= $c_value[0] ?>)'><?= $c_value[1]?></a>
+                            <a href='' data-cateid='<?= $c_value[0] ?>' onclick='return categorydata(<?= $c_value[0] ?>)'><?= $c_value[1]?></a>
 
                             
                             
@@ -115,6 +115,8 @@ main-content main-content-three-col - this class is for three columns.
 
         $producturl = $url ."?type=Equipment&category_ids=%5B".$categoryid."%5D&access_token=".$apikey."&method=get&format=json";
 
+        //$producturl = "https://wpd.amsnetwork.ca/api/v3/assets/15527?type=Equipment&access_token=3c003006d6e6890b833e2bfefb59d15f32b565a9bade00223bf7b525b7b8c0d9&method=get&format=json";
+
         /*echo $producturl;
         die;*/
 
@@ -130,10 +132,7 @@ main-content main-content-three-col - this class is for three columns.
 
          $arrayResult = json_decode($json, true);
 
-          /*echo "<pre>";
- var_dump($arrayResult['meta']);
- echo "</pre>";
- die;*/
+          
 
  //echo $arrayResult['meta']['equipment_items_count'];
 
@@ -141,8 +140,6 @@ main-content main-content-three-col - this class is for three columns.
 //echo "<img src=". esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) . ">";
 
             foreach($arrayResult as $json_value) {
-                
-                
 
                 foreach($json_value as $x_value) { 
 
@@ -154,7 +151,7 @@ main-content main-content-three-col - this class is for three columns.
                         
                             if(isset($x_value['name']))
                             {
-                                echo "<a href='javascript:void(0)' data-eqid=".urlencode($x_value['name'])."> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                                echo "<a href='javascript:void(0)' onclick='return equipmentdetails(".$x_value['id'].")'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
                                  echo "<div class='product-img-wrap'>";
                                     echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
                                  echo "</div>";
@@ -178,8 +175,6 @@ main-content main-content-three-col - this class is for three columns.
                         echo "</div>";
                     }
                 }
-
-                
             }
           ?>
        </div>   
@@ -200,44 +195,6 @@ function myscript() {
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 
-     /*console.log(amsjs_ajax_url.ajaxurl);
-     console.log("hello");*/
-     
-     
-    jQuery('.productstyle a').click(function(event) {
-        //console.log(jQuery(this).attr("data-eqid"));
-
-
-        event.preventDefault();
-        var prodictkey =  jQuery(this).attr("data-eqid");
-        jQuery('#inifiniteLoader').hide();
-
-        jQuery(window).unbind('scroll');
-
-        jQuery.ajax({
-            url: amsjs_ajax_url.ajaxurl,
-            type: 'post',
-            data : {
-                action : 'equipmentproductdetails_action',
-                prodictkey : prodictkey
-            },
-            success: function(result)
-            {
-                /*console.log(result);
-                return false;*/
-                jQuery('.right-col-wrap').html(result);
-            }
-        });
-    });
-    
-   //return false; 
-
-    $('#backproduct').live('click', function () {
-        event.preventDefault();  
-        window.history.go(-1);
-        window.location=history.go(-2);
-        $('.right-col-wrap').load($(this).attr('href'));
-    });
 
    var count = 2;
    var total = jQuery("#inifiniteLoader").data("totalequipment");
@@ -256,7 +213,7 @@ jQuery(document).ready(function($) {
 
 
    function loadArticle(pageNumber){
-     $('a#inifiniteLoader').show('fast');
+     $('a#inifiniteLoader').show();
 
      /*console.log(amsjs_ajax_url.ajaxurl);
      console.log("hello");*/

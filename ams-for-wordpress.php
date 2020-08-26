@@ -452,33 +452,96 @@ function equipmentproductdetails_action()
         $arrayResult = json_decode($json, true);
 
         
+            echo "<div class='product-detail-wrap'>";
             foreach($arrayResult as $json_value) {
-                
-                echo "<p class='product-title'>". $json_value['name'] ."</p>";
 
-                echo "<img src=".$json_value['photo_medium']." alt=".$json_value['name'].">";
+                echo "<div class='pro-detail-inner'>";
 
-                echo "<p class='product-title'>". $json_value['description'] ."</p>";
-                echo "<br>";
-                
-                echo "<br>";
-                echo "<div class='bottom-fix'>"; 
+                     echo "<div class='pro-detail-left'>";
+
+                        echo "<a href='javascript:void(0)' class='pro-back'><img class='back-img' src='". plugins_url( 'assets/img/back.png', __FILE__ ) ."' >Back</a>"; 
+                        echo "<div class='pro-img'>"; 
+                            echo "<img src=".$json_value['photo_medium']." alt=".$json_value['name'].">";
+                        echo "</div>";
+                     echo "</div>";
+
+                     echo "<div class='pro-detail-right'>"; 
+                        echo "<div class='cat-name'>"; 
+                            echo "<p >". $json_value['category_name'] ."</p>";
+                        echo "</div>";
+
+                        echo "<div class='pro-name'>"; 
+                             echo "<p >". $json_value['name'] ."</p>";
+                        echo "</div>";
+
+                        echo "<div class='price_types'>";
+                            echo "<div class='cat-name'>"; 
+                                echo "<p >Prices(per day)</p>";
+                            echo "</div>";
+                            
+                            echo "<p class='pro-price'>". $json_value['price_types'][0][0] ."</p>";
+                            echo "<p class='pro-price non-mem'>". $json_value['price_types'][1][0] ."</p>";
+                        echo "</div>";
+                        
+                        echo "<div class='available-details'>"; 
                             if($json_value['status_text'] == "Active")
                             {
-                                echo "<bR>";
+                                echo "<bR class='d-n'>";
                                 echo "<p><span class='label label-success btn-common'>Available</span></p>";
                             }    
                             else
                             {
                                 echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
                             }
-                echo "</div>"; 
-                echo "<br>";
-                echo "<div class='price-main'>"; 
-                    echo "<p>$ 10 </p>";
+                        echo "</div>"; 
+
+                        echo "<div class='pro-num'>";
+                            echo "<div class='barcode cat-name'>"; 
+                                echo "<p>Barcode Number:</p>";
+                                echo "<spna class='B-text'>".$json_value['barcode']."</span>";
+                            echo "</div>";
+
+                            echo "<div class='barcode cat-name'>"; 
+                                echo "<p>Serial Number:</p>";
+                                echo "<spna class='B-text'>"
+                                .$json_value['serial_number']."</span>";
+                            echo "</div>";
+
+                             echo "<div class='barcode cat-name'>"; 
+                                echo "<p>Insurance Value:</p>";
+                                echo "<spna class='B-text'>31738.25</span>";
+                            echo "</div>";
+
+                            
+                        echo "</div>";
+
+                     echo "</div>";
+
                 echo "</div>";
-                
+                echo "<div class='product-des acc-des'>";
+                        echo "<p class='product-des-title'>Information</p>";
+                        echo "<p class='pro-des-text'>". $json_value['description'] ."</p>";
+                    echo "</div>";
+                echo "<div class='product-des-wrap'>";
+                    echo "<div class='product-des m-r-pro'>";  
+                     echo "<p class='product-des-title' id='include-acc'>Included Accessories</p>";
+
+                    echo "<div class='included_accessories' id='include-acc-des'>"; 
+                        echo $json_value['included_accessories'];
+                    echo "</div>";
+                     echo "</div>";
+
+                    echo "<div class='product-des '>";     
+                        echo "<p class='product-des-title'>Warranty Information</p>";
+                        echo "<p class='pro-des-text'>". $json_value['warranty_info'] ."</p>";
+
+                    echo "</div>";
+                 echo "</div>";
+
+               
+                   
             }
+            echo "</div>";
         
         //echo "<img src=". esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) . ">";
 

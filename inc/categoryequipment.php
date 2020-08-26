@@ -163,13 +163,13 @@ main-content main-content-three-col - this class is for three columns.
                                     {
                                         echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
                                     }
-                                    echo "<div class='price-main'>"; 
-                                        echo "<p>$ 10 </p>";
-                                     echo "</div>";
+                                    
                                 echo "</div>";    
                                 }
 
-                            echo "<p class='price-non-mem'>Non-Member: $20.00 </p>";
+                            echo "<p class='memberprice'>".$x_value['price_types'][0][0]."</p>";
+                                     
+                            echo "<p class='price-non-mem'>".$x_value['price_types'][1][0]."</p>";
 
                             
                         echo "</div>";

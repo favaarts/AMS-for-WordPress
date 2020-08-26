@@ -196,16 +196,14 @@ function myscript() {
 jQuery(document).ready(function($) {
 
 
-
-
    var count = 2;
    var total = jQuery("#inifiniteLoader").data("totalequipment");
 
-   //$(document.body).on('touchmove', loadArticle); // for mobile
-    
-
-   $(window).scroll(function(){
-     if ($(window).scrollTop() == $(document).height() - $(window).height()){
+   var s = 100;
+   
+   jQuery(window).scroll(function(){
+     if (jQuery("body").height() - s <= jQuery(window).height() + jQuery(window).scrollTop())
+     {
       if (count > total){
         return false;
       }else{
@@ -215,30 +213,20 @@ jQuery(document).ready(function($) {
      }
    });
 
-   $(document.body).on('touchmove', function(){
-     if ($(window).scrollTop() == $(document).height() - $(window).height()){
-      if (count > total){
-        return false;
-      }else{
-        loadArticle(count);
-      }
-      count++;
-     }
-   });
 
    function loadArticle(pageNumber){
-     $('a#inifiniteLoader').show();
+     jQuery('a#inifiniteLoader').show();
 
      /*console.log(amsjs_ajax_url.ajaxurl);
      console.log("hello");*/
 
-     $.ajax({
+     jQuery.ajax({
        url: amsjs_ajax_url.ajaxurl,
        type:'POST',
        data: "action=infinitescroll_action&page="+ pageNumber + '&loop_file=loop',
        beforeSend: function(){
         // Show image container
-        $("#inifiniteLoader").show();
+        jQuery("#inifiniteLoader").show();
        },
        success: function (html) {
          jQuery('#inifiniteLoader').hide('1000');
@@ -248,8 +236,6 @@ jQuery(document).ready(function($) {
      });
      return false;
    }
-
-
 
     
 

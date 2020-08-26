@@ -196,9 +196,13 @@ function myscript() {
 jQuery(document).ready(function($) {
 
 
+
+
    var count = 2;
    var total = jQuery("#inifiniteLoader").data("totalequipment");
 
+   //$(document.body).on('touchmove', loadArticle); // for mobile
+    
 
    $(window).scroll(function(){
      if ($(window).scrollTop() == $(document).height() - $(window).height()){
@@ -211,6 +215,16 @@ jQuery(document).ready(function($) {
      }
    });
 
+   $(document.body).on('touchmove', function(){
+     if ($(window).scrollTop() == $(document).height() - $(window).height()){
+      if (count > total){
+        return false;
+      }else{
+        loadArticle(count);
+      }
+      count++;
+     }
+   });
 
    function loadArticle(pageNumber){
      $('a#inifiniteLoader').show();
@@ -234,6 +248,8 @@ jQuery(document).ready(function($) {
      });
      return false;
    }
+
+
 
     
 

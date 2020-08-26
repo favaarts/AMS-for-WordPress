@@ -39,11 +39,8 @@ $url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets";
  
 <!-- ======================================================================
 notes::
-
 main-content - this class is for two columns.
-
 main-content main-content-three-col - this class is for three columns.
-
 ======================================================================  -->
 
 <div class="wp-block-columns main-content main-content-three-col" >
@@ -246,7 +243,7 @@ jQuery(document).ready(function($) {
 add_action('wp_footer', 'myscript');
 
 ?>
-	
+    
 <?php
     $ret = ob_get_contents();  
     ob_end_clean(); 

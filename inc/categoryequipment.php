@@ -199,11 +199,9 @@ jQuery(document).ready(function($) {
    var count = 2;
    var total = jQuery("#inifiniteLoader").data("totalequipment");
 
-   var s = 100;
-   
-   jQuery(window).scroll(function(){
-     if (jQuery("body").height() - s <= jQuery(window).height() + jQuery(window).scrollTop())
-     {
+
+   $(window).scroll(function(){
+     if( $(window).scrollTop() + window.innerHeight >= document.body.scrollHeight ) { 
       if (count > total){
         return false;
       }else{
@@ -215,18 +213,18 @@ jQuery(document).ready(function($) {
 
 
    function loadArticle(pageNumber){
-     jQuery('a#inifiniteLoader').show();
+     $('a#inifiniteLoader').show();
 
      /*console.log(amsjs_ajax_url.ajaxurl);
      console.log("hello");*/
 
-     jQuery.ajax({
+     $.ajax({
        url: amsjs_ajax_url.ajaxurl,
        type:'POST',
        data: "action=infinitescroll_action&page="+ pageNumber + '&loop_file=loop',
        beforeSend: function(){
         // Show image container
-        jQuery("#inifiniteLoader").show();
+        $("#inifiniteLoader").show();
        },
        success: function (html) {
          jQuery('#inifiniteLoader').hide('1000');

@@ -81,12 +81,12 @@ main-content main-content-three-col - this class is for three columns.
                  
                     if($cat === 'categories') {
                         echo '<h4>Categories</h4>';
-                         echo "<ul class='ul-cat-wrap'>";
+                         echo "<ul class='ul-cat-wrap getcategoryid'>";
                         foreach($cat_value as $c => $c_value) {
                             echo "<li>";
                             ?>
 
-                            <a href='' onclick='return categorydata(<?= $c_value[0] ?>)'><?= $c_value[1]?></a>
+                            <a href='' data-cateid='<?= $c_value[0] ?>' onclick='return categorydata(<?= $c_value[0] ?>)'><?= $c_value[1]?></a>
 
                             
                             
@@ -115,6 +115,8 @@ main-content main-content-three-col - this class is for three columns.
 
         $producturl = $url ."?type=Equipment&category_ids=%5B".$categoryid."%5D&access_token=".$apikey."&method=get&format=json";
 
+        //$producturl = "https://wpd.amsnetwork.ca/api/v3/assets/15527?type=Equipment&access_token=3c003006d6e6890b833e2bfefb59d15f32b565a9bade00223bf7b525b7b8c0d9&method=get&format=json";
+
         /*echo $producturl;
         die;*/
 
@@ -130,10 +132,7 @@ main-content main-content-three-col - this class is for three columns.
 
          $arrayResult = json_decode($json, true);
 
-          /*echo "<pre>";
- var_dump($arrayResult['meta']);
- echo "</pre>";
- die;*/
+          
 
  //echo $arrayResult['meta']['equipment_items_count'];
 
@@ -141,8 +140,6 @@ main-content main-content-three-col - this class is for three columns.
 //echo "<img src=". esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) . ">";
 
             foreach($arrayResult as $json_value) {
-                
-                
 
                 foreach($json_value as $x_value) { 
 
@@ -151,10 +148,10 @@ main-content main-content-three-col - this class is for three columns.
                         //productstyle  
                         //
                         echo "<div class='productstyle'>";
-                        echo "<div>";
+                        
                             if(isset($x_value['name']))
                             {
-                                echo "<a href='". $x_value['id']."' target='_blank'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                                echo "<a href='javascript:void(0)' onclick='return equipmentdetails(".$x_value['id'].")'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
                                  echo "<div class='product-img-wrap'>";
                                     echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
                                  echo "</div>";
@@ -166,26 +163,20 @@ main-content main-content-three-col - this class is for three columns.
                                     {
                                         echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
                                     }
+                                    
+                                echo "</div>";    
                                 }
 
-                                 echo "<div class='price-main'>"; 
-                                    $member = $x_value[0];
-                                    $member_price = $member[0];
-                                    
-                                    $nonmember = $x_value[1];
-                                    $nonmember_price = $nonmember[0];
-                                    
-                                    echo "<p>".$member_price."</p>";
-                                 echo "</div>";
-                             echo "</div>";
-                            echo "<p class='price-non-mem'>".$nonmember_price."</p>";
+                                echo "<p class='memberprice'>".$x_value['price_types'][0][0]."</p>";
 
-                        echo "</div>";    
+                                echo "<p class='price-non-mem'>".$x_value['price_types'][1][0]."</p>";
+                             
+                                echo "</div>";
+                            
                         echo "</div>";
                     }
-                }
 
-                
+                }
             }
           ?>
        </div>   
@@ -206,13 +197,13 @@ function myscript() {
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 
-     /*console.log(amsjs_ajax_url.ajaxurl);
-     console.log("hello");*/
 
    var count = 2;
    var total = jQuery("#inifiniteLoader").data("totalequipment");
+
+
    $(window).scroll(function(){
-     if ($(window).scrollTop() == $(document).height() - $(window).height()){
+     if( $(window).scrollTop() + window.innerHeight >= document.body.scrollHeight ) { 
       if (count > total){
         return false;
       }else{
@@ -224,10 +215,10 @@ jQuery(document).ready(function($) {
 
 
    function loadArticle(pageNumber){
-     $('a#inifiniteLoader').show('fast');
+     $('a#inifiniteLoader').show();
 
-     console.log(amsjs_ajax_url.ajaxurl);
-     console.log("hello");
+     /*console.log(amsjs_ajax_url.ajaxurl);
+     console.log("hello");*/
 
      $.ajax({
        url: amsjs_ajax_url.ajaxurl,

@@ -1,4 +1,35 @@
 
+function equipmentdetails(prodictkey)
+{
+	/*console.log(prodictkey);
+	console.log("hello");
+	return false;*/
+
+	event.preventDefault();
+	var prodictid =  prodictkey;
+	
+	jQuery('#inifiniteLoader').hide();
+
+	jQuery(window).unbind('scroll');
+
+	jQuery.ajax({
+		url: amsjs_ajax_url.ajaxurl,
+		type: 'post',
+		data : {
+			action : 'equipmentproductdetails_action',
+			prodictid : prodictid
+		},
+		success: function(result)
+		{
+			/*console.log(result);
+			return false;*/
+			jQuery('.right-col-wrap').html(result);
+		}
+	});
+
+	
+}
+
 function categorydata(getcatid)
 {
 	event.preventDefault();
@@ -6,7 +37,7 @@ function categorydata(getcatid)
 
 	document.getElementById('keyword').value = '';
 
-	console.log(catid);
+	/*console.log(catid);*/
 
 
 	jQuery.ajax({
@@ -20,7 +51,7 @@ function categorydata(getcatid)
 		{
 			/*console.log(result);
 			return false;*/
-			jQuery('.categorysearchdata').html(result);
+			jQuery('.right-col-wrap').html(result);
 		}
 	});
 }
@@ -34,7 +65,7 @@ function fetchequipment()
         type: 'post',
         data: { action: 'searchcategorydata_action', keyword: jQuery('#keyword').val() },
         success: function(data) {
-            jQuery('.categorysearchdata').html(data);
+            jQuery('.right-col-wrap').html(data);
         }
     });
 }

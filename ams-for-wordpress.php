@@ -13,6 +13,14 @@ if (!defined( 'WPINC' )) {
     die;
 }
 
+//register_deactivation_hook( __FILE__, 'amsnetwork_deactivate' );
+//register_uninstall_hook( __FILE__, 'amsnetwork_deactivate' );
+register_deactivation_hook( __FILE__, 'amsnetwork_deactivate' );
+function amsnetwork_deactivate(){
+   delete_option('wpams_url_btn_label');
+   delete_option('wpams_apikey_btn_label');
+}
+
 //Define Constants
 if ( !defined('WPD_AMS_PLUGIN_VERSION')) {
     define('WPD_AMS_PLUGIN_VERSION', '1.0.0');
@@ -232,9 +240,19 @@ function ams_get_category_action()
                             if(isset($x_value['name']))
                             {
                                 echo "<a href='javascript:void(0)' onclick='return equipmentdetails(".$x_value['id'].")'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+
+                                if($x_value['photo'] == NULL || $x_value['photo'] == "")
+                                {                                    
+                                    echo "<div class='product-img-wrap'>";
+                                        echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ )." alt=".$x_value['name'].">";
+                                     echo "</div>";
+                                }
+                                else
+                                {
                                  echo "<div class='product-img-wrap'>";
                                     echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
                                  echo "</div>";
+                                } 
 
                                 echo "<div class='bottom-fix'>"; 
                                 if($x_value['status_text'] == "Active")
@@ -298,13 +316,23 @@ function search_category_action()
                     if(isset($x_value['id']))
                     {
                         echo "<div class='productstyle'>";
-                        
+                           
                             if(isset($x_value['name']))
                             {
                                 echo "<a href='javascript:void(0)' onclick='return equipmentdetails(".$x_value['id'].")'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
-                                 echo "<div class='product-img-wrap'>";
-                                    echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
-                                 echo "</div>";
+                                if($x_value['photo'] == NULL || $x_value['photo'] == "")
+                                {                                    
+                                    echo "<div class='product-img-wrap'>";
+                                        echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ )." alt=".$x_value['name'].">";
+                                     echo "</div>";
+                                }
+                                else
+                                {
+                                    echo "<div class='product-img-wrap'>";
+                                        echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
+                                    echo "</div>";
+                                }
+                                 
 
                                 echo "<div class='bottom-fix'>"; 
                                 if($x_value['status_text'] == "Active")
@@ -383,9 +411,19 @@ function infinitescroll_action()
                             {
 
                                 echo "<a href='javascript:void(0)' onclick='return equipmentdetails(".$x_value['id'].")'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
-                                echo "<div class='product-img-wrap'>";
-                                echo "<img  src=".$x_value['photo']." alt=".$x_value['name'].">";
-                                echo "</div>";
+
+                                if($x_value['photo'] == NULL || $x_value['photo'] == "")
+                                {                                    
+                                    echo "<div class='product-img-wrap'>";
+                                        echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ )." alt=".$x_value['name'].">";
+                                     echo "</div>";
+                                }
+                                else
+                                {
+                                    echo "<div class='product-img-wrap'>";
+                                    echo "<img  src=".$x_value['photo']." alt=".$x_value['name'].">";
+                                    echo "</div>";
+                                }    
 
                                 echo "<div class='bottom-fix'>"; 
                                 if($x_value['status_text'] == "Active")
@@ -455,10 +493,20 @@ function equipmentproductdetails_action()
 
                      echo "<div class='pro-detail-left'>";
 
-                        echo "<a href='javascript:void(0)' class='pro-back'><img class='back-img' src='". plugins_url( 'assets/img/back.png', __FILE__ ) ."' >Back</a>"; 
-                        echo "<div class='pro-img'>"; 
-                            echo "<img src=".$json_value['photo_medium']." alt=".$json_value['name'].">";
-                        echo "</div>";
+                        echo "<a href='javascript:void(0)' onclick='return productback()' class='pro-back'><img class='back-img' src='". plugins_url( 'assets/img/back.png', __FILE__ ) ."' >Back</a>"; 
+
+                        if($json_value['photo'] == NULL || $json_value['photo'] == "")
+                        {                                    
+                            echo "<div class='pro-img'>";
+                                echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ )." alt=".$json_value['name'].">";
+                             echo "</div>";
+                        }
+                        else
+                        {
+                            echo "<div class='pro-img'>"; 
+                                echo "<img src=".$json_value['photo_medium']." alt=".$json_value['name'].">";
+                            echo "</div>";
+                        }
                      echo "</div>";
 
                      echo "<div class='pro-detail-right'>"; 

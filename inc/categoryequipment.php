@@ -106,6 +106,7 @@ main-content main-content-three-col - this class is for three columns.
 
 
     <div class="categorysearchdata right-col" >
+        <div class="productdetail"></div>
         <div class="right-col-wrap">
             
         
@@ -152,9 +153,19 @@ main-content main-content-three-col - this class is for three columns.
                             if(isset($x_value['name']))
                             {
                                 echo "<a href='javascript:void(0)' onclick='return equipmentdetails(".$x_value['id'].")'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                                
+                                if($x_value['photo'] == NULL || $x_value['photo'] == "")
+                                {                                    
+                                    echo "<div class='product-img-wrap'>";
+                                        echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ )." alt=".$x_value['name'].">";
+                                     echo "</div>";
+                                }
+                                else
+                                {
                                  echo "<div class='product-img-wrap'>";
                                     echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
                                  echo "</div>";
+                                }
 
                                 echo "<div class='bottom-fix'>"; 
                                 if($x_value['status_text'] == "Active")
@@ -228,7 +239,7 @@ jQuery(document).ready(function($) {
        },
        success: function (html) {
          jQuery('#inifiniteLoader').hide('1000');
-         
+         jQuery(".right-col-wrap").show();
          jQuery('.right-col-wrap').append(html);
        }
      });

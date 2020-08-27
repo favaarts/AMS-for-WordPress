@@ -1,9 +1,19 @@
 
+function productback()
+{
+
+	  jQuery(".right-col-wrap").show();
+	  jQuery(".productdetail").hide();
+	
+}	
+
+
 function equipmentdetails(prodictkey)
 {
 	/*console.log(prodictkey);
 	console.log("hello");
 	return false;*/
+	console.log(prodictkey);
 
 	event.preventDefault();
 	var prodictid =  prodictkey;
@@ -23,7 +33,9 @@ function equipmentdetails(prodictkey)
 		{
 			/*console.log(result);
 			return false;*/
-			jQuery('.right-col-wrap').html(result);
+			jQuery(".productdetail").show();
+			jQuery('.productdetail').html(result);
+			jQuery(".right-col-wrap").hide();
 		}
 	});
 
@@ -51,6 +63,8 @@ function categorydata(getcatid)
 		{
 			/*console.log(result);
 			return false;*/
+			jQuery(".productdetail").hide();
+			jQuery(".right-col-wrap").show();
 			jQuery('.right-col-wrap').html(result);
 		}
 	});
@@ -65,6 +79,8 @@ function fetchequipment()
         type: 'post',
         data: { action: 'searchcategorydata_action', keyword: jQuery('#keyword').val() },
         success: function(data) {
+        	jQuery(".productdetail").hide();
+        	jQuery(".right-col-wrap").show();
             jQuery('.right-col-wrap').html(data);
         }
     });

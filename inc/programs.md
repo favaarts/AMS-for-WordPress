@@ -24,7 +24,8 @@ These lists are taken from the results of the API:
 
 The events we should see should have the status "Active", or "Cancelled". Events with the status "Finished" should not be seen in the list, but should still show up if someone looks up the event.
 
-In the list view we should be able to see filters:
+
+In the list view we should be able to see these filters:
 - A filter for status 
 	- Active
 	- Finished
@@ -34,6 +35,7 @@ In the list view we should be able to see filters:
 	- https://wpd.amsnetwork.ca/api/v3/programs/filters 
 
 #### What do we need to see in the details view
+
 - name 
 - description
 - location
@@ -45,4 +47,5 @@ In the list view we should be able to see filters:
 - photo (original or medium)
 - status 
 
-
+### Notes
+We will probably have to create a registration form for each event/class/workshop, if we don't already have one. This would maybe be done in AMS directly when they sign up?

@@ -73,7 +73,7 @@ main-content main-content-three-col - this class is for three columns.
 
         $catArrayResult = json_decode($json, true);
 
-        
+    
 
          foreach($catArrayResult as $catjson_value) {
                 
@@ -152,7 +152,7 @@ main-content main-content-three-col - this class is for three columns.
                         
                             if(isset($x_value['name']))
                             {
-                                echo "<a href='javascript:void(0)' onclick='return equipmentdetails(".$x_value['id'].")'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                                echo "<a href='".site_url('/product/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
                                 
                                 if($x_value['photo'] == NULL || $x_value['photo'] == "")
                                 {                                    
@@ -239,7 +239,6 @@ jQuery(document).ready(function($) {
        },
        success: function (html) {
          jQuery('#inifiniteLoader').hide('1000');
-         jQuery(".right-col-wrap").show();
          jQuery('.right-col-wrap').append(html);
        }
      });

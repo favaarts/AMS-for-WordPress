@@ -2,7 +2,7 @@ var el = wp.element.createElement;
 
 wp.blocks.registerBlockType('wpdams-amsnetwork/amsnetwork-block', {
 
-   title: 'AMS', // Block name visible to user
+   title: 'AMS Assets', // Block name visible to user
 
    icon: 'screenoptions', // Toolbar icon can be either using WP Dashicons or custom SVG
 

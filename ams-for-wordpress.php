@@ -29,6 +29,64 @@ if ( !defined('WPD_AMS_PLUGIN_DIR')) {
     define('WPD_AMS_PLUGIN_DIR', plugin_dir_url( __FILE__ ));
 }
 
+
+// rewrite_rule
+
+add_action(
+    'plugins_loaded', 
+    array(Registration::get_instance(), 'setup')
+);
+
+class Registration {
+
+    protected static $instance = NULL;
+
+    public function __construct() {}
+
+    public static function get_instance() {
+        NULL === self::$instance and self::$instance = new self;
+        return self::$instance;
+    }    
+
+    public function setup() {
+
+        add_action('init', array($this, 'rewrite_rules'));
+        add_filter('query_vars', array($this, 'query_vars'), 10, 1);
+        add_action('parse_request', array($this, 'parse_request'), 10, 1);
+
+        register_activation_hook(__FILE__, array($this, 'flush_rules' ));
+
+    }
+
+    public function rewrite_rules(){
+        add_rewrite_rule('^product/([^/]*)/([^/]*)/?', 'index.php?category=$matches[1]&proname=$matches[2]', 'top');
+
+        flush_rewrite_rules();
+    }
+
+    public function query_vars($vars){
+        $vars[] = 'category';
+        $vars[] = 'proname';
+        return $vars;
+    }
+
+    public function flush_rules(){
+        $this->rewrite_rules();
+        flush_rewrite_rules();
+    }
+
+    public function parse_request($wp){
+        if ( array_key_exists( 'category', $wp->query_vars ) ){
+            include plugin_dir_path(__FILE__) . 'productdetails.php';
+            exit();
+        }
+    }
+
+}
+
+// End rewrite_rule
+
+
 //Include Scripts & Styles
 if( !function_exists('wpdams_plugin_scripts')) {
     function wpdams_plugin_scripts() {
@@ -188,13 +246,13 @@ else
 //===================================================================
 //========================== category shortcode =======================
 //====================================================================
-require plugin_dir_path( __FILE__ ). 'inc/filter.php';
+//require plugin_dir_path( __FILE__ ). 'inc/filter.php';
 
 
 //===================================================================
 //========================== product shortcode =======================
 //====================================================================
-require plugin_dir_path( __FILE__ ). 'inc/equipment.php';
+//require plugin_dir_path( __FILE__ ). 'inc/equipment.php';
 
 require plugin_dir_path( __FILE__ ). 'inc/categoryequipment.php';
 
@@ -239,7 +297,7 @@ function ams_get_category_action()
                         
                             if(isset($x_value['name']))
                             {
-                                echo "<a href='javascript:void(0)' onclick='return equipmentdetails(".$x_value['id'].")'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                                echo "<a href='".site_url('/product/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
 
                                 if($x_value['photo'] == NULL || $x_value['photo'] == "")
                                 {                                    
@@ -319,7 +377,7 @@ function search_category_action()
                            
                             if(isset($x_value['name']))
                             {
-                                echo "<a href='javascript:void(0)' onclick='return equipmentdetails(".$x_value['id'].")'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                                echo "<a href='".site_url('/product/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
                                 if($x_value['photo'] == NULL || $x_value['photo'] == "")
                                 {                                    
                                     echo "<div class='product-img-wrap'>";
@@ -410,7 +468,7 @@ function infinitescroll_action()
                             if(isset($x_value['name']))
                             {
 
-                                echo "<a href='javascript:void(0)' onclick='return equipmentdetails(".$x_value['id'].")'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                                echo "<a href='".site_url('/product/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
 
                                 if($x_value['photo'] == NULL || $x_value['photo'] == "")
                                 {                                    
@@ -562,24 +620,35 @@ function equipmentproductdetails_action()
                      echo "</div>";
 
                 echo "</div>";
-                echo "<div class='product-des acc-des'>";
+                if($json_value['description'])
+                {
+                    echo "<div class='product-des acc-des'>";
                         echo "<p class='product-des-title'>Information</p>";
                         echo "<p class='pro-des-text'>". $json_value['description'] ."</p>";
                     echo "</div>";
+                }
+               
                 echo "<div class='product-des-wrap'>";
-                    echo "<div class='product-des m-r-pro'>";  
-                     echo "<p class='product-des-title' id='include-acc'>Included Accessories</p>";
 
-                    echo "<div class='included_accessories' id='include-acc-des'>"; 
-                        echo $json_value['included_accessories'];
-                    echo "</div>";
-                     echo "</div>";
+                    if($json_value['included_accessories']) 
+                    {
+                        echo "<div class='product-des m-r-pro'>";  
+                        echo "<p class='product-des-title' id='include-acc'>Included Accessories</p>";
+                            echo "<div class='included_accessories' id='include-acc-des'>"; 
+                                echo $json_value['included_accessories'];
+                            echo "</div>";
+                        echo "</div>";
+                    }
 
-                    echo "<div class='product-des '>";     
+                    if($json_value['warranty_info']) 
+                    {
+                       echo "<div class='product-des '>";     
                         echo "<p class='product-des-title'>Warranty Information</p>";
                         echo "<p class='pro-des-text'>". $json_value['warranty_info'] ."</p>";
 
-                    echo "</div>";
+                        echo "</div>"; 
+                    }
+                    
                  echo "</div>";
 
                

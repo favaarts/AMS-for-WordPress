@@ -16,8 +16,8 @@ $i = 1;
 
 $url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets";
 ?>
-
-<div class="wrap">
+<div class="site-content"> <!-- site-content" -->
+<div class="container no-sidebar">
     <div id="primary" class="content-area">
         <main id="main" class="site-main" role="main">
 
@@ -182,6 +182,7 @@ $url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets";
 
 </main><!-- #main -->
     </div><!-- #primary -->
+</div><!-- .wrap -->
 </div><!-- .wrap -->
 <?php
 get_footer();

@@ -1,13 +1,7 @@
 <?php
 
-get_header(); ?>
+get_header(); 
 
-<div class="wrap">
-	<div id="primary" class="content-area">
-		
-<div id="category" class="category cat-wrap">
-
-<?php
 
 global $wp, $wpdb;
 
@@ -21,22 +15,15 @@ $apikey = get_option('wpams_apikey_btn_label');
 $i = 1;
 
 $url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets";
-
-
-
 ?>
-    
-  
-<div class="entry-content main-content-wrap">
- 
-<!-- ======================================================================
-notes::
 
-main-content - this class is for two columns.
+<div class="wrap">
+    <div id="primary" class="content-area">
+        <main id="main" class="site-main" role="main">
 
-main-content main-content-three-col - this class is for three columns.
 
-======================================================================  -->
+    <!-- Entry content -->
+    <div class="entry-content">
 
 <div class="wp-block-columns main-content main-content-three-col" >
     
@@ -45,10 +32,10 @@ main-content main-content-three-col - this class is for three columns.
 
     <div class="categorysearchdata right-col" >
         <div class="productdetail"></div>
-	        <div class="right-col-wrap">
-	            
-	        <?php
-	        $prodictid = $_POST['prodictid'];
+            <div class="right-col-wrap">
+                
+            <?php
+            $prodictid = $_POST['prodictid'];
     $apiurl = get_option('wpams_url_btn_label');
     $apikey = get_option('wpams_apikey_btn_label');
     
@@ -183,16 +170,18 @@ main-content main-content-three-col - this class is for three columns.
                    
             }
             echo "</div>";
-	        ?>
-	       </div>   
-    	</div> 
+            ?>
+           </div>   
+        </div> 
     
- 	</div>
+    </div>
         
-</div>
 
-		
-	</div><!-- #primary -->
+    </div><!-- .entry-content -->
+
+
+</main><!-- #main -->
+    </div><!-- #primary -->
 </div><!-- .wrap -->
 <?php
 get_footer();

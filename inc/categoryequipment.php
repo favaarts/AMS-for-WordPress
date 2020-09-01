@@ -6,44 +6,13 @@ function amscategoryequipment_function( $slug ) {
 
 <div id="category" class="category cat-wrap">
 
- <?php
-
-// https://wpd.amsnetwork.ca/api/v3/assets?type=Equipment&access_token=de5cb03d9c6bb57d5cd41b0616e72716d53fb5f6ec34e6bb0b8ff05acf029dac&method=get&format=json
-$apiurl = get_option('wpams_url_btn_label');
-$apikey = get_option('wpams_apikey_btn_label');
-//$url = "".$apiurl."?access_token=".$apikey."&method=get&format=json";
-//$url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets&type=Equipment?access_token=".$apikey."&method=get&format=json";
-$i = 1;
-
-/*$url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets?type=Equipment&page=1&limit=10&access_token=".$apikey."&method=get&format=json";*/
-$url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets";
-
-//$url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets/filter?access_token=".$apikey."&method=get&format=json";
-
-
-//print_r(json_decode($json));
-/* echo "<pre>";
- var_dump($arrayResult);
- echo "</pre>";
- die;*/
-
-
- //=======
-
- //
-
-?>
-    
   
 <div class="entry-content main-content-wrap">
  
 <!-- ======================================================================
 notes::
-
 main-content - this class is for two columns.
-
 main-content main-content-three-col - this class is for three columns.
-
 ======================================================================  -->
 
 <div class="wp-block-columns main-content main-content-three-col" >
@@ -57,23 +26,8 @@ main-content main-content-three-col - this class is for three columns.
         </div>
 
         <?php
-        $carurl = $url ."/filter?access_token=".$apikey."&method=get&format=json";
 
-
-
-        $catch = curl_init();
-        curl_setopt($catch,CURLOPT_URL,$carurl);
-        curl_setopt($catch,CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($catch,CURLOPT_CONNECTTIMEOUT, 4);
-        $json = curl_exec($catch);
-        if(!$json) {
-            echo curl_error($catch);
-        }
-        curl_close($catch);
-
-        $catArrayResult = json_decode($json, true);
-
-    
+        $catArrayResult = get_sidebarcategory();
 
          foreach($catArrayResult as $catjson_value) {
                 
@@ -112,33 +66,8 @@ main-content main-content-three-col - this class is for three columns.
         
 
          <?php
-        $categoryid = 834;
-
-        $producturl = $url ."?type=Equipment&category_ids=%5B".$categoryid."%5D&access_token=".$apikey."&method=get&format=json";
-
-        //$producturl = "https://wpd.amsnetwork.ca/api/v3/assets/15527?type=Equipment&access_token=3c003006d6e6890b833e2bfefb59d15f32b565a9bade00223bf7b525b7b8c0d9&method=get&format=json";
-
-        /*echo $producturl;
-        die;*/
-
-        $ch = curl_init();
-        curl_setopt($ch,CURLOPT_URL,$producturl);
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 4);
-        $json = curl_exec($ch);
-        if(!$json) {
-            echo curl_error($ch);
-        }
-        curl_close($ch);
-
-         $arrayResult = json_decode($json, true);
-
-          
-
- //echo $arrayResult['meta']['equipment_items_count'];
-
-//echo "<img src=". plugins_url( 'assets/img/loader.svg', __FILE__ ).">";
-//echo "<img src=". esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) . ">";
+        
+            $arrayResult = get_apirequest(NULL,NULL,NULL);
 
             foreach($arrayResult as $json_value) {
 
@@ -146,8 +75,7 @@ main-content main-content-three-col - this class is for three columns.
 
                     if(isset($x_value['id']))
                     {
-                        //productstyle  
-                        //
+                        
                         echo "<div class='productstyle'>";
                         
                             if(isset($x_value['name']))

@@ -57,7 +57,8 @@ class Registration {
     }
 
     public function rewrite_rules(){
-        add_rewrite_rule('^product/([^/]*)/([^/]*)/?', 'index.php?category=$matches[1]&proname=$matches[2]', 'top');
+       /* add_rewrite_rule('^product/([^/]*)/([^/]*)/?', 'index.php?category=$matches[1]&proname=$matches[2]', 'top');*/
+        add_rewrite_rule('^([^/]*)/([^/]*)/([^/]*)/?', 'index.php?pagename=$matches[1]&category=$matches[2]&proname=$matches[3]', 'top');
 
         flush_rewrite_rules();
     }
@@ -429,7 +430,7 @@ function infinitescroll_action()
     $categoryid = $_POST['catid'];
 
     $page = $_POST['page'];
-
+    $newslugname = $_POST['slugname'];
 
     $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/assets?type=Equipment&category_ids=%5B".$categoryid."%5D&page=".$page."&access_token=".$apikey."&method=get&format=json";
 
@@ -457,7 +458,7 @@ function infinitescroll_action()
                             if(isset($x_value['name']))
                             {
 
-                                echo "<a href='".site_url('/product/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                                echo "<a href='".site_url('/'.$newslugname.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
 
                                 if($x_value['photo'] == NULL || $x_value['photo'] == "")
                                 {                                    

@@ -29,6 +29,13 @@ main-content main-content-three-col - this class is for three columns.
 
         $catArrayResult = get_sidebarcategory();
 
+        // Comparison function 
+        function date_compare($element1, $element2) { 
+            return strcmp($element1[1],$element2[1]); 
+        }
+        // Sort the array  
+        usort($catArrayResult['json']['categories'], 'date_compare');
+
          foreach($catArrayResult as $catjson_value) {
                 
                 foreach($catjson_value as $cat => $cat_value) { 
@@ -66,7 +73,10 @@ main-content main-content-three-col - this class is for three columns.
         
 
          <?php
-        
+            
+            global $post;
+            $pageslug = $post->post_name;
+
             $arrayResult = get_apirequest(NULL,NULL,NULL);
 
             foreach($arrayResult as $json_value) {
@@ -80,7 +90,7 @@ main-content main-content-three-col - this class is for three columns.
                         
                             if(isset($x_value['name']))
                             {
-                                echo "<a href='".site_url('/product/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                                echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
                                 
                                 if($x_value['photo'] == NULL || $x_value['photo'] == "")
                                 {                                    
@@ -118,7 +128,7 @@ main-content main-content-three-col - this class is for three columns.
           ?>
        </div>   
     </div> 
-    
+    <input type="hidden" id="inputpageslug" value="<?php echo $pageslug; ?>">
 </div>
     <div class="loaderdiv">
         <a id="inifiniteLoader"  data-totalequipment="<?php echo $arrayResult['meta']['equipment_items_count']; ?>" ><img src="<?php echo esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) ?>" ></a>
@@ -156,11 +166,12 @@ jQuery(document).ready(function($) {
 
      /*console.log(amsjs_ajax_url.ajaxurl);
      console.log("hello");*/
+     var slugvar = $('#inputpageslug').val();
 
      $.ajax({
        url: amsjs_ajax_url.ajaxurl,
        type:'POST',
-       data: "action=infinitescroll_action&page="+ pageNumber + '&loop_file=loop',
+       data: "action=infinitescroll_action&page="+ pageNumber + "&loop_file=loop&slugname="+slugvar,
        beforeSend: function(){
         // Show image container
         $("#inifiniteLoader").show();

@@ -106,13 +106,15 @@ main-content main-content-three-col - this class is for three columns.
                                 echo "</div>";    
                                 }
 
-                            echo "<p class='memberprice'>".$x_value['price_types'][0][0]."</p>";
-                                     
-                            echo "<p class='price-non-mem'>".$x_value['price_types'][1][0]."</p>";
+                                echo "<p class='memberprice'>".$x_value['price_types'][0][0]."</p>";
 
+                                echo "<p class='price-non-mem'>".$x_value['price_types'][1][0]."</p>";
+                             
+                                echo "</div>";
                             
                         echo "</div>";
                     }
+
                 }
             }
           ?>
@@ -182,7 +184,7 @@ jQuery(document).ready(function($) {
 add_action('wp_footer', 'myscript');
 
 ?>
-	
+    
 <?php
     $ret = ob_get_contents();  
     ob_end_clean(); 

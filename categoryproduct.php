@@ -1,9 +1,13 @@
 <?php
 
-function amscategoryequipment_function( $slug ) {
-    ob_start();  
-    ?>
+get_header();  ?>
 
+<div class="site-content"> <!-- site-content" -->
+ <div class="container no-sidebar">
+  <div class="wrap">
+    <div id="primary" class="content-area">
+        <main id="main" class="site-main" role="main">
+    <!-- Entry content -->
 <div id="category" class="category cat-wrap">
 
   
@@ -28,9 +32,19 @@ main-content main-content-three-col - this class is for three columns.
         <?php
 
         global $post;
-       
-        $pageslug = $post->post_name;
-        
+        global $wp;
+        //$pageslug = $post->post_name;
+        $url = home_url( $wp->request );
+        $parts = explode("/", $url);
+        $pageslug = $parts[count($parts) - 2];
+
+
+        $catArrayResult = get_sidebarcategory();
+
+        $category = $wp->query_vars['categoryslug'];
+
+        $arraynew = $catArrayResult['json']['categories'];
+
         $catArrayResult = get_sidebarcategory();
 
         // Comparison function 
@@ -50,11 +64,9 @@ main-content main-content-three-col - this class is for three columns.
                         foreach($cat_value as $c => $c_value) {
                             echo "<li>";
                             ?>
-
+                            
                             <a href='<?= site_url('/'.$pageslug.'/'.$c_value[1]); ?>'><?= $c_value[1]?></a>
 
-                            
-                            
                             <?php   
                             echo "</li>";
                         }
@@ -78,10 +90,21 @@ main-content main-content-three-col - this class is for three columns.
 
          <?php
             
-            global $post;
-            $pageslug = $post->post_name;
+            
 
-            $arrayResult = get_apirequest(NULL,NULL,NULL);
+            function searchForId($category, $array) {
+                foreach($array as $c_value) {
+                    if ($c_value[1] === $category) {
+                        return $c_value[0];
+                    }
+                }
+                return null;
+            }    
+            
+            $catid = searchForId($category, $arraynew);
+
+            $arrayResult = get_apirequest($catid,NULL,NULL);
+            //
 
             foreach($arrayResult as $json_value) {
 
@@ -139,12 +162,13 @@ main-content main-content-three-col - this class is for three columns.
     <div>    
 </div>
 
+ </main><!-- #main -->
+    </div><!-- #primary -->
+  </div>  
+ </div><!-- .container no-sidebar -->
+</div><!-- .site-content -->
 
 
-
-<?php
-function myscript() {
-?>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 
@@ -193,16 +217,4 @@ jQuery(document).ready(function($) {
 });    
 </script>
 <?php
-}
-add_action('wp_footer', 'myscript');
-
-?>
-    
-<?php
-    $ret = ob_get_contents();  
-    ob_end_clean(); 
-    return $ret; 
-}
-add_shortcode('amscategoryequipment', 'amscategoryequipment_function');
-
-?>
+get_footer();

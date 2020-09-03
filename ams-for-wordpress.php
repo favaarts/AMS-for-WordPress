@@ -84,6 +84,60 @@ class Registration {
 }
 // End rewrite_rule
 
+// Category rewrite rule
+add_action(
+    'plugins_loaded', 
+    array(CategoryRegistration::get_instance(), 'setup')
+);
+
+class CategoryRegistration {
+
+    protected static $instance = NULL;
+
+    public function __construct() {}
+
+    public static function get_instance() {
+        NULL === self::$instance and self::$instance = new self;
+        return self::$instance;
+    }    
+
+    public function setup() {
+
+        add_action('init', array($this, 'catrewrite_rules'));
+        add_filter('query_vars', array($this, 'query_vars'), 10, 1);
+        add_action('parse_request', array($this, 'parse_request'), 10, 1);
+
+        register_activation_hook(__FILE__, array($this, 'flush_rules' ));
+
+    }
+
+    public function catrewrite_rules(){
+        add_rewrite_rule('^([^/]*)/([^/]*)/?', 'index.php?page=$matches[1]&categoryslug=$matches[2]', 'top');
+
+        flush_rewrite_rules();
+    }
+
+    public function query_vars($vars){
+        $vars[] = 'categoryslug';
+        return $vars;
+    }
+
+    public function flush_rules(){
+        $this->catrewrite_rules();
+        flush_rewrite_rules();
+    }
+
+    public function parse_request($wp){
+        if ( array_key_exists( 'categoryslug', $wp->query_vars ) ){
+            //echo $ab = $wp->query_vars['categoryslug'];
+            include plugin_dir_path(__FILE__) . 'categoryproduct.php';
+            exit();
+        }
+    }
+
+}
+// End category rewrite
+
 
 //Include Scripts & Styles
 if( !function_exists('wpdams_plugin_scripts')) {

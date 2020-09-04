@@ -30,7 +30,7 @@ main-content main-content-three-col - this class is for three columns.
         global $post;
        
         $pageslug = $post->post_name;
-        
+
         $catArrayResult = get_sidebarcategory();
 
         // Comparison function 
@@ -135,7 +135,7 @@ main-content main-content-three-col - this class is for three columns.
     <input type="hidden" id="inputpageslug" value="<?php echo $pageslug; ?>">
 </div>
     <div class="loaderdiv">
-        <a id="inifiniteLoader"  data-totalequipment="<?php echo $arrayResult['meta']['equipment_items_count']; ?>" ><img src="<?php echo esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) ?>" ></a>
+        <a id="inifiniteLoader"  data-totalequipment="<?php echo $arrayResult['meta']['total_count']; ?>" ><img src="<?php echo esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) ?>" ></a>
     <div>    
 </div>
 
@@ -149,13 +149,15 @@ function myscript() {
 jQuery(document).ready(function($) {
 
 
-   var count = 2;
+   var count = 1;
    var total = jQuery("#inifiniteLoader").data("totalequipment");
-
+   console.log(total);
 
    $(window).scroll(function(){
      if( $(window).scrollTop() + window.innerHeight >= document.body.scrollHeight ) { 
-      if (count > total){
+      var numItems = jQuery('.productstyle').length;  
+      console.log(numItems);
+      if (numItems >= total){
         return false;
       }else{
         loadArticle(count);

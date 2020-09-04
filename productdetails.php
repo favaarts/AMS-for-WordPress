@@ -29,7 +29,7 @@ get_header();  ?>
             
             echo "<div class='pro-detail-left'>";
             
-            echo "<a href='javascript:history.back()' class='pro-back'><img class='back-img' src='". plugins_url( 'assets/img/back.png', __FILE__ ) ."' >Back</a>"; 
+            /*echo "<a href='javascript:history.back()' class='pro-back'><img class='back-img' src='". plugins_url( 'assets/img/back.png', __FILE__ ) ."' >Back</a>"; */
             
             if($json_value['photo'] == NULL || $json_value['photo'] == "")
             {                                    

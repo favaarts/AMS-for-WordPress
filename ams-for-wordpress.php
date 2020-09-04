@@ -482,6 +482,7 @@ function infinitescroll_action()
     $apikey = get_option('wpams_apikey_btn_label');
     
     $categoryid = $_POST['catid'];
+    //die;
 
     $page = $_POST['page'];
     $newslugname = $_POST['slugname'];

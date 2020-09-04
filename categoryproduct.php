@@ -20,8 +20,6 @@ main-content main-content-three-col - this class is for three columns.
 ======================================================================  -->
 
 <div class="wp-block-columns main-content main-content-three-col" >
-    
-
 
     <div class="wp-block-column left-col" >
         <div class="searchbox">
@@ -30,20 +28,19 @@ main-content main-content-three-col - this class is for three columns.
         </div>
 
         <?php
-
-        global $post;
         global $wp;
-        //$pageslug = $post->post_name;
         $url = home_url( $wp->request );
         $parts = explode("/", $url);
         $pageslug = $parts[count($parts) - 2];
 
+        //$catArrayResult = get_sidebarcategory();
 
-        $catArrayResult = get_sidebarcategory();
+        // get slug
+        $categoryinurl = $wp->query_vars['categoryslug'];
+        $category = preg_replace("/[^a-zA-Z]+/", " ", $categoryinurl);
+        // End get slug
 
-        $category = $wp->query_vars['categoryslug'];
-
-        $arraynew = $catArrayResult['json']['categories'];
+        
 
         $catArrayResult = get_sidebarcategory();
 
@@ -64,7 +61,6 @@ main-content main-content-three-col - this class is for three columns.
                         foreach($cat_value as $c => $c_value) {
                             echo "<li>";
                             ?>
-                            
                             <a href='<?= site_url('/'.$pageslug.'/'.$c_value[1]); ?>'><?= $c_value[1]?></a>
 
                             <?php   
@@ -91,6 +87,8 @@ main-content main-content-three-col - this class is for three columns.
          <?php
             
             
+            global $array;
+            $arraynew = $catArrayResult['json']['categories'];
 
             function searchForId($category, $array) {
                 foreach($array as $c_value) {
@@ -156,9 +154,10 @@ main-content main-content-three-col - this class is for three columns.
        </div>   
     </div> 
     <input type="hidden" id="inputpageslug" value="<?php echo $pageslug; ?>">
+    <input type="hidden" id="categoryid" value="<?php echo $catid; ?>">
 </div>
     <div class="loaderdiv">
-        <a id="inifiniteLoader"  data-totalequipment="<?php echo $arrayResult['meta']['equipment_items_count']; ?>" ><img src="<?php echo esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) ?>" ></a>
+        <a id="inifiniteLoader"  data-totalequipment="<?php echo $arrayResult['meta']['total_count']; ?>" ><img src="<?php echo plugin_dir_url( __FILE__ ).'assets/img/loader.svg' ?>" ></a>
     <div>    
 </div>
 
@@ -171,19 +170,22 @@ main-content main-content-three-col - this class is for three columns.
 
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-
-
-   var count = 2;
+    $('a#inifiniteLoader').hide();
+   
+   var count = 1;
    var total = jQuery("#inifiniteLoader").data("totalequipment");
-
+   console.log(total);
 
    $(window).scroll(function(){
      if( $(window).scrollTop() + window.innerHeight >= document.body.scrollHeight ) { 
-      if (count > total){
+      var numItems = jQuery('.productstyle').length;   
+      console.log(numItems);
+      if (numItems >= total){
         return false;
       }else{
         loadArticle(count);
       }
+      console.log(count);
       count++;
      }
    });
@@ -195,11 +197,12 @@ jQuery(document).ready(function($) {
      /*console.log(amsjs_ajax_url.ajaxurl);
      console.log("hello");*/
      var slugvar = $('#inputpageslug').val();
+     var catid = $('#categoryid').val();
 
      $.ajax({
        url: amsjs_ajax_url.ajaxurl,
        type:'POST',
-       data: "action=infinitescroll_action&page="+ pageNumber + "&loop_file=loop&slugname="+slugvar,
+       data: "action=infinitescroll_action&page="+ pageNumber + "&catid="+catid+"&slugname="+slugvar,
        beforeSend: function(){
         // Show image container
         $("#inifiniteLoader").show();

@@ -5,53 +5,62 @@ get_header();  ?>
 <div class="site-content"> <!-- site-content" -->
  <div class="container no-sidebar">
   <div class="wrap">
-    <div id="primary" class="content-area">
-        <main id="main" class="site-main" role="main">
-    <!-- Entry content -->
-<div id="category" class="category cat-wrap">
-
-  
-<div class="entry-content main-content-wrap">
- 
-<!-- ======================================================================
-notes::
-main-content - this class is for two columns.
-main-content main-content-three-col - this class is for three columns.
-======================================================================  -->
-
-<div class="wp-block-columns main-content main-content-three-col" >
-
-    <div class="wp-block-column left-col" >
-        <div class="searchbox">
+    <div id="primary" class="content-area">  <!-- primary" --> 
+      <div id="category" class="category cat-wrap"> <!-- category cat-wrap" --> 
+        <div class="entry-content main-content-wrap"> <!-- entry-content main-content-wrap" --> 
+        
+        <!-- ======================================================================
+        notes::
+        main-content - this class is for two columns.
+        main-content main-content-three-col - this class is for three columns.
+        ======================================================================  -->
+        <?php
+        $catArrayResult = get_sidebarcategory();
+        if(isset($catArrayResult['error']))
+        {   
+        echo $catArrayResult['error'];
+        } 
+        elseif($catArrayResult == NULL && $catArrayResult == "")
+        {
+        echo " Something went wrong! Please check subdomain and API key ";    
+        }
+        else
+        {
+        ?>
+        
+            <div class="wp-block-columns main-content main-content-three-col" >
+            
+            <div class="wp-block-column left-col" >
+            <div class="searchbox">
             <h4>Search Box</h4>
             <input type="text" class="searrch-input" name="keyword" id="keyword" onkeyup="fetchequipment()"></input>
-        </div>
-
-        <?php
-        global $wp;
-        $url = home_url( $wp->request );
-        $parts = explode("/", $url);
-        $pageslug = $parts[count($parts) - 2];
-
-        //$catArrayResult = get_sidebarcategory();
-
-        // get slug
-        $categoryinurl = $wp->query_vars['categoryslug'];
-        $category = preg_replace("/[^a-zA-Z]+/", " ", $categoryinurl);
-        // End get slug
-
-        
-
-        $catArrayResult = get_sidebarcategory();
-
-        // Comparison function 
-        function date_compare($element1, $element2) { 
-            return strcmp($element1[1],$element2[1]); 
-        }
-        // Sort the array  
-        usort($catArrayResult['json']['categories'], 'date_compare');
-
-         foreach($catArrayResult as $catjson_value) {
+            </div>
+            
+            <?php
+            global $wp;
+            $url = home_url( $wp->request );
+            $parts = explode("/", $url);
+            $pageslug = $parts[count($parts) - 2];
+            
+            //$catArrayResult = get_sidebarcategory();
+            
+            // get slug
+            $categoryinurl = $wp->query_vars['categoryslug'];
+            $category = preg_replace("/[^a-zA-Z]+/", " ", $categoryinurl);
+            // End get slug
+            
+            
+            if(!function_exists('dateCompare'))
+            {    
+            function dateCompare($element1, $element2) { 
+                
+                return strcmp($element1[1],$element2[1]); 
+            }
+            
+            usort($catArrayResult['json']['categories'], 'dateCompare');
+            }    
+            
+            foreach($catArrayResult as $catjson_value) {
                 
                 foreach($catjson_value as $cat => $cat_value) { 
                  
@@ -62,7 +71,7 @@ main-content main-content-three-col - this class is for three columns.
                             echo "<li>";
                             ?>
                             <a href='<?= site_url('/'.$pageslug.'/'.$c_value[1]); ?>'><?= $c_value[1]?></a>
-
+            
                             <?php   
                             echo "</li>";
                         }
@@ -71,25 +80,25 @@ main-content main-content-three-col - this class is for three columns.
                     
                 }
             }
-
-        ?>
-    </div>  
-
-
-
-
-    <div class="categorysearchdata right-col" >
-        <div class="productdetail"></div>
-        <div class="right-col-wrap">
             
-        
-
-         <?php
+            ?>
+            </div>  
+            
+            
+            
+            
+            <div class="categorysearchdata right-col" >
+            <div class="productdetail"></div>
+            <div class="right-col-wrap">
+            
+            
+            
+            <?php
             
             
             global $array;
             $arraynew = $catArrayResult['json']['categories'];
-
+            
             function searchForId($category, $array) {
                 foreach($array as $c_value) {
                     if ($c_value[1] === $category) {
@@ -100,14 +109,14 @@ main-content main-content-three-col - this class is for three columns.
             }    
             
             $catid = searchForId($category, $arraynew);
-
+            
             $arrayResult = get_apirequest($catid,NULL,NULL);
             //
-
+            
             foreach($arrayResult as $json_value) {
-
+            
                 foreach($json_value as $x_value) { 
-
+            
                     if(isset($x_value['id']))
                     {
                         
@@ -129,7 +138,7 @@ main-content main-content-three-col - this class is for three columns.
                                     echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
                                  echo "</div>";
                                 }
-
+            
                                 echo "<div class='bottom-fix'>"; 
                                 if($x_value['status_text'] == "Active")
                                     echo "<p><span class='label label-success btn-common'>Available</span></p>";
@@ -140,32 +149,34 @@ main-content main-content-three-col - this class is for three columns.
                                     
                                 echo "</div>";    
                                 }
-
+            
                             echo "<p class='memberprice'>".$x_value['price_types'][0][0]."</p>";
                                      
                             echo "<p class='price-non-mem'>".$x_value['price_types'][1][0]."</p>";
-
+            
                             
                         echo "</div>";
                     }
                 }
             }
-          ?>
-       </div>   
-    </div> 
-    <input type="hidden" id="inputpageslug" value="<?php echo $pageslug; ?>">
-    <input type="hidden" id="categoryid" value="<?php echo $catid; ?>">
+            ?>
+            </div>   
+            </div> 
+            <input type="hidden" id="inputpageslug" value="<?php echo $pageslug; ?>">
+            <input type="hidden" id="categoryid" value="<?php echo $catid; ?>">
+            </div>
+            <div class="loaderdiv">
+            <a id="inifiniteLoader"  data-totalequipment="<?php echo $arrayResult['meta']['total_count']; ?>" ><img src="<?php echo plugin_dir_url( __FILE__ ).'assets/img/loader.svg' ?>" ></a>
+            </div>    
+        
+        
+        <?php } ?>
+        </div> <!-- entry-content main-content-wrap" --> 
+     </div> <!-- category cat-wrap" --> 
+    </div> <!-- primary" --> 
+  </div>
+ </div>
 </div>
-    <div class="loaderdiv">
-        <a id="inifiniteLoader"  data-totalequipment="<?php echo $arrayResult['meta']['total_count']; ?>" ><img src="<?php echo plugin_dir_url( __FILE__ ).'assets/img/loader.svg' ?>" ></a>
-    <div>    
-</div>
-
- </main><!-- #main -->
-    </div><!-- #primary -->
-  </div>  
- </div><!-- .container no-sidebar -->
-</div><!-- .site-content -->
 
 
 <script type="text/javascript">

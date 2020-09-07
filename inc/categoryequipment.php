@@ -20,28 +20,40 @@ main-content main-content-three-col - this class is for three columns.
 
 
     <div class="wp-block-column left-col" >
-        <div class="searchbox">
-            <h4>Search Box</h4>
-            <input type="text" class="searrch-input" name="keyword" id="keyword" onkeyup="fetchequipment()"></input>
-        </div>
-
         <?php
-
-        global $post;
-       
-        $pageslug = $post->post_name;
 
         $catArrayResult = get_sidebarcategory();
 
-        // Comparison function 
-        function date_compare($element1, $element2) { 
-            return strcmp($element1[1],$element2[1]); 
-        }
-        // Sort the array  
-        usort($catArrayResult['json']['categories'], 'date_compare');
+        if(!isset($catArrayResult['error']))
+        {
 
-         foreach($catArrayResult as $catjson_value) {
-                
+        ?>
+
+            <div class="searchbox">
+                <h4>Search Box</h4>
+                <input type="text" class="searrch-input" name="keyword" id="keyword" onkeyup="fetchequipment()"></input>
+            </div>
+
+            <?php
+
+            global $post;
+           
+            $pageslug = $post->post_name;
+
+            
+
+            // Comparison function 
+            if(!function_exists('dateCompare'))
+            {    
+                function dateCompare($element1, $element2) { 
+                    
+                    return strcmp($element1[1],$element2[1]); 
+                }
+                usort($catArrayResult['json']['categories'], 'dateCompare');
+            }    
+ 
+        
+            foreach($catArrayResult as $catjson_value) {
                 foreach($catjson_value as $cat => $cat_value) { 
                  
                     if($cat === 'categories') {
@@ -60,9 +72,11 @@ main-content main-content-three-col - this class is for three columns.
                         }
                         echo "</ul>";
                     }
-                    
                 }
             }
+
+            
+        }    
 
         ?>
     </div>  
@@ -76,75 +90,90 @@ main-content main-content-three-col - this class is for three columns.
             
         
 
-         <?php
+        <?php
+            $arrayResult = get_apirequest($catid,NULL,NULL);
             
-            global $post;
-            $pageslug = $post->post_name;
+            if(isset($arrayResult['error']))
+            {   
+                 echo $arrayResult['error'];
+            } 
+            elseif($arrayResult == NULL && $arrayResult == "")
+            {
+                echo " Something went wrong! Please check subdomain and API key ";    
+            }
+            else
+            {
+            
+                global $post;
+                $pageslug = $post->post_name;
 
-            $arrayResult = get_apirequest(NULL,NULL,NULL);
+                $arrayResult = get_apirequest(NULL,NULL,NULL);
 
-            foreach($arrayResult as $json_value) {
+                foreach($arrayResult as $json_value) {
 
-                foreach($json_value as $x_value) { 
+                    foreach($json_value as $x_value) { 
 
-                    if(isset($x_value['id']))
-                    {
-                        
-                        echo "<div class='productstyle'>";
-                        
-                            if(isset($x_value['name']))
-                            {
-                                echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
-                                
-                                if($x_value['photo'] == NULL || $x_value['photo'] == "")
-                                {                                    
-                                    echo "<div class='product-img-wrap'>";
-                                        echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ )." alt=".$x_value['name'].">";
-                                     echo "</div>";
-                                }
-                                else
+                        if(isset($x_value['id']))
+                        {
+                            
+                            echo "<div class='productstyle'>";
+                            
+                                if(isset($x_value['name']))
                                 {
-                                 echo "<div class='product-img-wrap'>";
-                                    echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
-                                 echo "</div>";
-                                }
-
-                                echo "<div class='bottom-fix'>"; 
-                                if($x_value['status_text'] == "Active")
-                                    echo "<p><span class='label label-success btn-common'>Available</span></p>";
+                                    echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                                    
+                                    if($x_value['photo'] == NULL || $x_value['photo'] == "")
+                                    {                                    
+                                        echo "<div class='product-img-wrap'>";
+                                            echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ )." alt=".$x_value['name'].">";
+                                         echo "</div>";
+                                    }
                                     else
                                     {
-                                        echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
+                                     echo "<div class='product-img-wrap'>";
+                                        echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
+                                     echo "</div>";
                                     }
-                                    
-                                echo "</div>";    
-                                }
 
-                            echo "<p class='memberprice'>".$x_value['price_types'][0][0]."</p>";
-                                     
-                            echo "<p class='price-non-mem'>".$x_value['price_types'][1][0]."</p>";
+                                    echo "<div class='bottom-fix'>"; 
+                                    if($x_value['status_text'] == "Active")
+                                        echo "<p><span class='label label-success btn-common'>Available</span></p>";
+                                        else
+                                        {
+                                            echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
+                                        }
+                                        
+                                    echo "</div>";    
+                                    }
 
-                            
-                        echo "</div>";
+                                echo "<p class='memberprice'>".$x_value['price_types'][0][0]."</p>";
+                                         
+                                echo "<p class='price-non-mem'>".$x_value['price_types'][1][0]."</p>";
+
+                                
+                            echo "</div>";
+                        }
                     }
                 }
-            }
+
+            }    
           ?>
        </div>   
     </div> 
     <input type="hidden" id="inputpageslug" value="<?php echo $pageslug; ?>">
 </div>
+    <?php
+    if(!isset($catArrayResult['error']))
+    {
+    ?>
     <div class="loaderdiv">
         <a id="inifiniteLoader"  data-totalequipment="<?php echo $arrayResult['meta']['total_count']; ?>" ><img src="<?php echo esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) ?>" ></a>
     <div>    
+    <?php } ?>    
 </div>
 
 
 
-
-<?php
-function myscript() {
-?>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 
@@ -194,11 +223,7 @@ jQuery(document).ready(function($) {
 
 });    
 </script>
-<?php
-}
-add_action('wp_footer', 'myscript');
 
-?>
     
 <?php
     $ret = ob_get_contents();  

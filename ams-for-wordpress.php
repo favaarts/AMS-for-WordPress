@@ -165,12 +165,53 @@ function wptuts_scripts_important()
 }
 add_action( 'wp_enqueue_scripts', 'wptuts_scripts_important', 20 );
 
+// Sidebar category function
+function get_sidebarcategory()
+{
+    $apiurl = get_option('wpams_url_btn_label');
+    $apikey = get_option('wpams_apikey_btn_label');
+    $url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets";
+    $carurl = $url ."/filter?access_token=".$apikey."&method=get&format=json";
+
+    $catch = curl_init();
+    curl_setopt($catch,CURLOPT_URL,$carurl);
+    curl_setopt($catch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($catch,CURLOPT_CONNECTTIMEOUT, 4);
+    $json = curl_exec($catch);
+    if(!$json) {
+        echo curl_error($catch);
+    }
+    curl_close($catch);
+
+    return $catArrayResultData = json_decode($json, true);
+}
+add_action('wp_ajax_get_sidebarcategory','get_sidebarcategory');
+add_action('wp_ajax_nopriv_get_sidebarcategory','get_sidebarcategory');
+// End sidebar category
 
 function wpdams_settings_page_html() {
    
    ?>
         <div class="wrap">
             <h1 style="padding:10px; background:#333;color:#fff"><?= esc_html(get_admin_page_title()); ?></h1>
+
+            <?php
+            //echo "fasdfsd";
+            $catArrayResult = get_sidebarcategory();
+            //print_r($catArrayResult);
+            if(isset($catArrayResult['error']))
+            {
+                 //settings_errors();
+
+                echo "<div class='notice notice-error is-dismissible'><p>".$catArrayResult['error']."</p></div>";
+            }
+            else
+            {
+                settings_errors();
+            }
+            
+            ?>
+
             <form action="options.php" method="post" class="wpamsform">
                 <?php 
                     // output security fields for the registered setting "wpac-settings"
@@ -235,6 +276,11 @@ function wpams_apikey_label_field_cb(){
     // get the value of the setting we've registered with register_setting()
     $setting = get_option('wpams_apikey_btn_label');
     // output the field
+    /*if(!empty($apikey))
+    {
+        $setting = sanitize_text_field("**************************************************************");
+    }*/
+    
     ?>
     <input type="text" name="wpams_apikey_btn_label" style="width: 500px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
 
@@ -330,29 +376,7 @@ add_action('wp_ajax_get_apirequest','get_apirequest');
 add_action('wp_ajax_nopriv_get_apirequest','get_apirequest');
 // End equipment product
 
-// Sidebar category function
-function get_sidebarcategory()
-{
-    $apiurl = get_option('wpams_url_btn_label');
-    $apikey = get_option('wpams_apikey_btn_label');
-    $url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets";
-    $carurl = $url ."/filter?access_token=".$apikey."&method=get&format=json";
 
-    $catch = curl_init();
-    curl_setopt($catch,CURLOPT_URL,$carurl);
-    curl_setopt($catch,CURLOPT_RETURNTRANSFER,1);
-    curl_setopt($catch,CURLOPT_CONNECTTIMEOUT, 4);
-    $json = curl_exec($catch);
-    if(!$json) {
-        echo curl_error($catch);
-    }
-    curl_close($catch);
-
-    return $catArrayResultData = json_decode($json, true);
-}
-add_action('wp_ajax_get_sidebarcategory','get_sidebarcategory');
-add_action('wp_ajax_nopriv_get_sidebarcategory','get_sidebarcategory');
-// End sidebar ca
 
 // Get data on click id from sidebar menu
 function ams_get_category_action()

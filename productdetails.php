@@ -25,11 +25,11 @@ get_header();  ?>
             
             if(isset($arrayResult['error']))
             {   
-            echo "<p style='text-align: center;'>".$arrayResult['error']."</p>";
+            echo "<p class='centertext'>".$arrayResult['error']."</p>";
             } 
             elseif($arrayResult == NULL && $arrayResult == "")
             {
-            echo "<p style='text-align: center;'>Something went wrong! Please check subdomain and API key </p>";    
+            echo "<p class='centertext'>Something went wrong! Please check subdomain and API key </p>";    
             }
             else
             {

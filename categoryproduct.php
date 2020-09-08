@@ -18,11 +18,11 @@ get_header();  ?>
         $catArrayResult = get_sidebarcategory();
         if(isset($catArrayResult['error']))
         {   
-        echo $catArrayResult['error'];
+        echo "<p class='centertext'>".$catArrayResult['error']."</p>";
         } 
         elseif($catArrayResult == NULL && $catArrayResult == "")
         {
-        echo " Something went wrong! Please check subdomain and API key ";    
+        echo "<p class='centertext'> Something went wrong! Please check subdomain and API key. </p>";  
         }
         else
         {

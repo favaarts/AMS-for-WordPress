@@ -95,11 +95,11 @@ main-content main-content-three-col - this class is for three columns.
             
             if(isset($arrayResult['error']))
             {   
-                 echo $arrayResult['error'];
+                 echo "<p class='centertext'>".$arrayResult['error']."</p>";
             } 
             elseif($arrayResult == NULL && $arrayResult == "")
             {
-                echo " Something went wrong! Please check subdomain and API key ";    
+                echo "<p class='centertext'> Something went wrong! Please check subdomain and API key </p>";   
             }
             else
             {

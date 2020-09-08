@@ -74,5 +74,5 @@ We will probably have to create a registration form for each event/class/worksho
 
 Note: Those last four points reuse the same code four separate times to create the UI (search box, category list, equipment list). We should make that more iterable.
 
-(need to start coding this)
+
 

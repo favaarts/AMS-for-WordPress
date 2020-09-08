@@ -274,12 +274,12 @@ function wpams_url_label_field_cb(){
 // Field callback function
 function wpams_apikey_label_field_cb(){ 
     // get the value of the setting we've registered with register_setting()
-    $setting = get_option('wpams_apikey_btn_label');
+    $apikey = get_option('wpams_apikey_btn_label');
     // output the field
-    /*if(!empty($apikey))
+    if(!empty($apikey))
     {
         $setting = sanitize_text_field("**************************************************************");
-    }*/
+    }
     
     ?>
     <input type="text" name="wpams_apikey_btn_label" style="width: 500px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">

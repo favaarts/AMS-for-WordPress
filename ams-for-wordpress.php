@@ -149,7 +149,7 @@ if( !function_exists('wpdams_plugin_scripts')) {
         //wp_enqueue_style('wpac-css', WPD_AMS_PLUGIN_DIR. 'assets/css/style.css');
         wp_enqueue_script('amsjsajax', WPD_AMS_PLUGIN_DIR. 'assets/js/main.js', 'jQuery', '1.0.0', true );
 
-        wp_enqueue_script('amsblock-js', WPD_AMS_PLUGIN_DIR. 'assets/js/amsblock.js', 'jQuery', '1.0.0', true );
+        //wp_enqueue_script('amsblock-js', WPD_AMS_PLUGIN_DIR. 'assets/js/amsblock.js', 'jQuery', '1.0.0', true );
 
         wp_localize_script( 'amsjsajax', 'amsjs_ajax_url',
             array( 'ajaxurl' => admin_url( 'admin-ajax.php' ))
@@ -275,10 +275,22 @@ function wpams_url_label_field_cb(){
 function wpams_apikey_label_field_cb(){ 
     // get the value of the setting we've registered with register_setting()
     $apikey = get_option('wpams_apikey_btn_label');
-    if(!empty($apikey))
+    // output the field
+
+    $catArrayResult = get_sidebarcategory();
+    //print_r($catArrayResult);
+    if(isset($catArrayResult['error']))
     {
-        $setting = sanitize_text_field("**************************************************************");
-    }
+        $setting = "";
+       
+    } 
+    else
+    {
+        if(!empty($apikey))
+        {
+            $setting = sanitize_text_field("**************************************************************");
+        }
+    } 
 
     ?>
     <input type="text" name="wpams_apikey_btn_label" style="width: 500px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">

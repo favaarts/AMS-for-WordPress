@@ -189,6 +189,27 @@ add_action('wp_ajax_get_sidebarcategory','get_sidebarcategory');
 add_action('wp_ajax_nopriv_get_sidebarcategory','get_sidebarcategory');
 // End sidebar category
 
+// Page template
+
+/* Filter the single_template with our custom function*/
+function wpse255804_add_page_template ($templates) {
+    $templates['ams-template.php'] = 'AMS Template';
+    return $templates;
+}
+add_filter ('theme_page_templates', 'wpse255804_add_page_template');
+
+//Template fallback
+function wpse255804_redirect_page_template ($template) {
+
+    if ($template)
+    {
+        $template = plugin_dir_path( __FILE__ ). 'ams-template.php';
+        return $template;
+    }      
+}
+add_filter ('page_template', 'wpse255804_redirect_page_template');
+// End page template
+
 function wpdams_settings_page_html() {
    
    ?>

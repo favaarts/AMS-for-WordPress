@@ -83,7 +83,9 @@ p.price-non-mem {
 
 @media(min-width: 1299px){
 
-.site-content .wrap {max-width: 1140px;padding-left: 2em;
+.site-content .wrap {
+    /*max-width: 1140px;*/
+    padding-left: 2em;
     padding-right: 2em; }
 
 

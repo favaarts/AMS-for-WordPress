@@ -162,6 +162,12 @@ if( !function_exists('wpdams_plugin_scripts')) {
 function wptuts_scripts_important()
 {
      wp_enqueue_style('wpac-css', WPD_AMS_PLUGIN_DIR. 'assets/css/style.css',false,'10','all');
+
+     if(wp_script_is('jquery')) {
+
+        } else {
+            wp_enqueue_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js', array(), null, true);
+        }
 }
 add_action( 'wp_enqueue_scripts', 'wptuts_scripts_important', 20 );
 
@@ -569,7 +575,9 @@ function infinitescroll_action()
                             if(isset($x_value['name']))
                             {
 
-                                echo "<a href='".site_url('/'.$newslugname.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                                $assetstitle = (strlen($x_value['name']) > 34) ? substr($x_value['name'],0,34).'..' : $x_value['name'];
+                                
+                                echo "<a href='".site_url('/'.$newslugname.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>".$assetstitle ."</p> </a>";
 
                                 if($x_value['photo'] == NULL || $x_value['photo'] == "")
                                 {                                    

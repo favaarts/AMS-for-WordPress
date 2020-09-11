@@ -2,8 +2,8 @@
 
 get_header();  ?>
 
-<div class="site-content"> <!-- site-content" -->
- <div class="container no-sidebar">
+<div class="site-content site-main"> <!-- site-content" -->
+ <div class="container no-sidebar ams-content">
   <div class="wrap">
     <div id="primary" class="content-area">  <!-- primary" --> 
       <div id="category" class="category cat-wrap"> <!-- category cat-wrap" --> 
@@ -124,7 +124,9 @@ get_header();  ?>
                         
                             if(isset($x_value['name']))
                             {
-                                echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                              $assetstitle = (strlen($x_value['name']) > 34) ? substr($x_value['name'],0,34).'..' : $x_value['name'];
+
+                                echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
                                 
                                 if($x_value['photo'] == NULL || $x_value['photo'] == "")
                                 {                                    
@@ -141,10 +143,10 @@ get_header();  ?>
             
                                 echo "<div class='bottom-fix'>"; 
                                 if($x_value['status_text'] == "Active")
-                                    echo "<p><span class='label label-success btn-common'>Available</span></p>";
+                                    echo "<span class='label label-success btn-common'>Available</span>";
                                     else
                                     {
-                                        echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
+                                        echo "<span class='label label-danger btn-common'>Unavailable</span>";
                                     }
                                     
                                 echo "</div>";    

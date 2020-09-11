@@ -2,7 +2,7 @@
 
 get_header();  ?>
 <div class="site-content"> <!-- site-content" -->
- <div class="container no-sidebar">
+ <div class="container no-sidebar ams-content">
   <div class="wrap">
     <div id="primary" class="content-area">
         <main id="main" class="site-main" role="main">

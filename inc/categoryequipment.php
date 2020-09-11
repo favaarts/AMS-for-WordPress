@@ -120,7 +120,9 @@ main-content main-content-three-col - this class is for three columns.
                             
                                 if(isset($x_value['name']))
                                 {
-                                    echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                                    $assetstitle = (strlen($x_value['name']) > 43) ? substr($x_value['name'],0,40).'...' : $x_value['name'];
+
+                                    echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
                                     
                                     if($x_value['photo'] == NULL || $x_value['photo'] == "")
                                     {                                    
@@ -137,10 +139,10 @@ main-content main-content-three-col - this class is for three columns.
 
                                     echo "<div class='bottom-fix'>"; 
                                     if($x_value['status_text'] == "Active")
-                                        echo "<p><span class='label label-success btn-common'>Available</span></p>";
+                                        echo "<span class='label label-success btn-common'>Available</span>";
                                         else
                                         {
-                                            echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
+                                            echo "<span class='label label-danger btn-common'>Unavailable</span>";
                                         }
                                         
                                     echo "</div>";    

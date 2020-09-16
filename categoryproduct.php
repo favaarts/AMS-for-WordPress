@@ -22,7 +22,7 @@ get_header();  ?>
         } 
         elseif($catArrayResult == NULL && $catArrayResult == "")
         {
-        echo "<p class='centertext'> Something went wrong! Please check subdomain and API key. </p>";  
+        echo "<p class='centertext'> Something went wrong! Please check subdomain and API key. </p>";    
         }
         else
         {
@@ -31,11 +31,26 @@ get_header();  ?>
             <div class="wp-block-columns main-content main-content-three-col" >
             
             <div class="wp-block-column left-col" >
+              <?php
+              global $wpdb;
+              $url = home_url( $wp->request );
+              $parts = explode("/", $url);
+              $pageslugnew = $parts[count($parts) - 2];
+              $query = "SELECT ID FROM wp_posts WHERE post_name = '$pageslugnew' ";
+              $post_id = $wpdb->get_var($query);
+              $post = get_post($post_id);
+              $blocks = parse_blocks($post->post_content);
+              $blockname = $blocks[0]['attrs'];
+
+              if (!isset($blockname['searchoption']))
+              {
+              ?>
             <div class="searchbox">
             <h4>Search Box</h4>
             <input type="text" class="searrch-input" name="keyword" id="keyword" onkeyup="fetchequipment()"></input>
             </div>
-            
+            <?php } ?>
+
             <?php
             global $wp;
             $url = home_url( $wp->request );
@@ -59,28 +74,36 @@ get_header();  ?>
             
             usort($catArrayResult['json']['categories'], 'dateCompare');
             }    
-            
-            foreach($catArrayResult as $catjson_value) {
-                
-                foreach($catjson_value as $cat => $cat_value) { 
-                 
-                    if($cat === 'categories') {
-                        echo '<h4>Categories</h4>';
-                         echo "<ul class='ul-cat-wrap getcategoryid'>";
-                        foreach($cat_value as $c => $c_value) {
-                            echo "<li>";
-                            ?>
-                            <a href='<?= site_url('/'.$pageslug.'/'.$c_value[1]); ?>'><?= $c_value[1]?></a>
-            
-                            <?php   
-                            echo "</li>";
-                        }
-                        echo "</ul>";
-                    }
-                    
-                }
+
+
+            $query = "SELECT ID FROM wp_posts WHERE post_name = '$pageslug' ";
+            $post_id = $wpdb->get_var($query);
+            $post = get_post($post_id);
+            $blocks = parse_blocks($post->post_content);
+            $blockname = $blocks[0]['attrs'];
+            if (!isset($blockname['categoryoption']))
+            {
+              foreach($catArrayResult as $catjson_value) {
+                  
+                  foreach($catjson_value as $cat => $cat_value) { 
+                   
+                      if($cat === 'categories') {
+                          echo '<h4>Categories</h4>';
+                           echo "<ul class='ul-cat-wrap getcategoryid'>";
+                          foreach($cat_value as $c => $c_value) {
+                              echo "<li>";
+                              ?>
+                              <a href='<?= site_url('/'.$pageslug.'/'.$c_value[1]); ?>'><?= $c_value[1]?></a>
+              
+                              <?php   
+                              echo "</li>";
+                          }
+                          echo "</ul>";
+                      }
+                      
+                  }
+              }
             }
-            
             ?>
             </div>  
             
@@ -125,7 +148,7 @@ get_header();  ?>
                             if(isset($x_value['name']))
                             {
                               $assetstitle = (strlen($x_value['name']) > 34) ? substr($x_value['name'],0,34).'..' : $x_value['name'];
-
+                              
                                 echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
                                 
                                 if($x_value['photo'] == NULL || $x_value['photo'] == "")
@@ -143,10 +166,10 @@ get_header();  ?>
             
                                 echo "<div class='bottom-fix'>"; 
                                 if($x_value['status_text'] == "Active")
-                                    echo "<span class='label label-success btn-common'>Available</span>";
+                                    echo "<p><span class='label label-success btn-common'>Book This Item</span></p>";
                                     else
                                     {
-                                        echo "<span class='label label-danger btn-common'>Unavailable</span>";
+                                        echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
                                     }
                                     
                                 echo "</div>";    

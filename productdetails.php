@@ -71,15 +71,15 @@ get_header();  ?>
                 echo "<p >Prices(per day)</p>";
                 echo "</div>";
                 
-                echo "<p class='pro-price'>". $json_value['price_types'][0][0] ."</p>";
-                echo "<p class='pro-price non-mem'>". $json_value['price_types'][1][0] ."</p>";
+                echo "<p class='memberprice'>". $json_value['price_types'][0][0] ."</p>";
+                echo "<p class='price-non-mem'>". $json_value['price_types'][1][0] ."</p>";
                 echo "</div>";
                 
                 echo "<div class='available-details'>"; 
                 if($json_value['status_text'] == "Active")
                 {
                 echo "<bR class='d-n'>";
-                echo "<p><span class='label label-success btn-common'>Available</span></p>";
+                echo "<p><span class='label label-success btn-common'>Book This Item</span></p>";
                 }    
                 else
                 {

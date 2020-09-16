@@ -22,11 +22,18 @@ main-content main-content-three-col - this class is for three columns.
     <div class="wp-block-column left-col" >
         <?php
 
+        
+        
+
         $catArrayResult = get_sidebarcategory();
 
         if(!isset($catArrayResult['error']))
         {
-
+            //Block option
+            $blockdata = get_pageblock();
+            if (!isset($blockdata['searchoption']))
+              {
+              
         ?>
 
             <div class="searchbox">
@@ -35,6 +42,7 @@ main-content main-content-three-col - this class is for three columns.
             </div>
 
             <?php
+                }    
 
             global $post;
            
@@ -52,30 +60,34 @@ main-content main-content-three-col - this class is for three columns.
                 usort($catArrayResult['json']['categories'], 'dateCompare');
             }    
  
-        
-            foreach($catArrayResult as $catjson_value) {
-                foreach($catjson_value as $cat => $cat_value) { 
-                 
-                    if($cat === 'categories') {
-                        echo '<h4>Categories</h4>';
-                         echo "<ul class='ul-cat-wrap getcategoryid'>";
-                        foreach($cat_value as $c => $c_value) {
-                            echo "<li>";
-                            ?>
+            //Block Option
+            $blockdata = get_pageblock();
+            if (!isset($blockdata['categoryoption']))
+            {
 
-                            <a href='<?= site_url('/'.$pageslug.'/'.$c_value[1]); ?>'><?= $c_value[1]?></a>
+                foreach($catArrayResult as $catjson_value) {
+                    foreach($catjson_value as $cat => $cat_value) { 
+                     
+                        if($cat === 'categories') {
+                            echo '<h4>Categories</h4>';
+                             echo "<ul class='ul-cat-wrap getcategoryid'>";
+                            foreach($cat_value as $c => $c_value) {
+                                echo "<li>";
+                                ?>
 
-                            
-                            
-                            <?php   
-                            echo "</li>";
+                                <a href='<?= site_url('/'.$pageslug.'/'.$c_value[1]); ?>'><?= $c_value[1]?></a>
+
+                                
+                                
+                                <?php   
+                                echo "</li>";
+                            }
+                            echo "</ul>";
                         }
-                        echo "</ul>";
                     }
                 }
-            }
 
-            
+            }
         }    
 
         ?>
@@ -99,7 +111,7 @@ main-content main-content-three-col - this class is for three columns.
             } 
             elseif($arrayResult == NULL && $arrayResult == "")
             {
-                echo "<p class='centertext'> Something went wrong! Please check subdomain and API key </p>";   
+                echo "<p class='centertext'> Something went wrong! Please check subdomain and API key </p>";    
             }
             else
             {
@@ -122,7 +134,7 @@ main-content main-content-three-col - this class is for three columns.
                                 {
                                     $assetstitle = (strlen($x_value['name']) > 43) ? substr($x_value['name'],0,40).'...' : $x_value['name'];
 
-                                    echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
+                                    echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title 123'>". $assetstitle ."</p> </a>";
                                     
                                     if($x_value['photo'] == NULL || $x_value['photo'] == "")
                                     {                                    
@@ -139,7 +151,7 @@ main-content main-content-three-col - this class is for three columns.
 
                                     echo "<div class='bottom-fix'>"; 
                                     if($x_value['status_text'] == "Active")
-                                        echo "<span class='label label-success btn-common'>Available</span>";
+                                        echo "<span class='label label-success btn-common'>Book This Item</span>";
                                         else
                                         {
                                             echo "<span class='label label-danger btn-common'>Unavailable</span>";

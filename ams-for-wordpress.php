@@ -195,6 +195,15 @@ add_action('wp_ajax_get_sidebarcategory','get_sidebarcategory');
 add_action('wp_ajax_nopriv_get_sidebarcategory','get_sidebarcategory');
 // End sidebar category
 
+function get_pageblock()
+{
+    $post_id = get_the_ID();
+    $post = get_post($post_id);
+    $blocks = parse_blocks($post->post_content);
+    return $blockname = $blocks[0]['attrs'];
+}
+
+
 // Page template
 
 /* Filter the single_template with our custom function*/
@@ -346,7 +355,7 @@ if(!empty($apiurlcheck) && !empty($apikeycheck))
        wp_enqueue_script(
           'amsblock-js',
           plugins_url( 'assets/js/amsblock.js', __FILE__ ),
-          array( 'wp-blocks', 'wp-element' )
+          array( 'wp-blocks', 'wp-element', 'wp-plugins', 'wp-editor', 'wp-edit-post', 'wp-i18n', 'wp-components', 'wp-data' )
        );
 
        wp_enqueue_style(
@@ -450,7 +459,7 @@ function ams_get_category_action()
 
                         echo "<div class='bottom-fix'>"; 
                         if($x_value['status_text'] == "Active")
-                            echo "<p><span class='label label-success btn-common'>Available</span></p>";
+                            echo "<p><span class='label label-success btn-common'>Book This Item</span></p>";
                             else
                             {
                                 echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
@@ -510,7 +519,7 @@ function search_category_action()
 
                         echo "<div class='bottom-fix'>"; 
                         if($x_value['status_text'] == "Active")
-                            echo "<p><span class='label label-success btn-common'>Available</span></p>";
+                            echo "<p><span class='label label-success btn-common'>Book This Item</span></p>";
                             else
                             {
                                 echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
@@ -594,7 +603,7 @@ function infinitescroll_action()
 
                                 echo "<div class='bottom-fix'>"; 
                                 if($x_value['status_text'] == "Active")
-                                    echo "<p><span class='label label-success btn-common'>Available</span></p>";
+                                    echo "<p><span class='label label-success btn-common'>Book This Item</span></p>";
                                 else
                                 {
                                     echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
@@ -672,7 +681,7 @@ function equipmentproductdetails_action()
                     if($json_value['status_text'] == "Active")
                     {
                         echo "<bR class='d-n'>";
-                        echo "<p><span class='label label-success btn-common'>Available</span></p>";
+                        echo "<p><span class='label label-success btn-common'>Book This Item</span></p>";
                     }    
                     else
                     {

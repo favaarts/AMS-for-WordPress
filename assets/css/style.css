@@ -10,10 +10,10 @@
 
 .main-content .productstyle {position: relative; float: left; width: 45%; display: block; padding: 10px 20px; line-height: 1.42857143; background-color: #fff; border-radius: 6px; -webkit-transition: border .2s ease-in-out; -o-transition: border .2s ease-in-out; transition: border .2s ease-in-out; min-height: 230px; margin:0px 8px 30px 8px ;
  -webkit-box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.2); -moz-box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.2); box-shadow:0px 0px 7px 0px rgba(0,0,0,0.2); }
-.productstyle .btn-common {background-color: #5cb85c; display: inline; padding: 7px 9px; font-size: 14px; font-weight: 600; line-height: 1; color: #fff; text-align: center; white-space: nowrap; vertical-align: middle; border-radius: 3px; cursor: pointer; transition: all 400ms ease; }
-.productstyle .btn-common:hover{background-color: #00a300; }
-.productstyle .btn-common.label-danger{background-color: #f87272;}
-.productstyle .btn-common.label-danger:hover{background-color: #e15d5d; }
+.productstyle .btn-common {background-color: #007bff; display: inline; padding: 7px 9px; font-size: 14px; font-weight: 600; line-height: 1; color: #fff; text-align: center; white-space: nowrap; vertical-align: middle; border-radius: 3px; cursor: pointer; transition: all 400ms ease; }
+.productstyle .btn-common:hover{background-color: #007bffd1; }
+.productstyle .btn-common.label-danger{background-color: #6c757d;}
+.productstyle .btn-common.label-danger:hover{background-color: #6c757dc9; }
 .productstyle .asset_item .label {font-size: 14px; line-height: 14px; }
 /*
 @media screen and (min-width: 48em){
@@ -158,10 +158,11 @@ p.price-non-mem {
 .product-detail-wrap .pro-name p {font-size: 20px; font-weight: bold; margin-bottom: 17px; }
 .product-detail-wrap .price_types p.pro-price {margin-bottom: 6px; /* display: flex; */ font-weight: bold; color: #393b39; }
 .product-detail-wrap .price_types p.pro-price.non-mem {color: #f45f5f; font-weight: 600; }
-.product-detail-wrap .btn-common {background-color: #5cb85c; display: inline; padding: 7px 9px; font-size: 14px; font-weight: 600; line-height: 1; color: #fff; text-align: center; white-space: nowrap; vertical-align: middle; border-radius: 3px; cursor: pointer; transition: all 400ms ease; }
-.product-detail-wrap .btn-common:hover{background-color: #00a300; }
-.product-detail-wrap .btn-common.label-danger{background-color: #f87272;}
-.product-detail-wrap .btn-common.label-danger:hover{background-color: #e15d5d; }
+.product-detail-wrap .btn-common {background-color: #007bff; display: inline; padding: 7px 9px; font-size: 14px; font-weight: 600; line-height: 1; color: #fff; text-align: center; white-space: nowrap; vertical-align: middle; border-radius: 3px; cursor: pointer; transition: all 400ms ease; }
+.product-detail-wrap .btn-common:hover{background-color: #007bffd1; }
+.product-detail-wrap .btn-common.label-danger{background-color: #6c757d;}
+.product-detail-wrap .btn-common.label-danger:hover{background-color: #6c757dc9; }
+.product-detail-wrap .btn-common a{color: #fff;text-decoration: none;}
 
 .product-detail-wrap .barcode.cat-name {display: flex; }
 .product-detail-wrap .barcode.cat-name spna.B-text {padding-left: 12px; font-weight: bold; font-size: 14px; }

@@ -18,7 +18,12 @@ main-content main-content-three-col - this class is for three columns.
 <div class="wp-block-columns main-content main-content-three-col" >
     
 
-
+  <?php
+  //Block option
+  $blockdata = get_sidebaroption();
+  if (!isset($blockdata['sidebaroption']))
+    {
+  ?>
     <div class="wp-block-column left-col" >
         <?php
 
@@ -29,10 +34,7 @@ main-content main-content-three-col - this class is for three columns.
 
         if(!isset($catArrayResult['error']))
         {
-            //Block option
-            $blockdata = get_pageblock();
-            if (!isset($blockdata['searchoption']))
-              {
+            
               
         ?>
 
@@ -42,7 +44,7 @@ main-content main-content-three-col - this class is for three columns.
             </div>
 
             <?php
-                }    
+                  
 
             global $post;
            
@@ -60,39 +62,40 @@ main-content main-content-three-col - this class is for three columns.
                 usort($catArrayResult['json']['categories'], 'dateCompare');
             }    
  
-            //Block Option
-            $blockdata = get_pageblock();
-            if (!isset($blockdata['categoryoption']))
-            {
+            
 
-                foreach($catArrayResult as $catjson_value) {
-                    foreach($catjson_value as $cat => $cat_value) { 
-                     
-                        if($cat === 'categories') {
-                            echo '<h4>Categories</h4>';
-                             echo "<ul class='ul-cat-wrap getcategoryid'>";
-                            foreach($cat_value as $c => $c_value) {
-                                echo "<li>";
-                                ?>
+            foreach($catArrayResult as $catjson_value) {
+                foreach($catjson_value as $cat => $cat_value) { 
+                 
+                    if($cat === 'categories') {
+                        echo '<h4>Categories</h4>';
+                         echo "<ul class='ul-cat-wrap getcategoryid'>";
+                        foreach($cat_value as $c => $c_value) {
+                            echo "<li>";
+                            ?>
 
-                                <a href='<?= site_url('/'.$pageslug.'/'.$c_value[1]); ?>'><?= $c_value[1]?></a>
+                            <a href='<?= site_url('/'.$pageslug.'/'.$c_value[1]); ?>'><?= $c_value[1]?></a>
 
-                                
-                                
-                                <?php   
-                                echo "</li>";
-                            }
-                            echo "</ul>";
+                            
+                            
+                            <?php   
+                            echo "</li>";
                         }
+                        echo "</ul>";
                     }
                 }
-
             }
+
+            
         }    
 
         ?>
     </div>  
 
+  <?php
+    // End sidebar block option
+    }
+  ?>  
 
 
 
@@ -151,7 +154,7 @@ main-content main-content-three-col - this class is for three columns.
 
                                     echo "<div class='bottom-fix'>"; 
                                     if($x_value['status_text'] == "Active")
-                                        echo "<span class='label label-success btn-common'>Book This Item</span>";
+                                        echo "<span class='label label-success btn-common'>Available</span>";
                                         else
                                         {
                                             echo "<span class='label label-danger btn-common'>Unavailable</span>";
@@ -238,7 +241,7 @@ jQuery(document).ready(function($) {
 });    
 </script>
 
-    
+  
 <?php
     $ret = ob_get_contents();  
     ob_end_clean(); 

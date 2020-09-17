@@ -20,7 +20,7 @@ get_header();  ?>
             $prodictid = $wp->query_vars['proname'];
             $ab = $wp->query_vars['category'];
             
-            
+            $landingurl = get_option('wpams_landing_url_btn_label');
             $arrayResult = get_apirequest(NULL,NULL,$prodictid);
             
             if(isset($arrayResult['error']))
@@ -79,7 +79,7 @@ get_header();  ?>
                 if($json_value['status_text'] == "Active")
                 {
                 echo "<bR class='d-n'>";
-                echo "<p><span class='label label-success btn-common'>Book This Item</span></p>";
+                echo "<p><span class='label label-success btn-common'><a href='$landingurl' target='_blank'>Book This Item</a></span></p>";
                 }    
                 else
                 {

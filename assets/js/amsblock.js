@@ -23,21 +23,7 @@
         selector: 'img',
         attribute: 'src'
       },
-      title: {
-        type: 'text',
-        selector: 'h3'
-      },
-      text: {
-        type: 'text',
-        selector: 'p'
-      },
-      buttonText: {
-        type: 'text'
-      },
-      buttonURL: {
-        type: 'url'
-      },
-      searchoption: {
+      sidebaroption: {
       type: 'boolean',
       default: true
      },
@@ -78,29 +64,16 @@
               className: 'block-content',
               initialOpen: true
             },
-            el('p', {}, i18n.__('Add custom meta options to your block', 'amsnetwork-gutenberg-block')),
+            el('p', {}, i18n.__('Add custom meta options to show or hide sidebar', 'amsnetwork-gutenberg-block')),
             
             el(ToggleControl, {
-              label: 'Search',
-            onChange: ( value ) => {
-               props.setAttributes( { searchoption: value } );
-            },
-            checked: props.attributes.searchoption,
-            }),
-            el(ToggleControl, {
-              label: 'Category',
-            onChange: ( value ) => {
-               props.setAttributes( { categoryoption: value } );
-            },
-            checked: props.attributes.categoryoption,
-            }),
-            el(ToggleControl, {
-              label: 'Equipment',
-            onChange: ( value ) => {
-               props.setAttributes( { equipmentoption: value } );
-            },
-            checked: props.attributes.equipmentoption,
+              label: 'Sidebar',
+              onChange: ( value ) => {
+                 props.setAttributes( { sidebaroption: value } );
+              },
+              checked: props.attributes.sidebaroption,
             })
+            
           )
         ),
         el( 'div',
@@ -136,9 +109,7 @@
            el('div', {className: 'header-right-part wp-block-shortcode'},
                            el( wp.element.RawHTML, null, '['+props.attributes.type+']')
            ),
-           el( 'input', { 'type': 'hidden', 'name' : 'search_option_in', 'value' : ( props.attributes.searchoption == true ? 'yes' : 'no' ) } ),
-           el( 'input', { 'type': 'hidden', 'name' : 'category_option_in', 'value' : ( props.attributes.categoryoption == true ? 'yes' : 'no' ) } ),
-           el( 'input', { 'type': 'hidden', 'name' : 'equipment_option_in', 'value' : ( props.attributes.equipmentoption == true ? 'yes' : 'no' ) } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'sidebar_option_in', 'value' : ( props.attributes.sidebaroption == true ? 'yes' : 'no' ) } ),
 
          )
 

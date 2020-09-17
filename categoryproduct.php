@@ -30,8 +30,7 @@ get_header();  ?>
         
             <div class="wp-block-columns main-content main-content-three-col" >
             
-            <div class="wp-block-column left-col" >
-              <?php
+            <?php
               global $wpdb;
               $url = home_url( $wp->request );
               $parts = explode("/", $url);
@@ -42,72 +41,70 @@ get_header();  ?>
               $blocks = parse_blocks($post->post_content);
               $blockname = $blocks[0]['attrs'];
 
-              if (!isset($blockname['searchoption']))
+              if (!isset($blockname['sidebaroption']))
               {
-              ?>
-            <div class="searchbox">
-            <h4>Search Box</h4>
-            <input type="text" class="searrch-input" name="keyword" id="keyword" onkeyup="fetchequipment()"></input>
-            </div>
-            <?php } ?>
-
-            <?php
-            global $wp;
-            $url = home_url( $wp->request );
-            $parts = explode("/", $url);
-            $pageslug = $parts[count($parts) - 2];
-            
-            //$catArrayResult = get_sidebarcategory();
-            
-            // get slug
-            $categoryinurl = $wp->query_vars['categoryslug'];
-            $category = preg_replace("/[^a-zA-Z]+/", " ", $categoryinurl);
-            // End get slug
-            
-            
-            if(!function_exists('dateCompare'))
-            {    
-            function dateCompare($element1, $element2) { 
-                
-                return strcmp($element1[1],$element2[1]); 
-            }
-            
-            usort($catArrayResult['json']['categories'], 'dateCompare');
-            }    
-
-
-            $query = "SELECT ID FROM wp_posts WHERE post_name = '$pageslug' ";
-            $post_id = $wpdb->get_var($query);
-            $post = get_post($post_id);
-            $blocks = parse_blocks($post->post_content);
-            $blockname = $blocks[0]['attrs'];
-            if (!isset($blockname['categoryoption']))
-            {
-              foreach($catArrayResult as $catjson_value) {
-                  
-                  foreach($catjson_value as $cat => $cat_value) { 
-                   
-                      if($cat === 'categories') {
-                          echo '<h4>Categories</h4>';
-                           echo "<ul class='ul-cat-wrap getcategoryid'>";
-                          foreach($cat_value as $c => $c_value) {
-                              echo "<li>";
-                              ?>
-                              <a href='<?= site_url('/'.$pageslug.'/'.$c_value[1]); ?>'><?= $c_value[1]?></a>
-              
-                              <?php   
-                              echo "</li>";
-                          }
-                          echo "</ul>";
-                      }
-                      
-                  }
-              }
-            }
             ?>
+
+            <div class="wp-block-column left-col" >
+              
+              <div class="searchbox">
+                <h4>Search Box</h4>
+                <input type="text" class="searrch-input" name="keyword" id="keyword" onkeyup="fetchequipment()"></input>
+              </div>
+              
+
+              <?php
+              global $wp;
+              $url = home_url( $wp->request );
+              $parts = explode("/", $url);
+              $pageslug = $parts[count($parts) - 2];
+              
+              //$catArrayResult = get_sidebarcategory();
+              
+              // get slug
+              $categoryinurl = $wp->query_vars['categoryslug'];
+              $category = preg_replace("/[^a-zA-Z]+/", " ", $categoryinurl);
+              // End get slug
+              
+              
+              if(!function_exists('dateCompare'))
+              {    
+              function dateCompare($element1, $element2) { 
+                  
+                  return strcmp($element1[1],$element2[1]); 
+              }
+              
+              usort($catArrayResult['json']['categories'], 'dateCompare');
+              }    
+
+
+              
+
+                foreach($catArrayResult as $catjson_value) {
+                    
+                    foreach($catjson_value as $cat => $cat_value) { 
+                     
+                        if($cat === 'categories') {
+                            echo '<h4>Categories</h4>';
+                             echo "<ul class='ul-cat-wrap getcategoryid'>";
+                            foreach($cat_value as $c => $c_value) {
+                                echo "<li>";
+                                ?>
+                                <a href='<?= site_url('/'.$pageslug.'/'.$c_value[1]); ?>'><?= $c_value[1]?></a>
+                
+                                <?php   
+                                echo "</li>";
+                            }
+                            echo "</ul>";
+                        }
+                        
+                    }
+                }
+              
+              ?>
             </div>  
             
-            
+            <?php } ?>
             
             
             <div class="categorysearchdata right-col" >
@@ -166,7 +163,7 @@ get_header();  ?>
             
                                 echo "<div class='bottom-fix'>"; 
                                 if($x_value['status_text'] == "Active")
-                                    echo "<p><span class='label label-success btn-common'>Book This Item</span></p>";
+                                    echo "<p><span class='label label-success btn-common'>Available</span></p>";
                                     else
                                     {
                                         echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";

@@ -34,7 +34,7 @@
 /*.searchbox input[type=text]{padding: 0.5em;
     width: 100%; border: none; border-radius: 20px; box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.2);
 }*/
-.searchbox input{width: 100%;}
+.searchbox input{width: 100%; margin-bottom: 10px;}
 .ul-cat-wrap{padding: 0px 15px;}
 .ul-cat-wrap li {padding-bottom: 10px; list-style: square; font-size: 15px; color: #acacac; transition: 400ms ease;}
 

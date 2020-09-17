@@ -68,14 +68,14 @@
 .memberprice
 {
     font-size: 14px;
-    margin-bottom: 10px;
-    color: #252222;
+    /*margin-bottom: 10px;*/
+    /* color: #252222;*/
 }
 
 p.price-non-mem {
     font-size: 14px;
-    margin-bottom: 10px;
-    color: #a89f9f;
+   /* margin-bottom: 10px;*/
+    /* color: #a89f9f;*/
 }
 
 .loaderdiv{text-align: center;}

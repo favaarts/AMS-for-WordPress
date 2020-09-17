@@ -68,13 +68,13 @@
 .memberprice
 {
     font-size: 14px;
-    /*margin-bottom: 10px;*/
+    margin-bottom: 0px;
     /* color: #252222;*/
 }
 
 p.price-non-mem {
     font-size: 14px;
-   /* margin-bottom: 10px;*/
+   margin-bottom: 0px;
     /* color: #a89f9f;*/
 }
 

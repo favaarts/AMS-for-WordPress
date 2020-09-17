@@ -195,7 +195,7 @@ add_action('wp_ajax_get_sidebarcategory','get_sidebarcategory');
 add_action('wp_ajax_nopriv_get_sidebarcategory','get_sidebarcategory');
 // End sidebar category
 
-function get_pageblock()
+function get_sidebaroption()
 {
     $post_id = get_the_ID();
     $post = get_post($post_id);
@@ -277,7 +277,7 @@ function wpams_plugin_settings(){
 
     register_setting( 'wpams-settings', 'wpams_url_btn_label' );
     register_setting( 'wpams-settings', 'wpams_apikey_btn_label' );
-    
+    register_setting( 'wpams-settings', 'wpams_landing_url_btn_label' );
 
     add_settings_section( 'wpams_label_settings_section', '', 'wpams_plugin_settings_section_cb', 'wpams-settings' );
 
@@ -285,6 +285,7 @@ function wpams_plugin_settings(){
 
     add_settings_field( 'wpams_apikey_label_field', 'API  Key', 'wpams_apikey_label_field_cb', 'wpams-settings', 'wpams_label_settings_section' );
    
+    add_settings_field( 'wpams_landing_url_label_field', 'Landing  URL', 'wpams_landing_url_label_field_cb', 'wpams-settings', 'wpams_label_settings_section' );
 }
 add_action('admin_init', 'wpams_plugin_settings');
 
@@ -334,6 +335,15 @@ function wpams_apikey_label_field_cb(){
     <?php
 }
 
+// Field landing url
+function wpams_landing_url_label_field_cb(){ 
+    // get the value of the setting we've registered with register_setting()
+    $setting = get_option('wpams_landing_url_btn_label');
+    // output the field
+    ?>
+    <input type="text" required="" name="wpams_landing_url_btn_label" style="width: 500px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
+    <?php
+}
 
 //=====Settings option after activate plugin
 add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'salcode_add_plugin_page_settings_link');
@@ -459,7 +469,7 @@ function ams_get_category_action()
 
                         echo "<div class='bottom-fix'>"; 
                         if($x_value['status_text'] == "Active")
-                            echo "<p><span class='label label-success btn-common'>Book This Item</span></p>";
+                            echo "<p><span class='label label-success btn-common'>Available</span></p>";
                             else
                             {
                                 echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
@@ -519,7 +529,7 @@ function search_category_action()
 
                         echo "<div class='bottom-fix'>"; 
                         if($x_value['status_text'] == "Active")
-                            echo "<p><span class='label label-success btn-common'>Book This Item</span></p>";
+                            echo "<p><span class='label label-success btn-common'>Available</span></p>";
                             else
                             {
                                 echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
@@ -603,7 +613,7 @@ function infinitescroll_action()
 
                                 echo "<div class='bottom-fix'>"; 
                                 if($x_value['status_text'] == "Active")
-                                    echo "<p><span class='label label-success btn-common'>Book This Item</span></p>";
+                                    echo "<p><span class='label label-success btn-common'>Available</span></p>";
                                 else
                                 {
                                     echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
@@ -681,7 +691,7 @@ function equipmentproductdetails_action()
                     if($json_value['status_text'] == "Active")
                     {
                         echo "<bR class='d-n'>";
-                        echo "<p><span class='label label-success btn-common'>Book This Item</span></p>";
+                        echo "<p><span class='label label-success btn-common'>Available</span></p>";
                     }    
                     else
                     {

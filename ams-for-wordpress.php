@@ -206,24 +206,7 @@ function get_sidebaroption()
 
 // Page template
 
-/* Filter the single_template with our custom function*/
-function wpse255804_add_page_template ($templates) {
-    $templates['ams-template.php'] = 'AMS Template';
-    return $templates;
-}
-add_filter ('theme_page_templates', 'wpse255804_add_page_template');
 
-//Template fallback
-function wpse255804_redirect_page_template ($template) {
-
-    if ($template)
-    {
-        $template = plugin_dir_path( __FILE__ ). 'ams-template.php';
-        return $template;
-    }      
-}
-add_filter ('page_template', 'wpse255804_redirect_page_template');
-// End page template
 
 function wpdams_settings_page_html() {
    
@@ -256,8 +239,12 @@ function wpdams_settings_page_html() {
                     do_settings_sections('wpams-settings');
 
                     // output save settings button 
-                    submit_button( 'Save Changes' );
+                    //submit_button( 'Save Changes' );
                 ?>
+
+                <input class="button cleartext" id="cleartext" type="submit" style="background: #dc3545;color: #fff; border-color: #dc3545;" value="<?php esc_attr_e( 'Clear Settings' ); ?>" />
+
+                <input name="submit" class="button button-primary savechanges" id="savechanges" type="submit" value="<?php esc_attr_e( 'Save Changes' ); ?>" />
             </form>
         </div>
     <?php
@@ -285,7 +272,7 @@ function wpams_plugin_settings(){
 
     add_settings_field( 'wpams_apikey_label_field', 'API  Key', 'wpams_apikey_label_field_cb', 'wpams-settings', 'wpams_label_settings_section' );
    
-    add_settings_field( 'wpams_landing_url_label_field', 'Landing  URL', 'wpams_landing_url_label_field_cb', 'wpams-settings', 'wpams_label_settings_section' );
+    add_settings_field( 'wpams_landing_url_label_field', 'Booking  URL', 'wpams_landing_url_label_field_cb', 'wpams-settings', 'wpams_label_settings_section' );
 }
 add_action('admin_init', 'wpams_plugin_settings');
 
@@ -387,6 +374,14 @@ else
     add_action( 'admin_notices', 'sample_admin_notice__error' );
 }
 //====================
+
+function my_script($hook) {
+    
+    wp_enqueue_script('my_custom_script', plugin_dir_url(__FILE__) . 'assets/js/script.js');
+}
+
+add_action('admin_enqueue_scripts', 'my_script');
+
 
 // CTA for Short code amscategoryequipment
 require plugin_dir_path( __FILE__ ). 'inc/categoryequipment.php';
@@ -613,10 +608,11 @@ function infinitescroll_action()
 
                                 echo "<div class='bottom-fix'>"; 
                                 if($x_value['status_text'] == "Active")
-                                    echo "<p><span class='label label-success btn-common'>Available</span></p>";
+                                    echo "<span class='label label-success btn-common'><a href='".site_url('/'.$newslugname.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Available</a></span>";
                                 else
                                 {
-                                    echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
+                                    
+                                    echo "<span class='label label-danger btn-common'><a href='".site_url('/'.$newslugname.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Unavailable</a></span>";
                                 }
                                      
                                 echo "</div>";

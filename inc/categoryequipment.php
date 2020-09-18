@@ -154,10 +154,10 @@ main-content main-content-three-col - this class is for three columns.
 
                                     echo "<div class='bottom-fix'>"; 
                                     if($x_value['status_text'] == "Active")
-                                        echo "<span class='label label-success btn-common'>Available</span>";
+                                         echo "<span class='label label-success btn-common'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Available</a></span>";
                                         else
                                         {
-                                            echo "<span class='label label-danger btn-common'>Unavailable</span>";
+                                          echo "<span class='label label-danger btn-common'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Unavailable</a></span>";
                                         }
                                         
                                     echo "</div>";    

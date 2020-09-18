@@ -163,10 +163,10 @@ get_header();  ?>
             
                                 echo "<div class='bottom-fix'>"; 
                                 if($x_value['status_text'] == "Active")
-                                    echo "<p><span class='label label-success btn-common'>Available</span></p>";
+                                    echo "<span class='label label-success btn-common'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Available</a></span>";
                                     else
                                     {
-                                        echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
+                                        echo "<span class='label label-danger btn-common'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Unavailable</a></span>";
                                     }
                                     
                                 echo "</div>";    

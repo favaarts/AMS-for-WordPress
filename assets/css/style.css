@@ -50,9 +50,10 @@
 
 
 
-.main-content.main-content-three-col .left-col{flex-basis:20%; padding: 0px 10px;}
-.main-content.main-content-three-col .right-col{flex-basis:80% ;margin-left: 20px;}
+.main-content.main-content-three-col .left-col{/*flex-basis:20%;*/ padding: 0px 10px;}
+.main-content.main-content-three-col .right-col{flex-basis:100% ;margin-left: 20px;}
 .main-content.main-content-three-col .productstyle {float: left; width: 30%;  }
+.productstyle .btn-common a{color:#fff; text-decoration: none;}
 
 .bottom-fix {
     display: flex;
@@ -230,3 +231,10 @@ p.price-non-mem {
 }
 
 .centertext{text-align: center; justify-content: center;}
+
+.cleartext {
+    color: #fff;
+    border-color: #dc3545;
+    background: #dc3545;
+    vertical-align: top;
+}

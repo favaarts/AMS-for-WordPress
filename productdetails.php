@@ -83,7 +83,7 @@ get_header();  ?>
                 }    
                 else
                 {
-                echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
+                echo "<p><span class='label label-danger btn-common' disabled>Unavailable</span></p>";
                 }
                 echo "</div>"; 
                 

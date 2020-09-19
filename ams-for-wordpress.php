@@ -19,6 +19,8 @@ register_deactivation_hook( __FILE__, 'amsnetwork_deactivate' );
 function amsnetwork_deactivate(){
    delete_option('wpams_url_btn_label');
    delete_option('wpams_apikey_btn_label');
+   delete_option('wpams_landing_url_btn_label');
+   delete_option('wpams_button_colour_btn_label');
 }
 
 //Define Constants
@@ -265,6 +267,7 @@ function wpams_plugin_settings(){
     register_setting( 'wpams-settings', 'wpams_url_btn_label' );
     register_setting( 'wpams-settings', 'wpams_apikey_btn_label' );
     register_setting( 'wpams-settings', 'wpams_landing_url_btn_label' );
+    register_setting( 'wpams-settings', 'wpams_button_colour_btn_label' );
 
     add_settings_section( 'wpams_label_settings_section', '', 'wpams_plugin_settings_section_cb', 'wpams-settings' );
 
@@ -273,6 +276,8 @@ function wpams_plugin_settings(){
     add_settings_field( 'wpams_apikey_label_field', 'API  Key', 'wpams_apikey_label_field_cb', 'wpams-settings', 'wpams_label_settings_section' );
    
     add_settings_field( 'wpams_landing_url_label_field', 'Booking  URL', 'wpams_landing_url_label_field_cb', 'wpams-settings', 'wpams_label_settings_section' );
+
+    add_settings_field( 'wpams_button_colour_label_field', 'Button  colour', 'wpams_button_colour_label_field_cb', 'wpams-settings', 'wpams_label_settings_section' );
 }
 add_action('admin_init', 'wpams_plugin_settings');
 
@@ -322,7 +327,7 @@ function wpams_apikey_label_field_cb(){
     <?php
 }
 
-// Field landing url
+// Field Booking url
 function wpams_landing_url_label_field_cb(){ 
     // get the value of the setting we've registered with register_setting()
     $setting = get_option('wpams_landing_url_btn_label');
@@ -331,6 +336,17 @@ function wpams_landing_url_label_field_cb(){
     <input type="text" required="" name="wpams_landing_url_btn_label" style="width: 500px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
     <?php
 }
+
+// Field Button colour url
+function wpams_button_colour_label_field_cb(){ 
+    // get the value of the setting we've registered with register_setting()
+    $setting = get_option('wpams_button_colour_btn_label');
+    // output the field
+    ?>
+    <input type="text" required="" name="wpams_button_colour_btn_label" style="width: 500px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
+    <?php
+}
+
 
 //=====Settings option after activate plugin
 add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'salcode_add_plugin_page_settings_link');
@@ -433,7 +449,14 @@ add_action('wp_ajax_nopriv_get_apirequest','get_apirequest');
 // Get data on click id from sidebar menu
 function ams_get_category_action()
 {
+    global $post;
+    $pageslug = $post->post_name;
+    $bgcolor = get_option('wpams_button_colour_btn_label');
+    $apiurl = get_option('wpams_url_btn_label');
+    $apikey = get_option('wpams_apikey_btn_label');
     $categoryid = $_POST['catid'];
+
+
 
     $arrayResult = get_apirequest($categoryid,NULL,NULL);
 
@@ -447,8 +470,8 @@ function ams_get_category_action()
                 
                     if(isset($x_value['name']))
                     {
-                        echo "<a href='".site_url('/product/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
-
+                        echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title 123'>". $x_value['name'] ."</p> </a>";
+                        
                         if($x_value['photo'] == NULL || $x_value['photo'] == "")
                         {                                    
                             echo "<div class='product-img-wrap'>";
@@ -493,7 +516,9 @@ add_action('wp_ajax_nopriv_getcategory_action','ams_get_category_action');
 function search_category_action()
 {
     
+    $bgcolor = get_option('wpams_button_colour_btn_label');
     $prodname = $_POST['keyword'];
+    $pageslug = $_POST['slugurl'];
     $productname = urlencode($prodname);
 
     $arrayResult = get_apirequest(NULL,$productname,NULL);
@@ -507,7 +532,8 @@ function search_category_action()
                    
                     if(isset($x_value['name']))
                     {
-                        echo "<a href='".site_url('/product/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                        echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title 123'>". $x_value['name'] ."</p> </a>";
+                        
                         if($x_value['photo'] == NULL || $x_value['photo'] == "")
                         {                                    
                             echo "<div class='product-img-wrap'>";
@@ -524,10 +550,10 @@ function search_category_action()
 
                         echo "<div class='bottom-fix'>"; 
                         if($x_value['status_text'] == "Active")
-                            echo "<p><span class='label label-success btn-common'>Available</span></p>";
+                            echo "<span class='label label-success btn-common' style='background-color: $bgcolor;'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Available</a></span>";
                             else
                             {
-                                echo "<p><span class='label label-danger btn-common'>Unavailable</span></p>";
+                                echo "<span class='label label-danger btn-common'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Unavailable</a></span>";
                             }
                             
                         echo "</div>";    
@@ -556,7 +582,8 @@ function infinitescroll_action()
 
     $apiurl = get_option('wpams_url_btn_label');
     $apikey = get_option('wpams_apikey_btn_label');
-    
+    $bgcolor = get_option('wpams_button_colour_btn_label');
+
     $categoryid = $_POST['catid'];
     //die;
 
@@ -608,7 +635,7 @@ function infinitescroll_action()
 
                                 echo "<div class='bottom-fix'>"; 
                                 if($x_value['status_text'] == "Active")
-                                    echo "<span class='label label-success btn-common'><a href='".site_url('/'.$newslugname.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Available</a></span>";
+                                    echo "<span class='label label-success btn-common' style='background-color: $bgcolor;'><a href='".site_url('/'.$newslugname.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Available</a></span>";
                                 else
                                 {
                                     

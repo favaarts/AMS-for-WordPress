@@ -16,7 +16,11 @@ main-content main-content-three-col - this class is for three columns.
 ======================================================================  -->
 
 <div class="wp-block-columns main-content main-content-three-col" >
-    
+    <?php
+    global $post;
+    $post_slug = $post->post_name;
+    ?>
+  <input type="hidden" name="slugurl" id="slugurl" value="<?=$post_slug?>">  
 
   <?php
   //Block option
@@ -121,6 +125,7 @@ main-content main-content-three-col - this class is for three columns.
             
                 global $post;
                 $pageslug = $post->post_name;
+                $bgcolor = get_option('wpams_button_colour_btn_label');
 
                 $arrayResult = get_apirequest(NULL,NULL,NULL);
 
@@ -151,10 +156,10 @@ main-content main-content-three-col - this class is for three columns.
                                         echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
                                      echo "</div>";
                                     }
-
+                                    
                                     echo "<div class='bottom-fix'>"; 
                                     if($x_value['status_text'] == "Active")
-                                         echo "<span class='label label-success btn-common'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Available</a></span>";
+                                         echo "<span class='label label-success btn-common' style='background-color: $bgcolor;'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Available</a></span>";
                                         else
                                         {
                                           echo "<span class='label label-danger btn-common'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Unavailable</a></span>";

@@ -21,6 +21,8 @@ get_header();  ?>
             $ab = $wp->query_vars['category'];
             
             $landingurl = get_option('wpams_landing_url_btn_label');
+            $bgcolor = get_option('wpams_button_colour_btn_label');
+
             $arrayResult = get_apirequest(NULL,NULL,$prodictid);
             
             if(isset($arrayResult['error']))
@@ -79,7 +81,7 @@ get_header();  ?>
                 if($json_value['status_text'] == "Active")
                 {
                 echo "<bR class='d-n'>";
-                echo "<p><span class='label label-success btn-common'><a href='$landingurl' target='_blank'>Book This Item</a></span></p>";
+                echo "<p><span class='label label-success btn-common' style='background-color: $bgcolor;'><a href='$landingurl' target='_blank'>Book This Item</a></span></p>";
                 }    
                 else
                 {

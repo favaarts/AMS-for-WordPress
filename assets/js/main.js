@@ -62,11 +62,12 @@ function categorydata(getcatid)
 function fetchequipment()
 {
 	event.preventDefault();
+	var slugurl = jQuery('#slugurl').val();
 
 	jQuery.ajax({
         url: amsjs_ajax_url.ajaxurl,
         type: 'post',
-        data: { action: 'searchcategorydata_action', keyword: jQuery('#keyword').val() },
+        data: { action: 'searchcategorydata_action', keyword: jQuery('#keyword').val(),slugurl:slugurl },
         success: function(data) {
             jQuery('.right-col-wrap').html(data);
         }

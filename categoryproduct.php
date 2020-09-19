@@ -8,7 +8,13 @@ get_header();  ?>
     <div id="primary" class="content-area">  <!-- primary" --> 
       <div id="category" class="category cat-wrap"> <!-- category cat-wrap" --> 
         <div class="entry-content main-content-wrap"> <!-- entry-content main-content-wrap" --> 
-        
+         <?php
+          global $wpdb;
+          $url = home_url( $wp->request );
+          $parts = explode("/", $url);
+          $pageslugnew = $parts[count($parts) - 2];
+          ?>
+        <input type="hidden" name="slugurl" id="slugurl" value="<?=$pageslugnew?>"> 
         <!-- ======================================================================
         notes::
         main-content - this class is for two columns.
@@ -31,10 +37,7 @@ get_header();  ?>
             <div class="wp-block-columns main-content main-content-three-col" >
             
             <?php
-              global $wpdb;
-              $url = home_url( $wp->request );
-              $parts = explode("/", $url);
-              $pageslugnew = $parts[count($parts) - 2];
+              
               $query = "SELECT ID FROM wp_posts WHERE post_name = '$pageslugnew' ";
               $post_id = $wpdb->get_var($query);
               $post = get_post($post_id);
@@ -129,6 +132,7 @@ get_header();  ?>
             }    
             
             $catid = searchForId($category, $arraynew);
+            $bgcolor = get_option('wpams_button_colour_btn_label');
             
             $arrayResult = get_apirequest($catid,NULL,NULL);
             //
@@ -163,7 +167,7 @@ get_header();  ?>
             
                                 echo "<div class='bottom-fix'>"; 
                                 if($x_value['status_text'] == "Active")
-                                    echo "<span class='label label-success btn-common'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Available</a></span>";
+                                    echo "<span class='label label-success btn-common' style='background-color: $bgcolor;'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Available</a></span>";
                                     else
                                     {
                                         echo "<span class='label label-danger btn-common'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Unavailable</a></span>";

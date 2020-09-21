@@ -8,8 +8,7 @@
 
 .entry-content > *:not(.alignwide):not(.alignfull):not(.alignleft):not(.alignright):not(.is-style-wide){max-width: 1160px;}
 
-.main-content .productstyle {position: relative; float: left; width: 45%; display: block; padding: 10px 20px; line-height: 1.42857143; background-color: #fff; border-radius: 6px; -webkit-transition: border .2s ease-in-out; -o-transition: border .2s ease-in-out; transition: border .2s ease-in-out; min-height: 230px; margin:0px 8px 30px 8px ;
- -webkit-box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.2); -moz-box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.2); box-shadow:0px 0px 7px 0px rgba(0,0,0,0.2); }
+.main-content .productstyle {position: relative; float: left; width: 45%; display: block; padding: 10px 10px; line-height: 1.42857143; background-color: #fff; border-radius: 6px; -webkit-transition: border .2s ease-in-out; -o-transition: border .2s ease-in-out; transition: border .2s ease-in-out; min-height: 230px; margin:0px 12px 30px 12px ;-webkit-box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.2); -moz-box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.2); box-shadow:0px 0px 7px 0px rgba(0,0,0,0.2); }
 .productstyle .btn-common {background-color: #007bff; display: inline; padding: 7px 9px; font-size: 14px; font-weight: 600; line-height: 1; color: #fff; text-align: center; white-space: nowrap; vertical-align: middle; border-radius: 3px; cursor: pointer; transition: all 400ms ease; }
 .productstyle .btn-common:hover{background-color: #007bffd1; }
 .productstyle .btn-common.label-danger{background-color: #6c757d;}
@@ -52,7 +51,7 @@
 
 .main-content.main-content-three-col .left-col{/*flex-basis:20%;*/ padding: 0px 10px;}
 .main-content.main-content-three-col .right-col{flex-basis:100% ;margin-left: 20px;}
-.main-content.main-content-three-col .productstyle {float: left; width: 30%;  }
+.main-content.main-content-three-col .productstyle {float: left; width:22%;  }
 .productstyle .btn-common a{color:#fff; text-decoration: none;}
 
 .bottom-fix {
@@ -100,7 +99,6 @@ p.price-non-mem {
 
 
 
-}
 
 
 
@@ -113,7 +111,7 @@ p.price-non-mem {
 }
 
 .main-content .productstyle {padding: 10px 14px;}
-
+.main-content-wrap .main-content.main-content-three-col .productstyle {width: 29%;  }
 
 }
 

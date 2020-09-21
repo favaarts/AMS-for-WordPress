@@ -197,6 +197,33 @@ add_action('wp_ajax_get_sidebarcategory','get_sidebarcategory');
 add_action('wp_ajax_nopriv_get_sidebarcategory','get_sidebarcategory');
 // End sidebar category
 
+//subdomain and key validation
+function subdomainkey_validation()
+{
+    $subdomain = $_POST['subdomain'];
+   
+    $apiurl = get_option('wpams_url_btn_label');
+    $apikey = get_option('wpams_apikey_btn_label');
+    $url = "https://".$subdomain.".amsnetwork.ca/api/v3/assets";
+    $carurl = $url ."/filter?access_token=".$apikey."&method=get&format=json";
+    
+    $catch = curl_init();
+    curl_setopt($catch,CURLOPT_URL,$carurl);
+    curl_setopt($catch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($catch,CURLOPT_CONNECTTIMEOUT, 4);
+    $json = curl_exec($catch);
+    if(!$json) {
+        echo curl_error($catch);
+    }
+    curl_close($catch);
+    //echo "hello";
+    $catArrayResultData = json_decode($json, true);
+    print_r($catArrayResultData);
+}
+add_action('wp_ajax_subdomainkey_validation','subdomainkey_validation');
+add_action('wp_ajax_nopriv_subdomainkey_validation','subdomainkey_validation');
+
+
 function get_sidebaroption()
 {
     $post_id = get_the_ID();
@@ -234,6 +261,7 @@ function wpdams_settings_page_html() {
             ?>
 
             <form action="options.php" method="post" class="wpamsform">
+                <input class="ajaxurl" id="ajaxurl" type="hidden" value="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" />
                 <?php 
                     // output security fields for the registered setting "wpac-settings"
                     settings_fields('wpams-settings' );
@@ -268,6 +296,8 @@ function wpams_plugin_settings(){
     register_setting( 'wpams-settings', 'wpams_apikey_btn_label' );
     register_setting( 'wpams-settings', 'wpams_landing_url_btn_label' );
     register_setting( 'wpams-settings', 'wpams_button_colour_btn_label' );
+    
+    register_setting('wpams-settings', 'url_window');
 
     add_settings_section( 'wpams_label_settings_section', '', 'wpams_plugin_settings_section_cb', 'wpams-settings' );
 
@@ -296,6 +326,7 @@ function wpams_url_label_field_cb(){
     // output the field
     ?>
     <input type="text" name="wpams_url_btn_label" style="width: 500px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
+    <!-- <span id="subdomainerror" style="color: red;"></span> -->
     <?php
 }
 
@@ -333,7 +364,13 @@ function wpams_landing_url_label_field_cb(){
     $setting = get_option('wpams_landing_url_btn_label');
     // output the field
     ?>
-    <input type="text" required="" name="wpams_landing_url_btn_label" style="width: 500px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
+    <input type="text" required="" name="wpams_landing_url_btn_label" style="width: 350px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
+
+    <select name="url_window" style="width: 140px;">
+      <option value="_self" <?php selected(get_option('url_window'), "_self"); ?>>Same Window</option>
+      <option value="_blank" <?php selected(get_option('url_window'), "_blank"); ?>>New Window</option>
+    </select>
+
     <?php
 }
 
@@ -343,7 +380,10 @@ function wpams_button_colour_label_field_cb(){
     $setting = get_option('wpams_button_colour_btn_label');
     // output the field
     ?>
-    <input type="text" required="" name="wpams_button_colour_btn_label" style="width: 500px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
+    <input type="color" id="colorpicker" name="color" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" style="width: 250px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
+
+    <input type="text" required="" name="wpams_button_colour_btn_label" id="hexcolor"  pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" style="width: 250px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
+    
     <?php
 }
 

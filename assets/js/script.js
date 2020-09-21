@@ -19,4 +19,57 @@ jQuery( document ).ready(function() {
 			jQuery('#savechanges').attr("disabled",false);
 		}					
 	});
+
+    //Color
+    jQuery('#colorpicker').on('change', function() {
+    jQuery('#hexcolor').val(this.value);
+    });
+    jQuery('#hexcolor').on('change', function() {
+      jQuery('#colorpicker').val(this.value);
+    });
+
+
+    //
+
+    jQuery('input[name="wpams_url_btn_label"]').keyup(function() {
+
+        var subdomain = jQuery(this).val();
+        var amsajax =  jQuery("#ajaxurl").val();
+        
+        jQuery.ajax({
+            url: amsajax,
+            type: 'post',
+            data : {
+                action : 'subdomainkey_validation',
+                subdomain : subdomain
+            },
+            success: function(result)
+            {
+                if (result == 0)
+                {
+                    console.log("Invalide subdomain.");
+                    jQuery('#subdomainerror').html("Invalide subdomain.");
+                    jQuery("#subdomainerror").show();
+                }
+                else
+                {
+                    console.log("Success");
+                    jQuery("#subdomainerror").hide();
+                }
+                
+            },
+            fail : function( err ) {
+                // You can craft something here to handle an error if something goes wrong when doing the AJAX request.
+                console.log( "There was an error: " + err );
+            }
+        });
+
+        /*$('span.error-keyup-3').remove();
+        var inputVal = $(this).val();
+        var characterReg = /^([a-zA-Z0-9]{0,8})$/;
+        if(!characterReg.test(inputVal)) {
+            $(this).after('<span class="error error-keyup-3">Maximum 8 characters.</span>');
+        }*/
+    });
+    
 });

@@ -13,9 +13,10 @@ function amscategoryequipment_function( $slug ) {
 notes::
 main-content - this class is for two columns.
 main-content main-content-three-col - this class is for three columns.
+main-content main-content-four-col - this class is for three columns.
 ======================================================================  -->
 
-<div class="wp-block-columns main-content main-content-three-col" >
+<div class="wp-block-columns main-content main-content-four-col" >
     <?php
     global $post;
     $post_slug = $post->post_name;

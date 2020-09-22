@@ -224,6 +224,8 @@ add_action('wp_ajax_subdomainkey_validation','subdomainkey_validation');
 add_action('wp_ajax_nopriv_subdomainkey_validation','subdomainkey_validation');
 
 
+
+
 function get_sidebaroption()
 {
     $post_id = get_the_ID();
@@ -242,7 +244,7 @@ function wpdams_settings_page_html() {
    ?>
         <div class="wrap">
             <h1 style="padding:10px; background:#333;color:#fff"><?= esc_html(get_admin_page_title()); ?></h1>
-
+            <div id="subdomainerror" class='notice notice-error is-dismissible'></div>
             <?php
             //echo "fasdfsd";
             $catArrayResult = get_sidebarcategory();
@@ -326,7 +328,7 @@ function wpams_url_label_field_cb(){
     // output the field
     ?>
     <input type="text" name="wpams_url_btn_label" style="width: 500px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
-    <!-- <span id="subdomainerror" style="color: red;"></span> -->
+    <!-- <span  style="color: red;"></span> -->
     <?php
 }
 
@@ -337,20 +339,12 @@ function wpams_apikey_label_field_cb(){
     $apikey = get_option('wpams_apikey_btn_label');
     // output the field
 
-    $catArrayResult = get_sidebarcategory();
-    //print_r($catArrayResult);
-    if(isset($catArrayResult['error']))
+   
+    if(!empty($apikey))
     {
-        $setting = "";
-       
-    } 
-    else
-    {
-        if(!empty($apikey))
-        {
-            $setting = sanitize_text_field("**************************************************************");
-        }
-    } 
+        $setting = sanitize_text_field("**************************************************************");
+    }
+     
 
     ?>
     <input type="text" name="wpams_apikey_btn_label" style="width: 500px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
@@ -382,7 +376,7 @@ function wpams_button_colour_label_field_cb(){
     ?>
     <input type="color" id="colorpicker" name="color" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" style="width: 250px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
 
-    <input type="text" required="" name="wpams_button_colour_btn_label" id="hexcolor"  pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" style="width: 250px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
+    <input type="hidden" name="wpams_button_colour_btn_label" id="hexcolor"  pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" style="width: 250px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
     
     <?php
 }

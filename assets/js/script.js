@@ -29,9 +29,9 @@ jQuery( document ).ready(function() {
     });
 
 
-    //
-
-    jQuery('input[name="wpams_url_btn_label"]').keyup(function() {
+    // Check subdomain
+    jQuery("#subdomainerror").hide();
+    jQuery('input[name="wpams_url_btn_label"]').blur(function() {
 
         var subdomain = jQuery(this).val();
         var amsajax =  jQuery("#ajaxurl").val();
@@ -64,12 +64,8 @@ jQuery( document ).ready(function() {
             }
         });
 
-        /*$('span.error-keyup-3').remove();
-        var inputVal = $(this).val();
-        var characterReg = /^([a-zA-Z0-9]{0,8})$/;
-        if(!characterReg.test(inputVal)) {
-            $(this).after('<span class="error error-keyup-3">Maximum 8 characters.</span>');
-        }*/
     });
+
+
     
 });

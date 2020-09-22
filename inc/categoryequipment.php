@@ -16,7 +16,7 @@ main-content main-content-three-col - this class is for three columns.
 main-content main-content-four-col - this class is for three columns.
 ======================================================================  -->
 
-<div class="wp-block-columns main-content main-content-four-col" >
+<div class="wp-block-columns main-content main-content-three-col" >
     <?php
     global $post;
     $post_slug = $post->post_name;

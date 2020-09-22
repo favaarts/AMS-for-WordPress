@@ -361,8 +361,8 @@ function wpams_landing_url_label_field_cb(){
     <input type="text" required="" name="wpams_landing_url_btn_label" style="width: 350px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
 
     <select name="url_window" style="width: 140px;">
-      <option value="_self" <?php selected(get_option('url_window'), "_self"); ?>>Same Window</option>
-      <option value="_blank" <?php selected(get_option('url_window'), "_blank"); ?>>New Window</option>
+      <option value="_self" <?php selected(get_option('url_window'), "_self"); ?>>Same Tab</option>
+      <option value="_blank" <?php selected(get_option('url_window'), "_blank"); ?>>New Tab</option>
     </select>
 
     <?php
@@ -376,7 +376,7 @@ function wpams_button_colour_label_field_cb(){
     ?>
     <input type="color" id="colorpicker" name="color" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" style="width: 250px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
 
-    <input type="hidden" name="wpams_button_colour_btn_label" id="hexcolor"  pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" style="width: 250px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
+    <input type="text" name="wpams_button_colour_btn_label" id="hexcolor"  pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" style="width: 250px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
     
     <?php
 }

@@ -151,8 +151,6 @@ if( !function_exists('wpdams_plugin_scripts')) {
         //wp_enqueue_style('wpac-css', WPD_AMS_PLUGIN_DIR. 'assets/css/style.css');
         wp_enqueue_script('amsjsajax', WPD_AMS_PLUGIN_DIR. 'assets/js/main.js', 'jQuery', '1.0.0', true );
 
-        //wp_enqueue_script('amsblock-js', WPD_AMS_PLUGIN_DIR. 'assets/js/amsblock.js', 'jQuery', '1.0.0', true );
-
         wp_localize_script( 'amsjsajax', 'amsjs_ajax_url',
             array( 'ajaxurl' => admin_url( 'admin-ajax.php' ))
         );
@@ -197,7 +195,7 @@ add_action('wp_ajax_get_sidebarcategory','get_sidebarcategory');
 add_action('wp_ajax_nopriv_get_sidebarcategory','get_sidebarcategory');
 // End sidebar category
 
-//subdomain and key validation
+//subdomain validation
 function subdomainkey_validation()
 {
     $subdomain = $_POST['subdomain'];
@@ -358,9 +356,9 @@ function wpams_landing_url_label_field_cb(){
     $setting = get_option('wpams_landing_url_btn_label');
     // output the field
     ?>
-    <input type="text" required="" name="wpams_landing_url_btn_label" style="width: 350px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
+    <input type="url" required="" name="wpams_landing_url_btn_label" style="width: 350px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
 
-    <select name="url_window" style="width: 140px;">
+    <select name="url_window" id="urlwindow" style="width: 140px;">
       <option value="_self" <?php selected(get_option('url_window'), "_self"); ?>>Same Tab</option>
       <option value="_blank" <?php selected(get_option('url_window'), "_blank"); ?>>New Tab</option>
     </select>

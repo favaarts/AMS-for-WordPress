@@ -34,16 +34,17 @@ get_header();  ?>
         {
         ?>
         
-            <div class="wp-block-columns main-content main-content-three-col" >
+            <div class="wp-block-columns main-content main-content-four-col" >
             
             <?php
-              
+              // Show and view shortcode sidebar block action  
               $query = "SELECT ID FROM wp_posts WHERE post_name = '$pageslugnew' ";
               $post_id = $wpdb->get_var($query);
               $post = get_post($post_id);
               $blocks = parse_blocks($post->post_content);
               $blockname = $blocks[0]['attrs'];
 
+              // Check if sidebar block "ON" or "OFF"
               if (!isset($blockname['sidebaroption']))
               {
             ?>
@@ -69,20 +70,20 @@ get_header();  ?>
               $category = preg_replace("/[^a-zA-Z]+/", " ", $categoryinurl);
               // End get slug
               
-              
+              // Use this function for ascending order
               if(!function_exists('dateCompare'))
               {    
-              function dateCompare($element1, $element2) { 
-                  
-                  return strcmp($element1[1],$element2[1]); 
-              }
-              
-              usort($catArrayResult['json']['categories'], 'dateCompare');
+                function dateCompare($element1, $element2) { 
+                    
+                    return strcmp($element1[1],$element2[1]); 
+                }
+                
+                usort($catArrayResult['json']['categories'], 'dateCompare');
               }    
-
+              // End ascending function
 
               
-
+                // Get sidebar category
                 foreach($catArrayResult as $catjson_value) {
                     
                     foreach($catjson_value as $cat => $cat_value) { 
@@ -91,23 +92,31 @@ get_header();  ?>
                             echo '<h4>Categories</h4>';
                              echo "<ul class='ul-cat-wrap getcategoryid'>";
                             foreach($cat_value as $c => $c_value) {
-                                echo "<li>";
-                                ?>
-                                <a href='<?= site_url('/'.$pageslug.'/'.$c_value[1]); ?>'><?= $c_value[1]?></a>
-                
-                                <?php   
-                                echo "</li>";
+                                $arrayResult = get_apirequest($c_value[0],NULL,NULL);
+                                $categorycount = $arrayResult['meta']['total_count'];
+                                if($categorycount > 0)
+                                {
+                                  echo "<li>";
+                                  ?>
+                                  <a href='<?= site_url('/'.$pageslug.'/'.$c_value[1]); ?>'><?= $c_value[1]?></a>
+                  
+                                  <?php   
+                                  echo "</li>";
+                                }
                             }
                             echo "</ul>";
                         }
                         
                     }
                 }
+                // End get sidebar category
               
               ?>
             </div>  
             
-            <?php } ?>
+            <?php } 
+            // End Show and view shortcode sidebar block action 
+            ?>
             
             
             <div class="categorysearchdata right-col" >
@@ -214,7 +223,7 @@ jQuery(document).ready(function($) {
    console.log(total);
 
    $(window).scroll(function(){
-     if( $(window).scrollTop() + window.innerHeight >= document.body.scrollHeight ) { 
+     if( $(window).scrollTop() + window.innerHeight >= document.body.scrollHeight - 400 ) { 
       var numItems = jQuery('.productstyle').length;   
       console.log(numItems);
       if (numItems >= total){

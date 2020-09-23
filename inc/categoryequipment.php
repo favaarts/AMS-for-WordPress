@@ -13,10 +13,10 @@ function amscategoryequipment_function( $slug ) {
 notes::
 main-content - this class is for two columns.
 main-content main-content-three-col - this class is for three columns.
-main-content main-content-four-col - this class is for three columns.
+main-content main-content-four-col - this class is for four columns.
 ======================================================================  -->
 
-<div class="wp-block-columns main-content main-content-three-col" >
+<div class="wp-block-columns main-content main-content-four-col" >
     <?php
     global $post;
     $post_slug = $post->post_name;
@@ -37,6 +37,9 @@ main-content main-content-four-col - this class is for three columns.
 
         $catArrayResult = get_sidebarcategory();
 
+        /*echo "<pre>";
+        print_r($catArrayResult);
+        echo "</pre>";*/
         if(!isset($catArrayResult['error']))
         {
             
@@ -76,15 +79,23 @@ main-content main-content-four-col - this class is for three columns.
                         echo '<h4>Categories</h4>';
                          echo "<ul class='ul-cat-wrap getcategoryid'>";
                         foreach($cat_value as $c => $c_value) {
-                            echo "<li>";
-                            ?>
 
-                            <a href='<?= site_url('/'.$pageslug.'/'.$c_value[1]); ?>'><?= $c_value[1]?></a>
+                            $arrayResult = get_apirequest($c_value[0],NULL,NULL);
+                            $categorycount = $arrayResult['meta']['total_count'];
+                            if($categorycount > 0)
+                            {
+                              echo "<li>";
+                             
+                              ?>
 
-                            
-                            
-                            <?php   
-                            echo "</li>";
+                              <a href='<?= site_url('/'.$pageslug.'/'.$c_value[1]); ?>'><?= $c_value[1]?></a>
+
+                              
+                              
+                              <?php   
+                              
+                              echo "</li>";
+                            }
                         }
                         echo "</ul>";
                     }
@@ -206,14 +217,18 @@ jQuery(document).ready(function($) {
    console.log(total);
 
    $(window).scroll(function(){
-     if( $(window).scrollTop() + window.innerHeight >= document.body.scrollHeight ) { 
-      var numItems = jQuery('.productstyle').length;  
-      console.log(numItems);
-      if (numItems >= total){
-        return false;
-      }else{
-        loadArticle(count);
-      }
+
+     /* var position = $(window).scrollTop();
+      var bottom = $(document).height() - $(window).height();*/
+
+     if( $(window).scrollTop() + window.innerHeight >= document.body.scrollHeight - 400 ) { 
+        var numItems = jQuery('.productstyle').length;  
+        console.log(numItems);
+        if (numItems >= total){
+          return false;
+        }else{
+          loadArticle(count);
+        }
       count++;
      }
    });

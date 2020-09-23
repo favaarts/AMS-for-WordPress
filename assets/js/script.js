@@ -3,11 +3,16 @@ jQuery( document ).ready(function() {
     console.log(alltext)
 
     if(!jQuery('.wpamsform input[type="text"]').val()) {
+
          jQuery('#savechanges').attr("disabled",false);
     }
     else
     {
     	 jQuery('#savechanges').attr("disabled",true);
+         jQuery('input[type="text"]').prop('disabled', true);
+         jQuery('input[type="url"]').prop('disabled', true);
+         jQuery('input[type="color"]').prop('disabled', true);
+         jQuery('#urlwindow').prop('disabled', true);
     }
 
 
@@ -17,6 +22,12 @@ jQuery( document ).ready(function() {
 			jQuery('.wpamsform input[type="text"]').val('');
 
 			jQuery('#savechanges').attr("disabled",false);
+
+            jQuery('input[type="text"]').prop('disabled', false);
+            jQuery('input[type="url"]').prop('disabled', false);
+            jQuery('input[type="color"]').prop('disabled', false);
+
+            jQuery('#urlwindow').prop('disabled', false);
 		}					
 	});
 

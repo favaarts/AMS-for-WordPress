@@ -49,7 +49,7 @@ get_header();  ?>
               {
             ?>
 
-            <div class="wp-block-column left-col" >
+            <div class="wp-block-column left-col col-fit" >
               
               <div class="searchbox">
                 <h4>Search Box</h4>
@@ -90,19 +90,20 @@ get_header();  ?>
                      
                         if($cat === 'categories') {
                             echo '<h4>Categories</h4>';
-                             echo "<ul class='ul-cat-wrap getcategoryid'>";
+                            echo "<ul class='ul-cat-wrap getcategoryid'>";
+                            echo "<li><a href='".site_url($pageslug)."'>All Items</a></li>";
                             foreach($cat_value as $c => $c_value) {
-                                $arrayResult = get_apirequest($c_value[0],NULL,NULL);
+                               /* $arrayResult = get_apirequest($c_value[0],NULL,NULL);
                                 $categorycount = $arrayResult['meta']['total_count'];
                                 if($categorycount > 0)
-                                {
+                                {*/
                                   echo "<li>";
                                   ?>
                                   <a href='<?= site_url('/'.$pageslug.'/'.$c_value[1]); ?>'><?= $c_value[1]?></a>
                   
                                   <?php   
                                   echo "</li>";
-                                }
+                                //}
                             }
                             echo "</ul>";
                         }

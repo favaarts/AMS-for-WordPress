@@ -1,35 +1,33 @@
 jQuery( document ).ready(function() {
-    var alltext = jQuery('.wpamsform input[type="text"]').val();
-    console.log(alltext)
-
-    if(!jQuery('.wpamsform input[type="text"]').val()) {
-
-         jQuery('#savechanges').attr("disabled",false);
-    }
-    else
+    
+    jQuery("#starapikey").hide();
+         
+    var subdomainurl = jQuery('#subdomainurl').val(); 
+    var apikeytext = jQuery('#apikeytext').val(); 
+    if(subdomainurl != "" && apikeytext != "") 
     {
-    	 jQuery('#savechanges').attr("disabled",true);
-         jQuery('input[type="text"]').prop('disabled', true);
-         jQuery('input[type="url"]').prop('disabled', true);
-         jQuery('input[type="color"]').prop('disabled', true);
-         jQuery('#urlwindow').prop('disabled', true);
+        jQuery('#subdomainurl').prop('readonly', true);
+        jQuery('#starapikey').prop('readonly', true);  
+
+        jQuery("#starapikey").show();
+        jQuery("#apikeytext").hide();
+
     }
 
 
-    jQuery('#cleartext').click(function(){				
-		if(confirm("Want to clear?")){
-			/*Clear all input type="text" box*/
-			jQuery('.wpamsform input[type="text"]').val('');
+    jQuery('#cleartext').click(function() {
+        var r = confirm('Are you sure you want to clear the API settings?')
+        if (r == true) {
+            jQuery('#subdomainurl').prop('readonly', false);
+            jQuery('#starapikey').prop('readonly', false);
 
-			jQuery('#savechanges').attr("disabled",false);
+            jQuery('#subdomainurl').val(''); 
+            jQuery('#apikeytext').val(''); 
 
-            jQuery('input[type="text"]').prop('disabled', false);
-            jQuery('input[type="url"]').prop('disabled', false);
-            jQuery('input[type="color"]').prop('disabled', false);
-
-            jQuery('#urlwindow').prop('disabled', false);
-		}					
-	});
+            jQuery("#starapikey").hide();
+            jQuery("#apikeytext").show();
+        }
+    });
 
     //Color
     jQuery('#colorpicker').on('change', function() {

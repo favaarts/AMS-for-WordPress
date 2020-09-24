@@ -57,7 +57,7 @@
 /*four*/
 .main-content.main-content-four-col .left-col{/*flex-basis:20%;*/ padding: 0px 10px;}
 .main-content.main-content-four-col .right-col{flex-basis:100% ;margin-left: 20px;}
-.main-content.main-content-four-col .productstyle {float: left; width: 22%;  }
+.main-content.main-content-four-col .productstyle {float: left; width: 22%; min-width: min-content; }
 /**/
 
 .productstyle .btn-common a{color:#fff; text-decoration: none;}
@@ -258,3 +258,4 @@ p.price-non-mem {
 }
 
 .centertext{text-align: center; justify-content: center;}
+.wp-block-column.left-col.col-fit{ min-width: max-content;}

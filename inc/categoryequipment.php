@@ -29,7 +29,7 @@ main-content main-content-four-col - this class is for four columns.
   if (!isset($blockdata['sidebaroption']))
     {
   ?>
-    <div class="wp-block-column left-col" >
+    <div class="wp-block-column left-col col-fit" >
         <?php
 
         
@@ -78,12 +78,13 @@ main-content main-content-four-col - this class is for four columns.
                     if($cat === 'categories') {
                         echo '<h4>Categories</h4>';
                          echo "<ul class='ul-cat-wrap getcategoryid'>";
+                          echo "<li><a href='".site_url($pageslug)."'>All Items</a></li>";
                         foreach($cat_value as $c => $c_value) {
 
-                            $arrayResult = get_apirequest($c_value[0],NULL,NULL);
+                            /*$arrayResult = get_apirequest($c_value[0],NULL,NULL);
                             $categorycount = $arrayResult['meta']['total_count'];
                             if($categorycount > 0)
-                            {
+                            {*/
                               echo "<li>";
                              
                               ?>
@@ -95,7 +96,7 @@ main-content main-content-four-col - this class is for four columns.
                               <?php   
                               
                               echo "</li>";
-                            }
+                            //}
                         }
                         echo "</ul>";
                     }

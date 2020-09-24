@@ -272,7 +272,7 @@ function wpdams_settings_page_html() {
                     //submit_button( 'Save Changes' );
                 ?>
 
-                <input class="button cleartext" id="cleartext" type="submit" style="background: #dc3545;color: #fff; border-color: #dc3545;" value="<?php esc_attr_e( 'Clear Settings' ); ?>" />
+                <input type="button" class="button cleartext" id="cleartext" style="background: #dc3545;color: #fff; border-color: #dc3545;" value="<?php esc_attr_e( 'Clear API Settings' ); ?>" />
 
                 <input name="submit" class="button button-primary savechanges" id="savechanges" type="submit" value="<?php esc_attr_e( 'Save Changes' ); ?>" />
             </form>
@@ -325,7 +325,7 @@ function wpams_url_label_field_cb(){
     $setting = get_option('wpams_url_btn_label');
     // output the field
     ?>
-    <input type="text" name="wpams_url_btn_label" style="width: 500px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
+    <input type="text" id="subdomainurl" name="wpams_url_btn_label" style="width: 500px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
     <!-- <span  style="color: red;"></span> -->
     <?php
 }
@@ -345,7 +345,11 @@ function wpams_apikey_label_field_cb(){
      
 
     ?>
-    <input type="text" name="wpams_apikey_btn_label" style="width: 500px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
+    <input type="text" id="starapikey" name="star_apikey" style="width: 500px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
+
+    <input type="text" id="apikeytext" name="wpams_apikey_btn_label" style="width: 500px;" value="<?php echo isset( $apikey ) ? esc_attr( $apikey ) : ''; ?>">
+
+    <!-- <input type="text" name="wpams_apikey_btn_label" style="width: 500px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>"> -->
 
     <?php
 }
@@ -440,6 +444,8 @@ function get_apirequest($categoryid,$productname,$prodictid)
 {
     $apiurl = get_option('wpams_url_btn_label');
     $apikey = get_option('wpams_apikey_btn_label');
+
+    
     
     if($categoryid)
     {
@@ -547,59 +553,86 @@ add_action('wp_ajax_nopriv_getcategory_action','ams_get_category_action');
 // Get data after search product
 function search_category_action()
 {
-    
+    $apiurl = get_option('wpams_url_btn_label');
+    $apikey = get_option('wpams_apikey_btn_label');
     $bgcolor = get_option('wpams_button_colour_btn_label');
     $prodname = $_POST['keyword'];
     $pageslug = $_POST['slugurl'];
+    $categoryid = $_POST['catid'];
     $productname = urlencode($prodname);
 
-    $arrayResult = get_apirequest(NULL,$productname,NULL);
+    //$arrayResult = get_apirequest($categoryid,$productname,NULL);
 
-    foreach($arrayResult as $json_value) {
-        
-        foreach($json_value as $x_value) { 
-            if(isset($x_value['id']))
-            {
-                echo "<div class='productstyle'>";
-                   
-                    if(isset($x_value['name']))
-                    {
-                        echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title 123'>". $x_value['name'] ."</p> </a>";
-                        
-                        if($x_value['photo'] == NULL || $x_value['photo'] == "")
-                        {                                    
-                            echo "<div class='product-img-wrap'>";
-                                echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ )." alt=".$x_value['name'].">";
-                             echo "</div>";
-                        }
-                        else
+    $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/assets?type=Equipment&category_ids=%5B".$categoryid."%5D&query_string=".$productname."&access_token=".$apikey."&method=get&format=json";
+
+    $ch = curl_init();
+    curl_setopt($ch,CURLOPT_URL,$producturl);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 4);
+    $json = curl_exec($ch);
+    if(!$json) {
+        echo curl_error($ch);
+    }
+    curl_close($ch);
+
+    $arrayResult = json_decode($json, true);
+
+    $totalitems = $arrayResult['assets'];
+
+    //print_r($arrayResult);   
+    if(!empty($totalitems))
+    {
+    
+        foreach($arrayResult as $json_value) {
+            
+            foreach($json_value as $x_value) { 
+                if(isset($x_value['id']))
+                {
+                    echo "<div class='productstyle'>";
+                       
+                        if(isset($x_value['name']))
                         {
-                            echo "<div class='product-img-wrap'>";
-                                echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
-                            echo "</div>";
-                        }
-                         
-
-                        echo "<div class='bottom-fix'>"; 
-                        if($x_value['status_text'] == "Active")
-                            echo "<span class='label label-success btn-common' style='background-color: $bgcolor;'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Available</a></span>";
+                            echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title 123'>". $x_value['name'] ."</p> </a>";
+                            
+                            if($x_value['photo'] == NULL || $x_value['photo'] == "")
+                            {                                    
+                                echo "<div class='product-img-wrap'>";
+                                    echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ )." alt=".$x_value['name'].">";
+                                 echo "</div>";
+                            }
                             else
                             {
-                                echo "<span class='label label-danger btn-common'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Unavailable</a></span>";
+                                echo "<div class='product-img-wrap'>";
+                                    echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
+                                echo "</div>";
                             }
-                            
-                        echo "</div>";    
-                        }
+                             
 
-                    echo "<p class='memberprice'>".$x_value['price_types'][0][0]."</p>";    
-                    echo "<p class='price-non-mem'>".$x_value['price_types'][1][0]."</p>";
+                            echo "<div class='bottom-fix'>"; 
+                            if($x_value['status_text'] == "Active")
+                                echo "<span class='label label-success btn-common' style='background-color: $bgcolor;'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Available</a></span>";
+                                else
+                                {
+                                    echo "<span class='label label-danger btn-common'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Unavailable</a></span>";
+                                }
+                                
+                            echo "</div>";    
+                            }
 
-                    
-                echo "</div>";
+                        echo "<p class='memberprice'>".$x_value['price_types'][0][0]."</p>";    
+                        echo "<p class='price-non-mem'>".$x_value['price_types'][1][0]."</p>";
+
+                        
+                    echo "</div>";
+                }
             }
         }
     }
-         
+    else
+    {
+        echo $arrayResult = "No item found";
+    }
+
 
     die();
 }

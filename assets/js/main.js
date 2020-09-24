@@ -63,13 +63,17 @@ function fetchequipment()
 {
 	event.preventDefault();
 	var slugurl = jQuery('#slugurl').val();
+	var catid = jQuery('#categoryid').val();
 
 	jQuery.ajax({
         url: amsjs_ajax_url.ajaxurl,
         type: 'post',
-        data: { action: 'searchcategorydata_action', keyword: jQuery('#keyword').val(),slugurl:slugurl },
+        data: { action: 'searchcategorydata_action', keyword: jQuery('#keyword').val(),slugurl:slugurl, catid:catid },
         success: function(data) {
-            jQuery('.right-col-wrap').html(data);
+        	//console.log(data);
+        	
+        	jQuery('.right-col-wrap').html(data);
+        		
         }
     });
 }

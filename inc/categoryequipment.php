@@ -81,10 +81,10 @@ main-content main-content-four-col - this class is for four columns.
                           echo "<li><a href='".site_url($pageslug)."'>All Items</a></li>";
                         foreach($cat_value as $c => $c_value) {
 
-                            /*$arrayResult = get_apirequest($c_value[0],NULL,NULL);
+                            $arrayResult = get_apirequest($c_value[0],NULL,NULL);
                             $categorycount = $arrayResult['meta']['total_count'];
                             if($categorycount > 0)
-                            {*/
+                            {
                               echo "<li>";
                              
                               ?>
@@ -96,7 +96,7 @@ main-content main-content-four-col - this class is for four columns.
                               <?php   
                               
                               echo "</li>";
-                            //}
+                            }
                         }
                         echo "</ul>";
                     }

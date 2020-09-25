@@ -8,6 +8,8 @@
   var InspectorControls = editor.InspectorControls;
   var TextControl = components.TextControl;
   var ToggleControl = components.ToggleControl;
+  var RadioControl = components.RadioControl;
+
   registerBlockType('wpdams-amsnetwork/amsnetwork-block', {
     title: i18n.__('AMS Assets', 'amsnetwork-gutenberg-block'),
     description: i18n.__('AMS network block setting', 'amsnetwork-gutenberg-block'),
@@ -27,6 +29,10 @@
       type: 'boolean',
       default: true
      },
+     radio_attr: {
+      type: 'string',
+      default: 'three_col',
+    },
      categoryoption: {
       type: 'boolean',
       default: true
@@ -46,6 +52,11 @@
      function updateContent( newdata ) {
             props.setAttributes( { content: newdata } );
          }  
+
+      var radioField = props.attributes;
+      function onChangeRadioField( newValue ) {
+        props.setAttributes( { radioField: newValue } );
+      }
 
       var attributes = props.attributes;
       var onSelectImage = function(media) {
@@ -72,7 +83,22 @@
                  props.setAttributes( { sidebaroption: value } );
               },
               checked: props.attributes.sidebaroption,
-            })
+            }),
+            el( RadioControl,
+              {
+                label: 'Grid Layout',
+                //help: 'Some kind of description',
+                options : [
+                  { label: 'Two Column', value: 'two_col' },
+                  { label: 'Three Column', value: 'three_col' },
+                  { label: 'Four Column', value: 'four_col' },
+                ],
+                onChange: ( value ) => {
+                  props.setAttributes( { radio_attr: value } );
+                },
+                selected: props.attributes.radio_attr
+              }
+            ),
             
           )
         ),
@@ -110,6 +136,7 @@
                            el( wp.element.RawHTML, null, '['+props.attributes.type+']')
            ),
            el( 'input', { 'type': 'hidden', 'name' : 'sidebar_option_in', 'value' : ( props.attributes.sidebaroption == true ? 'yes' : 'no' ) } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'radio_attr', 'value' : ( props.attributes.radio_attr) } ),
 
          )
 

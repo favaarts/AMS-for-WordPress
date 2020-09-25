@@ -32,17 +32,37 @@ get_header();  ?>
         }
         else
         {
-        ?>
-        
-            <div class="wp-block-columns main-content main-content-four-col" >
-            
-            <?php
-              // Show and view shortcode sidebar block action  
               $query = "SELECT ID FROM wp_posts WHERE post_name = '$pageslugnew' ";
               $post_id = $wpdb->get_var($query);
               $post = get_post($post_id);
               $blocks = parse_blocks($post->post_content);
               $blockname = $blocks[0]['attrs'];
+
+              $gridlayout = $blocks[0]['attrs']['radio_attr'];
+
+              if($gridlayout == "four_col")
+              {
+                 $blockclass = 'main-content-four-col';
+              }
+              elseif($gridlayout == "two_col")
+              {
+                $blockclass = '';
+              }
+              else
+              {
+                 $blockclass = 'main-content-three-col';
+              }
+        ?>
+        
+            <div class="wp-block-columns main-content <?= $blockclass; ?>" >
+            
+            <?php
+              // Show and view shortcode sidebar block action  
+              /*$query = "SELECT ID FROM wp_posts WHERE post_name = '$pageslugnew' ";
+              $post_id = $wpdb->get_var($query);
+              $post = get_post($post_id);
+              $blocks = parse_blocks($post->post_content);
+              $blockname = $blocks[0]['attrs'];*/
 
               // Check if sidebar block "ON" or "OFF"
               if (!isset($blockname['sidebaroption']))

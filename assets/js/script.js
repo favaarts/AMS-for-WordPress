@@ -4,6 +4,8 @@ jQuery( document ).ready(function() {
          
     var subdomainurl = jQuery('#subdomainurl').val(); 
     var apikeytext = jQuery('#apikeytext').val(); 
+    jQuery("#starapikey").hide();
+    
     if(subdomainurl != "" && apikeytext != "") 
     {
         jQuery('#subdomainurl').prop('readonly', true);

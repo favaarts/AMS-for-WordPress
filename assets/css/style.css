@@ -159,6 +159,7 @@ p.price-non-mem {
 .main-content-wrap .main-content.main-content-four-col .productstyle {width: 100%;  }
 /**/
 
+
 }
 
 /*Product Detail*/
@@ -239,7 +240,9 @@ p.price-non-mem {
 
 .site-content .wrap {padding-left: 1em; padding-right: 1em; }
 
-
+.mobileviewonly{display: block !important;}
+#cagegorydata{width: 100%; margin-bottom: 15px;}
+.getcategoryid {display: none;}
 
 }
 
@@ -260,3 +263,5 @@ p.price-non-mem {
 .centertext{text-align: center; justify-content: center;}
 .wp-block-column.left-col.col-fit{ min-width: max-content;}
 .searchbox {margin-bottom: 15px;}
+.mobileviewonly{display: none;}
+.mobileviewonly select{font-size: 16px;}

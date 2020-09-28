@@ -71,6 +71,26 @@ else
                 <input type="text" class="searrch-input" name="keyword" id="keyword" onkeyup="fetchequipment()"></input>
             </div>
 
+            <!-- Mobile view only -->
+            <div class="mobileviewonly">
+              <select class='ul-cat-wrap' id='cagegorydata'>
+                <option value="<?= site_url($post_slug) ?>">All Items</option>
+                
+                <?php
+                 foreach($catArrayResult as $catjson_value) {
+                    foreach($catjson_value as $cat => $cat_value) { 
+
+                        foreach($cat_value as $c => $c_value) {
+                            echo "<option  value='".site_url('/'.$post_slug.'/'.$c_value[1])."'>".$c_value[1]."</option>";     
+                        }
+                    }
+                }
+
+              ?>
+              </select>
+            </div>
+            <!-- Mobile view only -->
+
             <?php
                   
 
@@ -278,7 +298,13 @@ jQuery(document).ready(function($) {
      return false;
    }
 
-    
+    $('#cagegorydata').on('change', function () {
+        var url = $(this).val(); // get selected value
+        if (url) { // require a URL
+            window.location = url; // redirect
+        }
+        return false;
+    }); 
 
 });    
 </script>

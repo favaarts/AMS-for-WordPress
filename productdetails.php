@@ -55,7 +55,7 @@ get_header();  ?>
                 else
                 {
                 echo "<div class='pro-img'>"; 
-                echo "<img src=".$json_value['photo_medium']." alt=".$json_value['name'].">";
+                echo "<img src=".$json_value['photo_medium']." alt='".$json_value['name']."' onerror='this.src=\"".$json_value['photo_small']."\"'>";
                 echo "</div>";
                 }
                 echo "</div>";

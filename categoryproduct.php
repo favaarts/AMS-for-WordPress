@@ -76,6 +76,24 @@ get_header();  ?>
                 <input type="text" class="searrch-input" name="keyword" id="keyword" onkeyup="fetchequipment()"></input>
               </div>
               
+              <!-- Mobile view only -->
+              <div class="mobileviewonly">
+                <select class='ul-cat-wrap' id='cagegorydata'>
+                  <option value="<?= site_url($pageslugnew) ?>">All Items</option>
+                  
+                  <?php
+                   foreach($catArrayResult as $catjson_value) {
+                      foreach($catjson_value as $cat => $cat_value) { 
+                          foreach($cat_value as $c => $c_value) {
+                              echo "<option value='".site_url('/'.$pageslugnew.'/'.$c_value[1])."'>".$c_value[1]."</option>"; 
+                          }
+                      }
+                  }
+
+                ?>
+                </select>
+              </div>
+              <!-- Mobile view only --> 
 
               <?php
               global $wp;
@@ -220,6 +238,7 @@ get_header();  ?>
             </div> 
             <input type="hidden" id="inputpageslug" value="<?php echo $pageslug; ?>">
             <input type="hidden" id="categoryid" value="<?php echo $catid; ?>">
+            <input type="hidden" id="pageurl" value="<?php echo urldecode($url); ?>">
             </div>
             <div class="loaderdiv">
             <a id="inifiniteLoader"  data-totalequipment="<?php echo $arrayResult['meta']['total_count']; ?>" ><img src="<?php echo plugin_dir_url( __FILE__ ).'assets/img/loader.svg' ?>" ></a>
@@ -238,6 +257,11 @@ get_header();  ?>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
     $('a#inifiniteLoader').hide();
+
+  // option selected
+  var newurl = $('#pageurl').val();
+  jQuery('#cagegorydata').val(newurl).attr('selected','selected');   
+  // End option selected
    
    var count = 1;
    var total = jQuery("#inifiniteLoader").data("totalequipment");
@@ -282,7 +306,13 @@ jQuery(document).ready(function($) {
      return false;
    }
 
-    
+    $('#cagegorydata').on('change', function () {
+        var url = $(this).val(); // get selected value
+        if (url) { // require a URL
+            window.location = url; // redirect
+        }
+        return false;
+    }); 
 
 });    
 </script>

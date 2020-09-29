@@ -27,7 +27,7 @@
     text-decoration: none !important;
 }
 
-.main-content{display: inline-flex; margin-top: 15px;}
+.main-content{/*display: inline-flex;*/ margin-top: 15px;}
 .main-content .left-col{flex-basis:30%}
 .main-content .right-col{flex-basis:70% ;margin-left: 20px;}
 .right-col-wrap {width: 100%; display: flex; flex-wrap: wrap; }

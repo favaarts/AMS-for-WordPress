@@ -438,6 +438,8 @@ add_action('admin_enqueue_scripts', 'my_script');
 // CTA for Short code amscategoryequipment
 require plugin_dir_path( __FILE__ ). 'inc/categoryequipment.php';
 
+// CTA for Short code event listing
+require plugin_dir_path( __FILE__ ). 'inc/eventlisting.php';
 
 // Get equipment product
 function get_apirequest($categoryid,$productname,$prodictid)
@@ -482,7 +484,30 @@ add_action('wp_ajax_get_apirequest','get_apirequest');
 add_action('wp_ajax_nopriv_get_apirequest','get_apirequest');
 // End equipment product
 
+// Event Listing
+function get_eventlisting()
+{
+    $apiurl = get_option('wpams_url_btn_label');
+    $apikey = get_option('wpams_apikey_btn_label');
 
+    $eventlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=Events&access_token=".$apikey."&method=get&format=json";
+
+
+    $ch = curl_init();
+    curl_setopt($ch,CURLOPT_URL,$eventlistingurl);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 4);
+    $json = curl_exec($ch);
+    if(!$json) {
+        echo curl_error($ch);
+    }
+    curl_close($ch);
+
+    return $arrayEventResultData = json_decode($json, true);
+}
+add_action('wp_ajax_get_eventlisting','get_eventlisting');
+add_action('wp_ajax_nopriv_get_eventlisting','get_eventlisting');
+// End Event Listing
 
 // Get data on click id from sidebar menu
 function ams_get_category_action()

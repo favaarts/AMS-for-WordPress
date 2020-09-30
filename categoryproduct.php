@@ -82,13 +82,9 @@ get_header();  ?>
                   <option value="<?= site_url($pageslugnew) ?>">All Items</option>
                   
                   <?php
-                   foreach($catArrayResult as $catjson_value) {
-                      foreach($catjson_value as $cat => $cat_value) { 
-                          foreach($cat_value as $c => $c_value) {
-                              echo "<option value='".site_url('/'.$pageslugnew.'/'.$c_value[1])."'>".$c_value[1]."</option>"; 
-                          }
-                      }
-                  }
+                    foreach($catArrayResult['categories'] as $c => $c_value) {
+                      echo "<option  value='".site_url('/'.$pageslugnew.'/'.$c_value['name'])."'>".$c_value['name']."</option>";     
+                    }
 
                 ?>
                 </select>
@@ -113,41 +109,32 @@ get_header();  ?>
               {    
                 function dateCompare($element1, $element2) { 
                     
-                    return strcmp($element1[1],$element2[1]); 
+                    return strcmp($element1['name'],$element2['name']); 
                 }
                 
-                usort($catArrayResult['json']['categories'], 'dateCompare');
+                usort($catArrayResult['categories'], 'dateCompare');
               }    
               // End ascending function
 
               
                 // Get sidebar category
-                foreach($catArrayResult as $catjson_value) {
-                    
-                    foreach($catjson_value as $cat => $cat_value) { 
-                     
-                        if($cat === 'categories') {
-                            echo '<h4>Categories</h4>';
-                            echo "<ul class='ul-cat-wrap getcategoryid'>";
-                            echo "<li><a href='".site_url($pageslug)."'>All Items</a></li>";
-                            foreach($cat_value as $c => $c_value) {
-                                $arrayResult = get_apirequest($c_value[0],NULL,NULL);
-                                $categorycount = $arrayResult['meta']['total_count'];
-                                if($categorycount > 0)
-                                {
-                                  echo "<li>";
-                                  ?>
-                                  <a href='<?= site_url('/'.$pageslug.'/'.$c_value[1]); ?>'><?= $c_value[1]?></a>
-                  
-                                  <?php   
-                                  echo "</li>";
-                                }
-                            }
-                            echo "</ul>";
+                
+                    echo '<h4>Categories</h4>';
+                    echo "<ul class='ul-cat-wrap getcategoryid'>";
+                    echo "<li><a href='".site_url($pageslug)."'>All Items</a></li>";
+                    foreach($catArrayResult['categories'] as $c => $c_value) {
+                        if($c_value['bookable_by_admin_only'] != 1)
+                        {
+                          echo "<li>";
+                          ?>
+                          <a href='<?= site_url('/'.$pageslug.'/'.$c_value['name']); ?>'><?= $c_value['name']?></a>
+          
+                          <?php   
+                          echo "</li>";
                         }
-                        
                     }
-                }
+                    echo "</ul>";
+                        
                 // End get sidebar category
               
               ?>
@@ -168,12 +155,12 @@ get_header();  ?>
             
             
             global $array;
-            $arraynew = $catArrayResult['json']['categories'];
+            $arraynew = $catArrayResult['categories'];
             
             function searchForId($category, $array) {
                 foreach($array as $c_value) {
-                    if ($c_value[1] === $category) {
-                        return $c_value[0];
+                    if ($c_value['name'] === $category) {
+                        return $c_value['id'];
                     }
                 }
                 return null;

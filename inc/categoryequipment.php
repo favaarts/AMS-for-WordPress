@@ -77,14 +77,11 @@ else
                 <option value="<?= site_url($post_slug) ?>">All Items</option>
                 
                 <?php
-                 foreach($catArrayResult as $catjson_value) {
-                    foreach($catjson_value as $cat => $cat_value) { 
-
-                        foreach($cat_value as $c => $c_value) {
-                            echo "<option  value='".site_url('/'.$post_slug.'/'.$c_value[1])."'>".$c_value[1]."</option>";     
-                        }
-                    }
-                }
+                 
+                  foreach($catArrayResult['categories'] as $c => $c_value) {
+                      echo "<option  value='".site_url('/'.$post_slug.'/'.$c_value['name'])."'>".$c_value['name']."</option>";     
+                  }
+                   
 
               ?>
               </select>
@@ -105,43 +102,36 @@ else
             {    
                 function dateCompare($element1, $element2) { 
                     
-                    return strcmp($element1[1],$element2[1]); 
+                    return strcmp($element1['name'],$element2['name']); 
                 }
-                usort($catArrayResult['json']['categories'], 'dateCompare');
+                usort($catArrayResult['categories'], 'dateCompare');
             }    
  
-            
+           
+                echo '<h4>Categories</h4>';
+                echo "<ul class='ul-cat-wrap getcategoryid'>";
+                echo "<li><a href='".site_url($pageslug)."'>All Items</a></li>";
+                foreach($catArrayResult['categories'] as $c => $c_value) {
 
-            foreach($catArrayResult as $catjson_value) {
-                foreach($catjson_value as $cat => $cat_value) { 
-                 
-                    if($cat === 'categories') {
-                        echo '<h4>Categories</h4>';
-                         echo "<ul class='ul-cat-wrap getcategoryid'>";
-                          echo "<li><a href='".site_url($pageslug)."'>All Items</a></li>";
-                        foreach($cat_value as $c => $c_value) {
+                   /* $arrayResult = get_apirequest($c_value[0],NULL,NULL);
+                    $categorycount = $arrayResult['meta']['total_count'];*/
+                    if($c_value['bookable_by_admin_only'] != 1)
+                    {
+                      echo "<li>";
+                     
+                      ?>
 
-                            $arrayResult = get_apirequest($c_value[0],NULL,NULL);
-                            $categorycount = $arrayResult['meta']['total_count'];
-                            if($categorycount > 0)
-                            {
-                              echo "<li>";
-                             
-                              ?>
+                      <a href='<?= site_url('/'.$pageslug.'/'.$c_value['name']); ?>'><?= $c_value['name']?> </a>
 
-                              <a href='<?= site_url('/'.$pageslug.'/'.$c_value[1]); ?>'><?= $c_value[1]?></a>
-
-                              
-                              
-                              <?php   
-                              
-                              echo "</li>";
-                            }
-                        }
-                        echo "</ul>";
+                      
+                      
+                      <?php   
+                      
+                      echo "</li>";
                     }
                 }
-            }
+                echo "</ul>";
+                    
 
             
         }    
@@ -243,7 +233,7 @@ else
     ?>
     <div class="loaderdiv">
         <a id="inifiniteLoader"  data-totalequipment="<?php echo $arrayResult['meta']['total_count']; ?>" ><img src="<?php echo esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) ?>" ></a>
-    <div>    
+    </div>    
     <?php } ?>    
 </div>
 

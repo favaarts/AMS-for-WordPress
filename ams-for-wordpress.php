@@ -176,8 +176,8 @@ function get_sidebarcategory()
 {
     $apiurl = get_option('wpams_url_btn_label');
     $apikey = get_option('wpams_apikey_btn_label');
-    $url = "https://".$apiurl.".amsnetwork.ca/api/v3/assets";
-    $carurl = $url ."/filter?access_token=".$apikey."&method=get&format=json";
+    $url = "https://".$apiurl.".amsnetwork.ca/api/v3/";
+    $carurl = $url ."/categories?access_token=".$apikey."&method=get&format=json";
 
     $catch = curl_init();
     curl_setopt($catch,CURLOPT_URL,$carurl);

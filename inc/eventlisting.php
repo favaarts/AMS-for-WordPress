@@ -22,7 +22,7 @@ main-content main-content-four-col - this class is for four columns.
 
 
 
-    <div class="categorysearchdata right-col" >
+    <div class="categorysearchdata right-col eventpage" >
         <div class="productdetail"></div>
         <div class="right-col-wrap">
             
@@ -31,30 +31,38 @@ main-content main-content-four-col - this class is for four columns.
         <?php
             $arrayResult = get_eventlisting();
 
-            /*echo "<pre>";
-            print_r($arrayResult['programs']);
-            echo "</pre>";*/
-
-            
 
             foreach($arrayResult['programs'] as $x_value) { 
 
                 if(isset($x_value['id']))
                 {
                     
-                    echo "<div class='productstyle'>";
+                    echo "<div class='productstyle eventlayout'>";
                     
                         if(isset($x_value['name']))
                         {
                             $assetstitle = (strlen($x_value['name']) > 43) ? substr($x_value['name'],0,40).'...' : $x_value['name'];
 
-                            echo "<a href=''> <p class='product-title 123'>". $assetstitle ."</p> </a>";
-                            
-                              
+
+                            if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
+                            {                                    
+                                echo "<div class='product-img-wrap'>";
+                                    echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ )." alt=".$x_value['name'].">";
+                                 echo "</div>";
+                            }
+                            else
+                            {
+                                 echo "<div class='eventlayout-image'>";
+                                    echo "<img src=".$x_value['photo']['photo']['medium']['url'].">";
+                                 echo "</div>";
                             }
 
-                        
-
+                            echo "<div class='eventtitle'>";
+                                echo "<p>Thu, Sep 24</P>"; 
+                                echo "<a href=''> <p class='product-title'>". $assetstitle ."</p> </a>";
+                            echo "</div>";
+                              
+                            }
                         
                     echo "</div>";
                 }

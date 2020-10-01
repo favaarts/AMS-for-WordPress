@@ -265,3 +265,16 @@ p.price-non-mem {
 .searchbox {margin-bottom: 15px;}
 .mobileviewonly{display: none;}
 .mobileviewonly select{font-size: 16px;}
+
+.eventlayout-image {
+    width: -webkit-fill-available;
+    margin: -10px -20px 10px -20px;
+}
+
+.eventtitle p{ margin-bottom: 8px; font-size: 14px; font-weight: 600;}
+
+.eventtitle p.product-title {
+    font-size: 16px;
+    line-height: 26px;
+    min-height: auto;
+}

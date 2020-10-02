@@ -30,7 +30,7 @@ main-content main-content-four-col - this class is for four columns.
 
         <?php
             $arrayResult = get_eventlisting();
-
+            $bgcolor = get_option('wpams_button_colour_btn_label');
 
             foreach($arrayResult['programs'] as $x_value) { 
 
@@ -47,8 +47,10 @@ main-content main-content-four-col - this class is for four columns.
                             if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
                             {                                    
                                 echo "<div class='product-img-wrap'>";
-                                    echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ )." alt=".$x_value['name'].">";
-                                 echo "</div>";
+                                ?>
+                                <img src="<?php echo plugin_dir_url( dirname( __FILE__ ) ) . 'assets/img/bg-image.png'; ?>">
+                                <?php    
+                                echo "</div>";
                             }
                             else
                             {
@@ -70,7 +72,13 @@ main-content main-content-four-col - this class is for four columns.
                         
             
           ?>
-       </div>   
+            
+       </div>  
+            <div class="eventbutton">
+                <p class="para"></p>
+                <a id="inifiniteLoader"  data-totalequipment="<?php echo $arrayResult['meta']['total_count']; ?>" ><img src="<?php echo esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) ?>" ></a>
+                <input type="button" id="seemore" style="background-color: <?=$bgcolor?>" value="See More">  
+            </div> 
     </div> 
     
 </div>
@@ -82,7 +90,52 @@ main-content main-content-four-col - this class is for four columns.
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 
+   var count = 2;
+   var total = jQuery("#inifiniteLoader").data("totalequipment");
+   //var total = 22;
+   
+   $('#inifiniteLoader').hide();
+   console.log(total);
 
+   $('#seemore').click(function(){
+
+        var numItems = jQuery('.productstyle').length;  
+        console.log(numItems);
+        if (numItems >= total){
+            jQuery('#seemore').hide();
+            jQuery(".para").text("No More Events found.");  
+          return false;
+        }else{
+            jQuery('#seemore').hide();   
+          loadArticle(count);
+          //
+        }
+        count++;
+        
+   });
+
+
+    function loadArticle(pageNumber){
+     //$('a#inifiniteLoader').show();
+
+     var slugvar = $('#inputpageslug').val();
+
+     $.ajax({
+       url: amsjs_ajax_url.ajaxurl,
+       type:'POST',
+       data: "action=geteventonclick_action&page="+ pageNumber + "&loop_file=loop&slugname="+slugvar,
+       beforeSend: function(){
+        // Show image container
+            $("#inifiniteLoader").show();
+       },
+       success: function (html) {
+         jQuery('#inifiniteLoader').hide('1000');
+         jQuery('.right-col-wrap').append(html);
+         jQuery('#seemore').show();
+       }
+     });
+     return false;
+    }
    
 
 });    

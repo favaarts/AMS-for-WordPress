@@ -280,3 +280,11 @@ p.price-non-mem {
     min-height: auto;
 }
 
+.eventbutton {text-align: center;}
+#seemore{
+    display: inline-block;
+    color: #fff;
+    padding: 4px 25px;
+    border: none;
+}
+

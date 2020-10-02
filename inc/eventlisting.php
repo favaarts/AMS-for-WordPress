@@ -99,10 +99,6 @@ jQuery(document).ready(function($) {
 
    $('#seemore').click(function(){
 
-     /* var position = $(window).scrollTop();
-      var bottom = $(document).height() - $(window).height();*/
-        //$('#seemore').hide();
-        
         var numItems = jQuery('.productstyle').length;  
         console.log(numItems);
         if (numItems >= total){
@@ -122,8 +118,6 @@ jQuery(document).ready(function($) {
     function loadArticle(pageNumber){
      //$('a#inifiniteLoader').show();
 
-     /*console.log(amsjs_ajax_url.ajaxurl);
-     console.log("hello");*/
      var slugvar = $('#inputpageslug').val();
 
      $.ajax({

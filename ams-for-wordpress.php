@@ -675,7 +675,6 @@ function infinitescroll_action()
     $bgcolor = get_option('wpams_button_colour_btn_label');
 
     $categoryid = $_POST['catid'];
-    //die;
 
     $page = $_POST['page'];
     $newslugname = $_POST['slugname'];

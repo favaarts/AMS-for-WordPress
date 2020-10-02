@@ -751,6 +751,78 @@ add_action('wp_ajax_infinitescroll_action','infinitescroll_action');
 add_action('wp_ajax_nopriv_infinitescroll_action','infinitescroll_action');
 // End infinite scroll
 
+// Event button click
+function geteventonclick_action()
+{
+
+    $apiurl = get_option('wpams_url_btn_label');
+    $apikey = get_option('wpams_apikey_btn_label');
+    $bgcolor = get_option('wpams_button_colour_btn_label');
+
+    $categoryid = $_POST['catid'];
+    //die;
+
+    $page = $_POST['page'];
+    $newslugname = $_POST['slugname'];
+
+    $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=Events&page=".$page."&access_token=".$apikey."&method=get&format=json";
+
+        $ch = curl_init();
+        curl_setopt($ch,CURLOPT_URL,$producturl);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+        curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 4);
+        $json = curl_exec($ch);
+        if(!$json) {
+            echo curl_error($ch);
+        }
+        curl_close($ch);
+
+        $arrayResult = json_decode($json, true);
+
+        
+            foreach($arrayResult['programs'] as $x_value) { 
+
+                if(isset($x_value['id']))
+                {
+                    
+                    echo "<div class='productstyle eventlayout'>";
+                    
+                        if(isset($x_value['name']))
+                        {
+                            $assetstitle = (strlen($x_value['name']) > 43) ? substr($x_value['name'],0,40).'...' : $x_value['name'];
+
+
+                            if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
+                            {                                    
+                                echo "<div class='product-img-wrap'>";
+                                  echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ )." alt=".$x_value['name'].">";    
+                                echo "</div>";
+                            }
+                            else
+                            {
+                                 echo "<div class='eventlayout-image'>";
+                                    echo "<img src=".$x_value['photo']['photo']['medium']['url'].">";
+                                 echo "</div>";
+                            }
+
+                            echo "<div class='eventtitle'>";
+                                echo "<p>Thu, Sep 24</P>"; 
+                                echo "<a href=''> <p class='product-title'>". $assetstitle ."</p> </a>";
+                            echo "</div>";
+                              
+                            }
+                        
+                    echo "</div>";
+                }
+            }
+        
+        //echo "<img src=". esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) . ">";
+
+    die();
+}
+add_action('wp_ajax_geteventonclick_action','geteventonclick_action');
+add_action('wp_ajax_nopriv_geteventonclick_action','geteventonclick_action');
+// End Event button click
 
 // Ajax page detal
 function equipmentproductdetails_action()

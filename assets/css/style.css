@@ -278,3 +278,11 @@ p.price-non-mem {
     line-height: 26px;
     min-height: auto;
 }
+
+.eventbutton {text-align: center;}
+#seemore{
+    display: inline-block;
+    color: #fff;
+    padding: 4px 25px;
+    border: none;
+}

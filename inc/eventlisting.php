@@ -29,7 +29,7 @@ main-content main-content-four-col - this class is for four columns.
         
 
         <?php
-            $arrayResult = get_eventlisting();
+            $arrayResult = get_eventlisting(NULL);
             $bgcolor = get_option('wpams_button_colour_btn_label');
 
             foreach($arrayResult['programs'] as $x_value) { 
@@ -61,7 +61,7 @@ main-content main-content-four-col - this class is for four columns.
 
                             echo "<div class='eventtitle'>";
                                 echo "<p>Thu, Sep 24</P>"; 
-                                echo "<a href=''> <p class='product-title'>". $assetstitle ."</p> </a>";
+                                echo "<a href='".site_url('/events/'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
                             echo "</div>";
                               
                             }

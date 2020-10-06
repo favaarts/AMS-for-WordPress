@@ -60,7 +60,7 @@ class Registration {
 
     public function rewrite_rules(){
        /* add_rewrite_rule('^product/([^/]*)/([^/]*)/?', 'index.php?category=$matches[1]&proname=$matches[2]', 'top');*/
-        add_rewrite_rule('^([^/]*)/([^/]*)/([^/]*)/?', 'index.php?pagename=$matches[1]&category=$matches[2]&proname=$matches[3]', 'top');
+        add_rewrite_rule('^ams-assets-2020/([^/]*)/([^/]*)/?', 'index.php?category=$matches[1]&proname=$matches[2]', 'top');
 
         flush_rewrite_rules();
     }
@@ -114,7 +114,8 @@ class CategoryRegistration {
     }
 
     public function catrewrite_rules(){
-        add_rewrite_rule('^([^/]*)/([^/]*)/?', 'index.php?page=$matches[1]&categoryslug=$matches[2]', 'top');
+
+        add_rewrite_rule('^ams-assets-2020/([^/]*)/?', 'index.php?categoryslug=$matches[1]', 'top');
 
         flush_rewrite_rules();
     }
@@ -139,6 +140,71 @@ class CategoryRegistration {
 
 }
 // End category rewrite
+
+// Event details
+
+add_action(
+    'plugins_loaded', 
+    array(EventDetailsRegistration::get_instance(), 'setup')
+);
+
+class EventDetailsRegistration {
+
+    protected static $instance = NULL;
+
+    public function __construct() {}
+
+    public static function get_instance() {
+        NULL === self::$instance and self::$instance = new self;
+        return self::$instance;
+    }    
+
+    public function setup() {
+
+        add_action('init', array($this, 'eventrewrite_rules'));
+        add_filter('query_vars', array($this, 'query_vars'), 10, 1);
+        add_action('parse_request', array($this, 'parse_request'), 10, 1);
+
+        register_activation_hook(__FILE__, array($this, 'flush_rules' ));
+
+    }
+
+    
+
+    public function eventrewrite_rules(){
+        
+        /*$post_id = 1302;
+        $post = get_post($post_id); 
+        echo $slug = $post->post_name;*/
+        
+        $pageslugurl = 'events';
+         
+        //$slugval = '^'.$sl.'/([^/]*)/?';
+        add_rewrite_rule('^'.$pageslugurl.'/([^/]*)/?', 'index.php?eventslug=$matches[1]', 'top');
+        
+        flush_rewrite_rules();
+    }
+
+    public function query_vars($vars){
+        $vars[] = 'eventslug';
+        return $vars;
+    }
+
+    public function flush_rules(){
+        $this->eventrewrite_rules();
+        flush_rewrite_rules();
+    }
+
+    public function parse_request($wp){
+        if ( array_key_exists( 'eventslug', $wp->query_vars ) ){
+            include plugin_dir_path(__FILE__) . 'eventdetails.php';
+            exit();
+        }
+    }
+
+}
+
+// End event details
 
 
 //Include Scripts & Styles
@@ -485,12 +551,20 @@ add_action('wp_ajax_nopriv_get_apirequest','get_apirequest');
 // End equipment product
 
 // Event Listing
-function get_eventlisting()
+function get_eventlisting($eventid)
 {
     $apiurl = get_option('wpams_url_btn_label');
     $apikey = get_option('wpams_apikey_btn_label');
 
-    $eventlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=Events&access_token=".$apikey."&method=get&format=json";
+    if($eventid)
+    {
+        $eventlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs/".$eventid."?type=Events&access_token=".$apikey."&method=get&format=json";
+    }
+    else
+    {
+
+        $eventlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=Events&access_token=".$apikey."&method=get&format=json";
+    }
 
 
     $ch = curl_init();

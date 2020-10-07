@@ -32,6 +32,10 @@ main-content main-content-four-col - this class is for four columns.
             $arrayResult = get_eventlisting(NULL);
             $bgcolor = get_option('wpams_button_colour_btn_label');
 
+            global $post;
+            $pageid = $post->ID;
+            $pageslug = $post->post_name;
+
             foreach($arrayResult['programs'] as $x_value) { 
 
                 if(isset($x_value['id']))
@@ -60,8 +64,9 @@ main-content main-content-four-col - this class is for four columns.
                             }
 
                             echo "<div class='eventtitle'>";
-                                echo "<p>Thu, Sep 24</P>"; 
-                                echo "<a href='".site_url('/events/'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
+                            $date=date_create($arrayResult['program']['created_at']);
+                                echo "<p>".date_format($date, 'D, M d')."</P>"; 
+                                echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
                             echo "</div>";
                               
                             }
@@ -74,6 +79,8 @@ main-content main-content-four-col - this class is for four columns.
           ?>
             
        </div>  
+            <input type="hidden" id="inputpageslug" value="<?php echo $pageslug; ?>">
+            <input type="hidden" id="inputpageid" value="<?php echo $pageid; ?>">
             <div class="eventbutton">
                 <p class="para"></p>
                 <a id="inifiniteLoader"  data-totalequipment="<?php echo $arrayResult['meta']['total_count']; ?>" ><img src="<?php echo esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) ?>" ></a>
@@ -99,6 +106,10 @@ jQuery(document).ready(function($) {
 
    $('#seemore').click(function(){
 
+     /* var position = $(window).scrollTop();
+      var bottom = $(document).height() - $(window).height();*/
+        //$('#seemore').hide();
+        
         var numItems = jQuery('.productstyle').length;  
         console.log(numItems);
         if (numItems >= total){
@@ -118,12 +129,15 @@ jQuery(document).ready(function($) {
     function loadArticle(pageNumber){
      //$('a#inifiniteLoader').show();
 
+     /*console.log(amsjs_ajax_url.ajaxurl);
+     console.log("hello");*/
      var slugvar = $('#inputpageslug').val();
+     var slugvarid = $('#inputpageid').val();
 
      $.ajax({
        url: amsjs_ajax_url.ajaxurl,
        type:'POST',
-       data: "action=geteventonclick_action&page="+ pageNumber + "&loop_file=loop&slugname="+slugvar,
+       data: "action=geteventonclick_action&page="+ pageNumber + "&loop_file=loop&pageslugname="+slugvar+"&pageslugid="+slugvarid,
        beforeSend: function(){
         // Show image container
             $("#inifiniteLoader").show();

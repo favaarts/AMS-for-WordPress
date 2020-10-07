@@ -15,9 +15,10 @@ get_header();  ?>
                     <?php
                     global $wp, $wpdb;
 
-                    $eventid = $wp->query_vars['eventslug'];
+                    $alleventid = $wp->query_vars['eventslug'];
+                    $arrayevid = explode("-",$alleventid);
                     
-                    $arrayResult = get_eventlisting($eventid);
+                    $arrayResult = get_eventlisting($arrayevid[1]);
 
                     /*echo "<pre>";
                     print_r($arrayResult['program']);
@@ -26,7 +27,18 @@ get_header();  ?>
                     ?>    
                         <div class="event-img-sec">
                             <div class="img-sec">
+                                <?php
+                                if($arrayResult['program']['photo']['photo']['medium']['url'] == NULL || $arrayResult['program']['photo']['photo']['medium']['url'] == "")
+                                {  
+                                ?>
+                                <img src="<?= plugins_url( 'assets/img/bg-image.png', __FILE__ )?>">
+                                <?php 
+                                }
+                                else
+                                { 
+                                ?>
                                 <img src="<?=$arrayResult['program']['photo']['photo']['medium']['url']?>">
+                                <?php } ?>
                             </div>
                             <div class="ing-title">
                                 <h1><?=$arrayResult['program']['name']?></h1>
@@ -58,10 +70,51 @@ get_header();  ?>
                                     <p><?php echo date_format($date, 'D, M d, Y'); ?></p>
                                     <p>4:30 AM – 5:30 AM IST</p>
                                 </div>
+                                <?php
+                                if(!empty($arrayResult['program']['location']))
+                                { 
+                                ?>
                                 <div class="location-sec">
                                     <h3>Location</h3>
                                     <p><?=$arrayResult['program']['location']?></p>
                                 </div>
+                                <?php
+                                }
+                                if(!empty($arrayResult['program']['instructors']))
+                                {
+                                ?>
+                                <div class="location-sec">
+                                    <h3>Instructors</h3>
+                                    <p><?=$arrayResult['program']['instructors']?></p>
+                                </div>
+                                <?php 
+                                } 
+                                if(!empty($arrayResult['program']['earlybird_discount']))
+                                {     
+                                ?>
+                                <div class="location-sec">
+                                    <h3>Earlybird Discount</h3>
+                                    <p><?=$arrayResult['program']['earlybird_discount']?></p>
+                                </div>
+                                <?php
+                                }
+                                if(!empty($arrayResult['program']['member_enrollment_price']))
+                                { 
+                                ?>
+                                <div class="location-sec">
+                                    <h3>Member Enrollment Price</h3>
+                                    <p><?=$arrayResult['program']['member_enrollment_price']?></p>
+                                </div>
+                                <?php
+                                }
+                                if(!empty($arrayResult['program']['enrollment_price']))
+                                { 
+                                ?>
+                                <div class="location-sec">
+                                    <h3>Non MemberPrice</h3>
+                                    <p><?=$arrayResult['program']['enrollment_price']?></p>
+                                </div>
+                                <?php } ?>
                             </div>
                             
                         </div>

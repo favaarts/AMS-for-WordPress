@@ -49,7 +49,6 @@ class Registration {
     }    
 
     public function setup() {
-
         add_action('init', array($this, 'rewrite_rules'));
         add_filter('query_vars', array($this, 'query_vars'), 10, 1);
         add_action('parse_request', array($this, 'parse_request'), 10, 1);
@@ -60,7 +59,7 @@ class Registration {
 
     public function rewrite_rules(){
        /* add_rewrite_rule('^product/([^/]*)/([^/]*)/?', 'index.php?category=$matches[1]&proname=$matches[2]', 'top');*/
-        add_rewrite_rule('^ams-assets-2020/([^/]*)/([^/]*)/?', 'index.php?category=$matches[1]&proname=$matches[2]', 'top');
+        add_rewrite_rule('([^/]+)/([^/]*)/([^/]*)/?', 'index.php?category=$matches[2]&proname=$matches[3]', 'top');
 
         flush_rewrite_rules();
     }
@@ -115,7 +114,16 @@ class CategoryRegistration {
 
     public function catrewrite_rules(){
 
-        add_rewrite_rule('^ams-assets-2020/([^/]*)/?', 'index.php?categoryslug=$matches[1]', 'top');
+        $urlArray = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        
+        $tokens = explode('/', $urlArray);
+        //echo $tokens[sizeof($tokens)-2];
+        $pageslug = $tokens[sizeof($tokens)-2];
+
+        add_rewrite_rule('^'.$pageslug.'/([^/]*)/?', 'index.php?categoryslug=$matches[1]', 'top');
+        //add_rewrite_rule('^ams-assets/([^/]*)/?', 'index.php?categoryslug=$matches[1]', 'top');
+        // add_rewrite_rule('([^/]+)/([^/]*)/?', 'index.php?categoryslug=$matches[2]', 'top');
+        
 
         flush_rewrite_rules();
     }
@@ -161,6 +169,8 @@ class EventDetailsRegistration {
 
     public function setup() {
 
+
+
         add_action('init', array($this, 'eventrewrite_rules'));
         add_filter('query_vars', array($this, 'query_vars'), 10, 1);
         add_action('parse_request', array($this, 'parse_request'), 10, 1);
@@ -173,14 +183,22 @@ class EventDetailsRegistration {
 
     public function eventrewrite_rules(){
         
-        /*$post_id = 1302;
-        $post = get_post($post_id); 
-        echo $slug = $post->post_name;*/
+        $evposid = basename(rtrim($_SERVER["REQUEST_URI"], "/"));
         
-        $pageslugurl = 'events';
+        $posid = explode("-",$evposid);   
+
+        $post_id = $posid[0];
+        $post = get_post($post_id); 
+        $pageslugurl = $post->post_name;
+
+        
+        //$pageslugurl = 'events';
          
         //$slugval = '^'.$sl.'/([^/]*)/?';
         add_rewrite_rule('^'.$pageslugurl.'/([^/]*)/?', 'index.php?eventslug=$matches[1]', 'top');
+        //add_rewrite_rule('([^/]+)/([^/]*)/?', 'index.php?eventslug=$matches[2]', 'top');
+        //add_rewrite_rule('^'.$pageslugurl.'/([^/]*)/?','index.php?page_id=1302&eventslug=$matches[1]','top');
+        //add_rewrite_rule('^(.*)?/([A-Za-z0-9-]+-)(\d+)/?','index.php?page_id='.$page_id.'&eventslug=$matches[1]','top');
         
         flush_rewrite_rules();
     }
@@ -836,7 +854,8 @@ function geteventonclick_action()
     //die;
 
     $page = $_POST['page'];
-    $newslugname = $_POST['slugname'];
+    $pageslug = $_POST['pageslugname'];
+    $pageslugid = $_POST['pageslugid'];
 
     $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=Events&page=".$page."&access_token=".$apikey."&method=get&format=json";
 
@@ -879,8 +898,9 @@ function geteventonclick_action()
                             }
 
                             echo "<div class='eventtitle'>";
-                                echo "<p>Thu, Sep 24</P>"; 
-                                echo "<a href=''> <p class='product-title'>". $assetstitle ."</p> </a>";
+                            $date=date_create($arrayResult['program']['created_at']);
+                                echo "<p>".date_format($date, 'D, M d')."</P>"; 
+                                echo "<a href='".site_url('/'.$pageslug.'/'.$pageslugid.'-'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
                             echo "</div>";
                               
                             }

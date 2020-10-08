@@ -351,3 +351,9 @@ p.price-non-mem {
 .location-sec {
     margin-bottom: 8px;
 }
+
+.enrtop {
+    margin-top: 50px;
+}
+.enrollment h3{font-size: 16px;margin-bottom: 5px;}
+.enrollment p{font-size: 16px;}

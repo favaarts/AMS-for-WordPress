@@ -16,7 +16,28 @@ main-content main-content-three-col - this class is for three columns.
 main-content main-content-four-col - this class is for four columns.
 ======================================================================  -->
 
-<div class="wp-block-columns main-content main-content-four-col" >
+<?php
+
+$blockdata = get_sidebaroption();
+
+$gridlayout = $blockdata['radio_attr_event'];
+
+if($gridlayout == "four_col")
+{
+   $blockclass = 'main-content-four-col';
+}
+elseif($gridlayout == "two_col")
+{
+  $blockclass = '';
+}
+else
+{
+   $blockclass = 'main-content-three-col';
+}
+
+?>
+
+<div class="wp-block-columns main-content <?= $blockclass; ?>" >
    
   <input type="hidden" name="slugurl" id="slugurl" value="<?=$post_slug?>">  
 

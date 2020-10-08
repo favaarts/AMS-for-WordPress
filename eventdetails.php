@@ -42,6 +42,48 @@ get_header();  ?>
                             </div>
                             <div class="ing-title">
                                 <h1><?=$arrayResult['program']['name']?></h1>
+
+                                <?php if(!empty($arrayResult['program']['member_enrollment_price']))
+                                { 
+                                ?>
+                                <div class="enrollment enrtop">
+                                    <h3>Member Enrollment Price</h3>
+                                    <p>
+                                        <?php
+                                        if($arrayResult['program']['member_enrollment_price'] == 0)
+                                        {
+                                            echo "Free";
+                                        }
+                                        else
+                                        {
+                                            echo $arrayResult['program']['member_enrollment_price'];
+                                        }
+
+                                        ?>
+                                        
+                                    </p>
+                                </div>
+                                <?php
+                                }
+                                if(!empty($arrayResult['program']['enrollment_price']))
+                                { 
+                                ?>
+                                <div class="enrollment">
+                                    <h3>Non MemberPrice</h3>
+                                    <p>
+                                        <?php
+                                        if($arrayResult['program']['enrollment_price'] == 0)
+                                        {
+                                            echo "Free";
+                                        }
+                                        else
+                                        {
+                                            echo $arrayResult['program']['enrollment_price'];
+                                        }
+                                        ?>    
+                                    </p>
+                                </div>
+                                <?php } ?>
                             </div>
                         </div>
 
@@ -68,7 +110,18 @@ get_header();  ?>
                                     ?>
                                     <h3>Date And Time</h3>
                                     <p><?php echo date_format($date, 'D, M d, Y'); ?></p>
-                                    <p>4:30 AM – 5:30 AM IST</p>
+
+                                    <?php
+                                     $eventtime = get_eventscheduletime($arrayevid[1]);
+                                     $keys = array_keys($eventtime['scheduled_program_dates']);
+                                     $lastKey = $keys[count($keys)-1];
+                                     
+
+                                     $start=date_create($eventtime['scheduled_program_dates'][$lastKey]['start']);
+                                     $end=date_create($eventtime['scheduled_program_dates'][$lastKey]['end']);
+                                    
+                                    ?>
+                                    <p><?=date_format($start,"H:i A")?> – <?=date_format($end,"H:i A")?> IST</p>
                                 </div>
                                 <?php
                                 if(!empty($arrayResult['program']['location']))
@@ -95,24 +148,6 @@ get_header();  ?>
                                 <div class="location-sec">
                                     <h3>Earlybird Discount</h3>
                                     <p><?=$arrayResult['program']['earlybird_discount']?></p>
-                                </div>
-                                <?php
-                                }
-                                if(!empty($arrayResult['program']['member_enrollment_price']))
-                                { 
-                                ?>
-                                <div class="location-sec">
-                                    <h3>Member Enrollment Price</h3>
-                                    <p><?=$arrayResult['program']['member_enrollment_price']?></p>
-                                </div>
-                                <?php
-                                }
-                                if(!empty($arrayResult['program']['enrollment_price']))
-                                { 
-                                ?>
-                                <div class="location-sec">
-                                    <h3>Non MemberPrice</h3>
-                                    <p><?=$arrayResult['program']['enrollment_price']?></p>
                                 </div>
                                 <?php } ?>
                             </div>

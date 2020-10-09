@@ -88,7 +88,7 @@ get_header();  ?>
                                  {
                                  ?>
                                 <div class="enrollment">
-                                    <h3>Non MemberPrice</h3>
+                                    <h3>Earlybird Discount</h3>
                                     <p>
                                         <?php
                                         if($arrayResult['program']['earlybird_discount'] == 0)

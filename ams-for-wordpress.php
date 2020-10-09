@@ -586,8 +586,19 @@ function get_eventlisting($eventid)
     }
     else
     {
+        $blockdata = get_sidebaroption();
 
-        $eventlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=Events&access_token=".$apikey."&method=get&format=json";
+        $numberofevents = $blockdata['event_pagination'];
+
+        if(isset($numberofevents))
+        {
+            $totalevents = $numberofevents;
+        }
+        else
+        {
+            $totalevents = 8;
+        }
+        $eventlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=Events&per_page=".$totalevents."&access_token=".$apikey."&method=get&format=json";
     }
 
 
@@ -889,8 +900,9 @@ function geteventonclick_action()
     $page = $_POST['page'];
     $pageslug = $_POST['pageslugname'];
     $pageslugid = $_POST['pageslugid'];
+    $eventperpg = $_POST['eventperpg'];
 
-    $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=Events&page=".$page."&access_token=".$apikey."&method=get&format=json";
+    $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=Events&page=".$page."&per_page=".$eventperpg."&access_token=".$apikey."&method=get&format=json";
 
         $ch = curl_init();
         curl_setopt($ch,CURLOPT_URL,$producturl);

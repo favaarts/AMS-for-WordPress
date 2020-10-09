@@ -83,7 +83,27 @@ get_header();  ?>
                                         ?>    
                                     </p>
                                 </div>
+                                <?php }
+                                 if(!empty($arrayResult['program']['earlybird_discount']))
+                                 {
+                                 ?>
+                                <div class="enrollment">
+                                    <h3>Non MemberPrice</h3>
+                                    <p>
+                                        <?php
+                                        if($arrayResult['program']['earlybird_discount'] == 0)
+                                        {
+                                            echo "Free";
+                                        }
+                                        else
+                                        {
+                                            echo $arrayResult['program']['earlybird_discount'];
+                                        }
+                                        ?>    
+                                    </p>
+                                </div>
                                 <?php } ?>
+
                             </div>
                         </div>
 
@@ -121,18 +141,24 @@ get_header();  ?>
                                      $end=date_create($eventtime['scheduled_program_dates'][$lastKey]['end']);
                                     
                                     ?>
-                                    <p><?=date_format($start,"H:i A")?> – <?=date_format($end,"H:i A")?> IST</p>
+                                    <p><?=date_format($start,"H:i A")?> – <?=date_format($end,"H:i A")?></p>
                                 </div>
-                                <?php
-                                if(!empty($arrayResult['program']['location']))
-                                { 
-                                ?>
+                               
                                 <div class="location-sec">
                                     <h3>Location</h3>
-                                    <p><?=$arrayResult['program']['location']?></p>
+                                    <p>
+                                        <?php if(!empty($arrayResult['program']['location']))
+                                        {
+                                            echo $arrayResult['program']['location'];
+                                        }
+                                        else
+                                        {
+                                            echo "No Location Found";
+                                        }
+                                        ?>
+                                    </p>
                                 </div>
                                 <?php
-                                }
                                 if(!empty($arrayResult['program']['instructors']))
                                 {
                                 ?>
@@ -142,14 +168,7 @@ get_header();  ?>
                                 </div>
                                 <?php 
                                 } 
-                                if(!empty($arrayResult['program']['earlybird_discount']))
-                                {     
                                 ?>
-                                <div class="location-sec">
-                                    <h3>Earlybird Discount</h3>
-                                    <p><?=$arrayResult['program']['earlybird_discount']?></p>
-                                </div>
-                                <?php } ?>
                             </div>
                             
                         </div>

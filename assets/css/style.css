@@ -295,7 +295,7 @@ p.price-non-mem {
 .eventdetail .event-img-sec {width: 100%; display: flex; flex-wrap: wrap; }
 .eventdetail .event-img-sec .img-sec {width: 65%; }
 .eventdetail .event-img-sec .ing-title {width: 35%; padding: 60px 30px 0; background-color: #ececec; }
-.eventdetail .event-img-sec .ing-title h1{font-size: 20px; color: #1E0A3C; font-weight: bold; text-transform: capitalize; }
+.eventdetail .event-img-sec .ing-title h1{font-size: 20px; color: #1E0A3C; font-weight: bold; text-transform: capitalize; line-height: 1.5;}
 
 .eventdetail .event-detail-sec {width: 100%;display: flex; flex-wrap: wrap;}
 .eventdetail .event-detail-sec .left-sec {width: 65%; padding: 60px 50px; }
@@ -326,7 +326,7 @@ p.price-non-mem {
 @media(max-width: 767px){
 
 .eventdetail .event-img-sec .img-sec {width: 100%;}
-.eventdetail .event-img-sec .ing-title {padding: 30px 0; width: 100%; background-color: #fff; }
+.eventdetail .event-img-sec .ing-title {padding: 30px 0; width: 100%; background-color: #fff0; }
 
 .eventdetail .event-detail-sec .left-sec {padding: 0; padding-right: 20px; width: 60%; }
 .eventdetail .event-detail-sec .right-sec {width: 40%; padding: 0;}
@@ -353,7 +353,7 @@ p.price-non-mem {
 }
 
 .enrtop {
-    margin-top: 50px;
+    margin-top: 20px;
 }
-.enrollment h3{font-size: 16px;margin-bottom: 5px;}
-.enrollment p{font-size: 16px;}
+.enrollment h3{font-size: 15px;margin-bottom: 5px;}
+.enrollment p{font-size: 16px;padding-bottom: 10px;}

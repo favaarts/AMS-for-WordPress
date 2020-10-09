@@ -9,9 +9,10 @@
   var TextControl = components.TextControl;
   var ToggleControl = components.ToggleControl;
   var RadioControl = components.RadioControl;
+  var SelectControl = components.SelectControl;
 
   registerBlockType('wpdams-amsnetwork-event/amsnetwork-block-event', {
-    title: i18n.__('AMS Evennts', 'amsnetwork-gutenbergevent-block'),
+    title: i18n.__('AMS Events', 'amsnetwork-gutenbergevent-block'),
     description: i18n.__('AMS network block setting', 'amsnetwork-gutenbergevent-block'),
     icon: 'screenoptions',
     category: 'common',
@@ -28,6 +29,10 @@
      radio_attr_event: {
       type: 'string',
       default: 'three_col',
+    },
+    event_pagination: {
+      type: 'string',
+      default: '8',
     },
      categoryoption: {
       type: 'boolean',
@@ -88,6 +93,23 @@
                 selected: props.attributes.radio_attr_event
               }
             ),
+
+            el( SelectControl,
+              {
+                label: 'Number of events display in this page.',
+                //help: 'Some kind of description',
+                options : [
+                  { label: '6', value: '6' },
+                  { label: '8', value: '8' },
+                  { label: '9', value: '9' },
+                  { label: '10', value: '10' },
+                ],
+                onChange: ( value ) => {
+                  props.setAttributes( { event_pagination: value } );
+                },
+                selected: props.attributes.event_pagination
+              }
+            ),
             
           )
         ),
@@ -125,6 +147,7 @@
                            el( wp.element.RawHTML, null, '['+props.attributes.type+']')
            ),           
            el( 'input', { 'type': 'hidden', 'name' : 'radio_attr_event', 'value' : ( props.attributes.radio_attr_event) } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'event_pagination', 'value' : ( props.attributes.event_pagination) } ),
 
          )
 

@@ -25,14 +25,17 @@ $gridlayout = $blockdata['radio_attr_event'];
 if($gridlayout == "four_col")
 {
    $blockclass = 'main-content-four-col';
+   $eventperpage = 4;
 }
 elseif($gridlayout == "two_col")
 {
   $blockclass = '';
+  $eventperpage = 2;
 }
 else
 {
    $blockclass = 'main-content-three-col';
+   $eventperpage = 3;
 }
 
 ?>
@@ -149,7 +152,7 @@ jQuery(document).ready(function($) {
 
     function loadArticle(pageNumber){
      //$('a#inifiniteLoader').show();
-
+     var eventperpg = <?php echo $eventperpage; ?>;
      /*console.log(amsjs_ajax_url.ajaxurl);
      console.log("hello");*/
      var slugvar = $('#inputpageslug').val();
@@ -158,7 +161,7 @@ jQuery(document).ready(function($) {
      $.ajax({
        url: amsjs_ajax_url.ajaxurl,
        type:'POST',
-       data: "action=geteventonclick_action&page="+ pageNumber + "&loop_file=loop&pageslugname="+slugvar+"&pageslugid="+slugvarid,
+       data: "action=geteventonclick_action&page="+ pageNumber + "&loop_file=loop&pageslugname="+slugvar+"&pageslugid="+slugvarid+"&eventperpg="+eventperpg,
        beforeSend: function(){
         // Show image container
             $("#inifiniteLoader").show();

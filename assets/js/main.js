@@ -84,11 +84,13 @@ function fetchevent()
 	event.preventDefault();
 	/*var slugurl = jQuery('#slugurl').val();
 	var catid = jQuery('#categoryid').val();*/
-
+	var pageslug = jQuery('#inputpageslug').val();
+	var pageid = jQuery('#inputpageid').val();
+	
 	jQuery.ajax({
         url: amsjs_ajax_url.ajaxurl,
         type: 'post',
-        data: { action: 'searcheventdata_action', getevent: jQuery('#getevent').val()},
+        data: { action: 'searcheventdata_action', getevent: jQuery('#getevent').val(), pageslug: pageslug, pageid: pageid},
         success: function(data) {
         	//console.log(data);
         	
@@ -106,12 +108,13 @@ function fetchotherevents()
 	var eventtype = jQuery('#alltypeevent').val();
 	var eventstatus = jQuery('#allstatus').val();
 	var evtlocation = jQuery('#evtlocation').val();
-
+	var pageslug = jQuery('#inputpageslug').val();
+	var pageid = jQuery('#inputpageid').val();
 
 	jQuery.ajax({
         url: amsjs_ajax_url.ajaxurl,
         type: 'post',
-        data: { action: 'searcheventdata_action', eventtype: eventtype, eventstatus: eventstatus, evtlocation: evtlocation},
+        data: { action: 'searcheventdata_action', eventtype: eventtype, eventstatus: eventstatus, evtlocation: evtlocation, pageslug: pageslug, pageid: pageid},
         success: function(data) {
         	//console.log(data);
         	

@@ -357,3 +357,21 @@ p.price-non-mem {
 }
 .enrollment h3{font-size: 15px;margin-bottom: 5px;}
 .enrollment p{font-size: 16px;padding-bottom: 10px;}
+
+.alltypeevent .ul-cat-wrap, .allstatus .ul-cat-wrap, .evtlocation .ul-cat-wrap {
+    padding: 0px 15px;
+    font-size: 16px;
+    padding: 4px 10px;
+    margin: 0px 0px 25px 0px;
+    width: 100%;
+}
+
+.othertitle{text-transform: uppercase; padding-top: 15px;}
+
+.inputsearchbutton
+{
+    display: inline-block;
+    color: #fff;
+    padding: 4px 25px;
+    border: none; 
+}

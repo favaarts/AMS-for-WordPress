@@ -44,7 +44,68 @@ else
    
   <input type="hidden" name="slugurl" id="slugurl" value="<?=$post_slug?>">  
 
+    <!-- Sidebar -->
+    <div class="wp-block-column left-col" >
+        <?php
 
+        $locationArrayResult = get_eventlocation();
+        $bgcolor = get_option('wpams_button_colour_btn_label');
+        /*echo $locationArrayResult['json']['locations'][0];
+        echo "<pre>";
+        print_r($locationArrayResult);
+        echo "</pre>";*/
+        if(!isset($locationArrayResult['error']))
+        {
+            
+              
+        ?>
+
+            <div class="searchbox">
+                <h4>Search By Event Name</h4>
+                <input type="text" class="searrch-input" name="getevent" id="getevent" onkeyup="fetchevent()"></input>
+            </div>
+
+          <div class="othersearch">
+
+            <h4 class="othertitle" style="color: <?=$bgcolor?>">Other Search</h4>  
+            <div class="alltypeevent">
+              <h4>Events Type</h4>
+              <select class='ul-cat-wrap' id='alltypeevent'>
+                <option value="Events">Events</option>
+                <option value="Workshops">Workshops</option>
+                <option value="Classes">Classes</option>
+              </select>
+            </div>
+            
+            <div class="allstatus">
+              <h4>Events Status</h4>
+              <select class='ul-cat-wrap' id='allstatus'>
+                <option value="1">Active</option>
+                <option value="2">Cancelled</option>
+                <option value="3">Finished</option>
+              </select>
+            </div>
+
+            <div class="evtlocation">
+              <h4>Events Location</h4>
+              <select class='ul-cat-wrap' id='evtlocation'>
+                <option value="">All Location</option>
+                <?php
+                foreach($locationArrayResult['json']['locations'] as $c => $c_value) {
+                  echo "<option  value='".$c_value."'>".$c_value."</option>";     
+                }
+              ?>
+              </select>
+            </div>
+            <div class="searchbutton">
+              <input type="button" class="inputsearchbutton" id="searchdata" style="background-color: <?=$bgcolor?>" value="Search" onclick="fetchotherevents()">
+            </div>  
+
+          </div>  
+      <?php } ?>    
+            
+    </div>  
+    <!-- End sidebar -->
 
     <div class="categorysearchdata right-col eventpage" >
         <div class="productdetail"></div>
@@ -54,7 +115,7 @@ else
 
         <?php
             $arrayResult = get_eventlisting(NULL);
-            $bgcolor = get_option('wpams_button_colour_btn_label');
+            
 
             global $post;
             $pageid = $post->ID;

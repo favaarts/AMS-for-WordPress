@@ -835,6 +835,9 @@ function search_event_action()
     $prodname = $_POST['getevent'];
     $productname = urlencode($prodname);
 
+    $pageslug = $_POST['pageslug'];
+    $pageid = $_POST['pageid'];
+
     $eventtype = $_POST['eventtype'];
 
     $locaton = $_POST['evtlocation'];
@@ -842,13 +845,13 @@ function search_event_action()
 
     $eventstatus = $_POST['eventstatus'];
 
-    if(empty($_POST['getevent']))
+    if(!empty($_POST['getevent']))
     {
-        $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&access_token=".$apikey."&method=get&format=json";
+        $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=Events&query=".$productname."&access_token=".$apikey."&method=get&format=json";
     }
     else
     {
-       $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?query=".$productname."&access_token=".$apikey."&method=get&format=json";
+       $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&access_token=".$apikey."&method=get&format=json";
     }
 
     $ch = curl_init();

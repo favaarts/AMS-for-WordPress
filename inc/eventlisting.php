@@ -67,7 +67,7 @@ else
 
           <div class="othersearch">
 
-            <h4 class="othertitle" style="color: <?=$bgcolor?>">Other Search</h4>  
+            <h4 class="othertitle" style="color: <?=$bgcolor?>">Filter</h4>  
             <div class="alltypeevent">
               <h4>Events Type</h4>
               <select class='ul-cat-wrap' id='alltypeevent'>

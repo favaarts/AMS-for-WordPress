@@ -31,6 +31,57 @@ if ( !defined('WPD_AMS_PLUGIN_DIR')) {
     define('WPD_AMS_PLUGIN_DIR', plugin_dir_url( __FILE__ ));
 }
 
+add_action(
+    'plugins_loaded', 
+    array(Member::get_instance(), 'setup')
+);
+
+// Rewrite rule for members
+class Member {
+
+    protected static $instance = NULL;
+
+    public function __construct() {}
+
+    public static function get_instance() {
+        NULL === self::$instance and self::$instance = new self;
+        return self::$instance;
+    }    
+
+    public function setup() {
+        add_action('init', array($this, 'rewrite_rules'));
+        add_filter('query_vars', array($this, 'query_vars'), 10, 1);
+        add_action('parse_request', array($this, 'parse_request'), 10, 1);
+
+        register_activation_hook(__FILE__, array($this, 'flush_rules' ));
+
+    }
+
+    public function rewrite_rules(){/* write_rule('^product/([^/]*)/([^/]*)/?', 'index.php?category=$matches[1]&proname=$matches[2]', 'top');*/
+        add_rewrite_rule('^members/([^/]*)/details/?', 'index.php?member_id=$matches[1]', 'top');
+
+        flush_rewrite_rules();
+    }
+
+    public function query_vars($vars) {
+        $vars[] = 'member_id';
+        $vars[] = 'member_type';
+        return $vars;
+    }
+
+    public function flush_rules(){
+        $this->rewrite_rules();
+        flush_rewrite_rules();
+    }
+
+    public function parse_request($wp){
+        if ( array_key_exists( 'member_id', $wp->query_vars ) ){
+            include plugin_dir_path(__FILE__) . 'member-details.php';
+            exit();
+        }
+    }
+}
+
 // rewrite_rule
 add_action(
     'plugins_loaded', 
@@ -278,6 +329,31 @@ function get_sidebarcategory()
 add_action('wp_ajax_get_sidebarcategory','get_sidebarcategory');
 add_action('wp_ajax_nopriv_get_sidebarcategory','get_sidebarcategory');
 // End sidebar category
+
+// Sidebar category function
+function get_member_types()
+{
+    $apiurl = get_option('wpams_url_btn_label');
+    $apikey = get_option('wpams_apikey_btn_label');
+    $url = "https://".$apiurl.".amsnetwork.ca/api/v3/";
+    $carurl = $url ."/member_types?access_token=".$apikey."&method=get&format=json";
+
+    $catch = curl_init();
+    curl_setopt($catch,CURLOPT_URL,$carurl);
+    curl_setopt($catch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($catch,CURLOPT_CONNECTTIMEOUT, 4);
+    $json = curl_exec($catch);
+    if(!$json) {
+        echo curl_error($catch);
+    }
+    curl_close($catch);
+
+    return $catArrayResultData = json_decode($json, true);
+}
+add_action('wp_ajax_get_member_types','get_member_types');
+add_action('wp_ajax_nopriv_get_member_types','get_member_types');
+// End sidebar category
+
 
 //subdomain validation
 function subdomainkey_validation()
@@ -528,6 +604,9 @@ add_action('admin_enqueue_scripts', 'my_script');
 // CTA for Short code amscategoryequipment
 require plugin_dir_path( __FILE__ ). 'inc/categoryequipment.php';
 
+// CTA
+require plugin_dir_path( __FILE__ ). 'inc/members.php';
+
 // CTA for Short code event listing
 require plugin_dir_path( __FILE__ ). 'inc/eventlisting.php';
 
@@ -573,6 +652,35 @@ function get_apirequest($categoryid,$productname,$prodictid)
 add_action('wp_ajax_get_apirequest','get_apirequest');
 add_action('wp_ajax_nopriv_get_apirequest','get_apirequest');
 // End equipment product
+
+function get_members($member_type, $member_id) {
+    $apiurl = get_option('wpams_url_btn_label');
+    $apikey = get_option('wpams_apikey_btn_label');
+
+    $base_url = "https://".$apiurl.".amsnetwork.ca/api/v3/";
+
+    if($member_type) {
+        $url = $base_url . "users/?access_token=".$apikey."&method=get&format=json&type=search_and_browse&sub_type=active_members&member_type_id=".$member_type;
+    }
+    else if($member_id) {
+        $url = $base_url . "users/".$member_id."/?access_token=".$apikey."&method=get&format=json";
+    }
+    else {
+        $url = $base_url . "users/?access_token=".$apikey."&method=get&format=json&type=search_and_browse&sub_type=active_members";
+    }
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 4);
+    $json = curl_exec($ch);
+    if(!$json) {
+        echo curl_error($ch);
+    }
+    curl_close($ch);
+
+    return $arrayResultData = json_decode($json, true);
+}
 
 // Event Listing
 function get_eventlisting($eventid)
@@ -885,6 +993,71 @@ function infinitescroll_action()
 add_action('wp_ajax_infinitescroll_action','infinitescroll_action');
 add_action('wp_ajax_nopriv_infinitescroll_action','infinitescroll_action');
 // End infinite scroll
+
+// Infinite scroll for Members
+function member_ajax()
+{
+
+    $apiurl = get_option('wpams_url_btn_label');
+    $apikey = get_option('wpams_apikey_btn_label');
+
+    $member_type = $_POST['member_type'];
+    $query = $_POST['query'];
+
+    $page = $_POST['page'];
+    $newslugname = $_POST['slugname'];
+
+    $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/users?access_token=".$apikey."&method=get&format=json&type=search_and_browse&sub_type=active_members&page=".$page;
+
+    if (!is_null($member_type) && $member_type != "") {
+        $producturl .= '&member_type_id='.$member_type;
+    }
+
+    if (!is_null($query) && $query != "") {
+        $producturl .= '&query='.$query;
+    }
+
+    $ch = curl_init();
+    curl_setopt($ch,CURLOPT_URL,$producturl);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 4);
+    $json = curl_exec($ch);
+    if(!$json) {
+        echo curl_error($ch);
+    }
+    curl_close($ch);
+    $dummy_image = "https://ssl.gstatic.com/images/branding/product/1x/avatar_square_blue_512dp.png";
+
+    $arrayResult = json_decode($json, true);
+    foreach ($arrayResult["users"] as $member) {
+        echo '<a class="member-item" href="'.site_url('/'.$newslugname.'/'.$member["id"].'/details' ).'">';
+        echo '<div class="row member-entry">';
+            echo '<div class="col-xs-12 col-sm-3 col-md-3 user-image">';
+                echo '<img src="'.$member['photo'] .'" onerror=\'this.src="'.$dummy_image.'"\' alt="'.$member["email"].'" style="height:150px; border-radius:5px">';
+            echo "</div>";
+            echo '<div class="col-xs-12 col-sm-9 col-md-9">';
+                echo '<div class="name">';
+                    echo '<h5> '.$member["first_name"].' '.$member["last_name"].' </h5>';
+                    echo '<p>';
+                        echo '<strong>Job Position:</strong> <?= getDataOrDash($member["job_position"]) ?>';
+                        echo '<br>';
+                        echo '<strong>City:</strong> <?= getDataOrDash($member["city"]) ?>';
+                        echo "<br>";
+                        $join_date = strtotime($member['created_at']);
+                        $newformat = date('M Y', $join_date);
+                        echo "Member since: ".$newformat;
+                        echo "<br>";
+                    echo "</p>";
+                echo "</div>";
+            echo "</div>";
+        echo "</div>";
+        echo "</a>";
+    }
+    die();
+}
+add_action('wp_ajax_member_ajax','member_ajax');
+add_action('wp_ajax_nopriv_member_ajax','member_ajax');
+
 
 // Event button click
 function geteventonclick_action()

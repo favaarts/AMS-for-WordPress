@@ -357,3 +357,19 @@ p.price-non-mem {
 }
 .enrollment h3{font-size: 15px;margin-bottom: 5px;}
 .enrollment p{font-size: 16px;padding-bottom: 10px;}
+.row.member-entry {
+    border: 1px solid #f1f1f1;
+    margin-top: 1rem;
+    border-radius: 3px;
+    box-shadow: 5px 5px 3px -3px #d6d6d6;
+    padding: 0.8rem 0.5rem;
+}
+#member-details-area {
+    /* width: 70%; */
+    background: #fff;
+    padding: 2rem 0 !important;
+    margin: 2rem 0;
+}
+.member-item {
+    color: #3a3a3a;
+}

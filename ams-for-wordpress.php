@@ -849,9 +849,13 @@ function search_event_action()
     {
         $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=Events&query=".$productname."&access_token=".$apikey."&method=get&format=json";
     }
-    else
+    else if(isset($eventtype))
     {
        $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&access_token=".$apikey."&method=get&format=json";
+    }
+    else
+    {
+        $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=Events&access_token=".$apikey."&method=get&format=json";
     }
 
     $ch = curl_init();
@@ -897,8 +901,15 @@ function search_event_action()
                             }
 
                             echo "<div class='eventtitle'>";
-                            $date=date_create($arrayResult['program']['created_at']);
-                                echo "<p>".date_format($date, 'D, M d')."</P>"; 
+                                $date=$x_value['earliest_scheduled_program_date'];
+                                if(empty($date))
+                                {
+                                  echo "<p>No Date Scheduled</P>";
+                                }
+                                else
+                                {
+                                  echo "<p>".date('D, M d', strtotime($date))."</P>"; 
+                                } 
                                 echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
                             echo "</div>";
                               

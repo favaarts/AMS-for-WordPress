@@ -99,6 +99,7 @@ else
             </div>
             <div class="searchbutton">
               <input type="button" class="inputsearchbutton" id="searchdata" style="background-color: <?=$bgcolor?>" value="Search" onclick="fetchotherevents()">
+              <img class="buttonloader" src="<?php echo esc_url( plugins_url( 'assets/img/buttonloader.gif', dirname(__FILE__) ) ) ?>" >
             </div>  
 
           </div>  
@@ -149,8 +150,15 @@ else
                             }
 
                             echo "<div class='eventtitle'>";
-                            $date=date_create($arrayResult['program']['created_at']);
-                                echo "<p>".date_format($date, 'D, M d')."</P>"; 
+                              $date=$x_value['earliest_scheduled_program_date'];
+                                if(empty($date))
+                                {
+                                  echo "<p>No Date Scheduled</P>";
+                                }
+                                else
+                                {
+                                  echo "<p>".date('D, M d', strtotime($date))."</P>"; 
+                                }
                                 echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
                             echo "</div>";
                               

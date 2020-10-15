@@ -57,7 +57,7 @@ class Member {
 
     }
 
-    public function rewrite_rules(){/* write_rule('^product/([^/]*)/([^/]*)/?', 'index.php?category=$matches[1]&proname=$matches[2]', 'top');*/
+    public function rewrite_rules() {
         add_rewrite_rule('^members/([^/]*)/details/?', 'index.php?member_id=$matches[1]', 'top');
 
         flush_rewrite_rules();
@@ -340,8 +340,8 @@ function get_member_types()
 
     $catch = curl_init();
     curl_setopt($catch,CURLOPT_URL,$carurl);
-    curl_setopt($catch,CURLOPT_RETURNTRANSFER,1);
-    curl_setopt($catch,CURLOPT_CONNECTTIMEOUT, 4);
+    curl_setopt($catch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($catch, CURLOPT_CONNECTTIMEOUT, 10);
     $json = curl_exec($catch);
     if(!$json) {
         echo curl_error($catch);
@@ -672,7 +672,7 @@ function get_members($member_type, $member_id) {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 4);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
     $json = curl_exec($ch);
     if(!$json) {
         echo curl_error($ch);
@@ -1020,7 +1020,7 @@ function member_ajax()
     $ch = curl_init();
     curl_setopt($ch,CURLOPT_URL,$producturl);
     curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-    curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 4);
+    curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 10);
     $json = curl_exec($ch);
     if(!$json) {
         echo curl_error($ch);

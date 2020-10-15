@@ -42,12 +42,12 @@ get_header();  ?>
                                         <a href="<?= site_url('/members/') ?>"> < Back</a>
                                         <br> <br>
                                         <div class="row">
-                                            <div class="col-xs-12 col-sm-12 col-md-3">
-                                            <img src="<?= $member['photo'] ?>" onerror='this.src="<?= $dummy_image ?>"'  alt="<?= $member["email"] ?>" style="height:150px; border-radius:5px">
+                                            <div class="col-xs-12 col-sm-12 col-md-3 member-image-section">
+                                                <img class="member-image" src="<?= $member['photo'] ?>" onerror='this.src="<?= $dummy_image ?>"'  alt="<?= $member["email"] ?>">
                                             </div>
                                             <div class="col-xs-12 col-sm-12 col-md-9">
                                                 <div class="name">
-                                                    <h5> <?= $member["first_name"] ?> <?= $member["last_name"] ?></h5>
+                                                    <h3> <?= $member["first_name"] ?> <?= $member["last_name"] ?></h3>
                                                     <p> 
                                                         <strong>Job Position:</strong> <?= getDataOrDash($member["job_position"]) ?>
                                                         <br>
@@ -66,6 +66,12 @@ get_header();  ?>
                                                             }
                                                         ?>
                                                         <br>
+                                                        <strong>Member since:</strong>
+                                                        <?php
+                                                            $join_date = strtotime($member['created_at']);
+                                                            $newformat = date('M Y', $join_date);
+                                                            echo $newformat;
+                                                        ?>
                                                     </p>
                                                 </div>
                                             </div>

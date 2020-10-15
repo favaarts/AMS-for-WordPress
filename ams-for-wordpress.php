@@ -354,6 +354,33 @@ add_action('wp_ajax_get_member_types','get_member_types');
 add_action('wp_ajax_nopriv_get_member_types','get_member_types');
 // End sidebar category
 
+// Event location
+function get_eventlocation()
+{
+    $apiurl = get_option('wpams_url_btn_label');
+    $apikey = get_option('wpams_apikey_btn_label');
+    $url = "https://".$apiurl.".amsnetwork.ca/api/v3/";
+
+    $carurl = $url ."/programs/filters?access_token=".$apikey."&method=get&format=json";
+
+    $catch = curl_init();
+    curl_setopt($catch,CURLOPT_URL,$carurl);
+    curl_setopt($catch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($catch,CURLOPT_CONNECTTIMEOUT, 4);
+
+    $json = curl_exec($catch);
+    if(!$json) {
+        echo curl_error($catch);
+    }
+    curl_close($catch);
+
+    return $catArrayResultData = json_decode($json, true);
+}
+
+add_action('wp_ajax_get_eventlocation','get_eventlocation');
+add_action('wp_ajax_nopriv_get_eventlocation','get_eventlocation');
+// End event location
+
 
 //subdomain validation
 function subdomainkey_validation()
@@ -909,6 +936,111 @@ add_action('wp_ajax_searchcategorydata_action','search_category_action');
 add_action('wp_ajax_nopriv_searchcategorydata_action','search_category_action');
 // End get data after search product
 
+// Event search data
+function search_event_action()
+{   
+
+    $apiurl = get_option('wpams_url_btn_label');
+    $apikey = get_option('wpams_apikey_btn_label');
+    $bgcolor = get_option('wpams_button_colour_btn_label');
+    $prodname = $_POST['getevent'];
+    $productname = urlencode($prodname);
+
+    $pageslug = $_POST['pageslug'];
+    $pageid = $_POST['pageid'];
+
+    $eventtype = $_POST['eventtype'];
+
+    $locaton = $_POST['evtlocation'];
+    $eventlocaton = urlencode($locaton);
+
+    $eventstatus = $_POST['eventstatus'];
+
+    if(!empty($_POST['getevent']))
+    {
+        $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=Events&query=".$productname."&access_token=".$apikey."&method=get&format=json";
+    }
+    else if(isset($eventtype))
+    {
+       $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&access_token=".$apikey."&method=get&format=json";
+    }
+    else
+    {
+        $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=Events&access_token=".$apikey."&method=get&format=json";
+    }
+
+    $ch = curl_init();
+    curl_setopt($ch,CURLOPT_URL,$producturl);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 4);
+    $json = curl_exec($ch);
+    if(!$json) {
+        echo curl_error($ch);
+    }
+    curl_close($ch);
+
+    $arrayResult = json_decode($json, true);
+
+    
+    if(!empty($arrayResult['programs']))
+    {
+    
+        foreach($arrayResult['programs'] as $x_value) { 
+
+                if(isset($x_value['id']))
+                {
+                    
+                    echo "<div class='productstyle eventlayout'>";
+                    
+                        if(isset($x_value['name']))
+                        {
+                            $assetstitle = (strlen($x_value['name']) > 43) ? substr($x_value['name'],0,40).'...' : $x_value['name'];
+
+
+                            if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
+                            {                                    
+                                echo "<div class='product-img-wrap'>";
+                                echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ ).">";   
+                                echo "</div>";
+
+                            }
+                            else
+                            {
+                                 echo "<div class='eventlayout-image'>";
+                                    echo "<img src=".$x_value['photo']['photo']['medium']['url'].">";
+                                 echo "</div>";
+                            }
+
+                            echo "<div class='eventtitle'>";
+                                $date=$x_value['earliest_scheduled_program_date'];
+                                if(empty($date))
+                                {
+                                  echo "<p>No Date Scheduled</P>";
+                                }
+                                else
+                                {
+                                  echo "<p>".date('D, M d', strtotime($date))."</P>"; 
+                                } 
+                                echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
+                            echo "</div>";
+                              
+                            }
+                        
+                    echo "</div>";
+                }
+            }
+    }
+    else
+    {
+        echo $arrayResult = "No item found";
+    }
+
+
+    die();
+}
+add_action('wp_ajax_searcheventdata_action','search_event_action');
+add_action('wp_ajax_nopriv_searcheventdata_action','search_event_action');
+// End event search data
 
 // Infinite scroll
 function infinitescroll_action()

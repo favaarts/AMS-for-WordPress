@@ -30,6 +30,9 @@
       type: 'string',
       default: 'three_col',
     },
+    register_url: {
+      type: 'string',
+    },
     event_pagination: {
       type: 'string',
       default: '8',
@@ -76,7 +79,7 @@
               className: 'block-content',
               initialOpen: true
             },
-            el('p', {}, i18n.__('Add custom meta options to show or hide sidebar', 'amsnetwork-gutenbergevent-block')),
+            el('p', {}, i18n.__('Add custom meta options for events.', 'amsnetwork-gutenbergevent-block')),
             
             el( RadioControl,
               {
@@ -110,6 +113,16 @@
                 selected: props.attributes.event_pagination
               }
             ),
+            el( TextControl,
+              {
+                label: 'Register URL',
+                onChange: ( value ) => {
+                  props.setAttributes( { register_url: value } );
+                },
+                value: props.attributes.register_url
+              }
+            )
+            //
             
           )
         ),
@@ -145,7 +158,8 @@
            ),
            el('div', {className: 'header-right-part wp-block-shortcode'},
                            el( wp.element.RawHTML, null, '['+props.attributes.type+']')
-           ),           
+           ),
+           el( 'input', { 'type': 'hidden', 'name' : 'register_url', 'value' : ( props.attributes.register_url) } ),           
            el( 'input', { 'type': 'hidden', 'name' : 'radio_attr_event', 'value' : ( props.attributes.radio_attr_event) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'event_pagination', 'value' : ( props.attributes.event_pagination) } ),
 

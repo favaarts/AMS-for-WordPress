@@ -77,3 +77,55 @@ function fetchequipment()
         }
     });
 }
+
+
+function fetchevent()
+{
+	event.preventDefault();
+	/*var slugurl = jQuery('#slugurl').val();
+	var catid = jQuery('#categoryid').val();*/
+	var pageslug = jQuery('#inputpageslug').val();
+	var pageid = jQuery('#inputpageid').val();
+	
+	jQuery.ajax({
+        url: amsjs_ajax_url.ajaxurl,
+        type: 'post',
+        data: { action: 'searcheventdata_action', getevent: jQuery('#getevent').val(), pageslug: pageslug, pageid: pageid},
+        success: function(data) {
+        	//console.log(data);
+        	
+        	jQuery('.right-col-wrap').html(data);
+        	jQuery('#seemore').hide();
+        }
+    });
+}
+
+function fetchotherevents()
+{	
+	
+	event.preventDefault();
+	
+	var eventtype = jQuery('#alltypeevent').val();
+	var eventstatus = jQuery('#allstatus').val();
+	var evtlocation = jQuery('#evtlocation').val();
+	var pageslug = jQuery('#inputpageslug').val();
+	var pageid = jQuery('#inputpageid').val();
+
+	jQuery.ajax({
+        url: amsjs_ajax_url.ajaxurl,
+        type: 'post',
+        data: { action: 'searcheventdata_action', eventtype: eventtype, eventstatus: eventstatus, evtlocation: evtlocation, pageslug: pageslug, pageid: pageid},
+        beforeSend: function(){
+        // Show image container
+            jQuery(".buttonloader").css("display","initial");
+        },
+        success: function(data) {
+        	//console.log(data);
+        	
+        	jQuery('.right-col-wrap').html(data);
+        	jQuery('#seemore').hide();
+        	jQuery('#getevent').val('');
+        	jQuery(".buttonloader").css("display","none");
+        }
+    });
+}

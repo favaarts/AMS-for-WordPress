@@ -79,9 +79,18 @@ get_header();  ?>
                 <!-- Mobile view only -->
                 <div class="mobileviewonly">
                   <select class='ul-cat-wrap' id='cagegorydata'>
-                    <option value="<?= site_url($pageslugnew) ?>">All Items</option>
-                    
+                  
                     <?php
+
+                      if(empty($blocks[0]['attrs']['all_items_url']))
+                      {
+                        echo "<option value=".site_url($pageslugnew).">All Items</option>";
+                      }
+                      else
+                      {
+                        echo "<option value=".$blocks[0]['attrs']['all_items_url'].">All Items</option>";
+                      }
+
                       foreach($catArrayResult['categories'] as $c => $c_value) {
                         echo "<option  value='".site_url('/'.$pageslugnew.'/'.$c_value['name'])."'>".$c_value['name']."</option>";     
                       }
@@ -121,7 +130,15 @@ get_header();  ?>
                   
                       echo '<h4>Categories</h4>';
                       echo "<ul class='ul-cat-wrap getcategoryid'>";
-                      echo "<li><a href='".site_url($pageslug)."'>All Items</a></li>";
+                      if(empty($blocks[0]['attrs']['all_items_url']))
+                      {
+                        echo "<li><a href='".site_url($pageslug)."'>All Items</a></li>";
+                      }
+                      else
+                      {
+                        echo "<li><a href='".$blocks[0]['attrs']['all_items_url']."'>All Items</a></li>";
+                      }
+                      
                       foreach($catArrayResult['categories'] as $c => $c_value) {
                           if($c_value['bookable_by_admin_only'] != 1)
                           {

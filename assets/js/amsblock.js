@@ -29,6 +29,9 @@
       type: 'boolean',
       default: true
      },
+     all_items_url: {
+        type: 'string',
+     },
      radio_attr: {
       type: 'string',
       default: 'three_col',
@@ -99,6 +102,16 @@
                 selected: props.attributes.radio_attr
               }
             ),
+            el( TextControl,
+              {
+                label: 'All Items URL',
+                onChange: ( value ) => {
+                  props.setAttributes( { all_items_url: value } );
+                },
+                value: props.attributes.all_items_url
+              }
+            )
+            //
             
           )
         ),
@@ -137,7 +150,7 @@
            ),
            el( 'input', { 'type': 'hidden', 'name' : 'sidebar_option_in', 'value' : ( props.attributes.sidebaroption == true ? 'yes' : 'no' ) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'radio_attr', 'value' : ( props.attributes.radio_attr) } ),
-
+           el( 'input', { 'type': 'hidden', 'name' : 'all_items_url', 'value' : ( props.attributes.all_items_url) } ),
          )
 
       )

@@ -74,10 +74,16 @@ else
             <!-- Mobile view only -->
             <div class="mobileviewonly">
               <select class='ul-cat-wrap' id='cagegorydata'>
-                <option value="<?= site_url($post_slug) ?>">All Items</option>
-                
                 <?php
-                 
+                 if(empty($blockdata['all_items_url']))
+                  {
+                    echo "<option value=".site_url($post_slug).">All Items</option>";
+                  }
+                  else
+                  {
+                    echo "<option value=".$blockdata['all_items_url'].">All Items</option>";
+                  }
+
                   foreach($catArrayResult['categories'] as $c => $c_value) {
                       echo "<option  value='".site_url('/'.$post_slug.'/'.$c_value['name'])."'>".$c_value['name']."</option>";     
                   }
@@ -110,7 +116,16 @@ else
            
                 echo '<h4>Categories</h4>';
                 echo "<ul class='ul-cat-wrap getcategoryid'>";
-                echo "<li><a href='".site_url($pageslug)."'>All Items</a></li>";
+
+                if(empty($blockdata['all_items_url']))
+                {
+                  echo "<li><a href='".site_url($pageslug)."'>All Items</a></li>";
+                }  
+                else
+                {
+                  echo "<li><a href='".$blockdata['all_items_url']."'>All Items</a></li>";
+                }
+
                 foreach($catArrayResult['categories'] as $c => $c_value) {
 
                    /* $arrayResult = get_apirequest($c_value[0],NULL,NULL);

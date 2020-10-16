@@ -22,10 +22,8 @@ get_header();  ?>
                     $arrayResult = get_eventlisting($arrayevid[1]);
 
                     // Register URL
-                    $post_id = $arrayevid[0];
-                    $post = get_post($post_id);
-                    $blocks = parse_blocks($post->post_content);
-                    $blockname = $blocks[0]['attrs'];
+                    $registerurl = get_option('wpams_landing_register_url_btn_label');
+                    $eventwindow = get_option('register_url_window');
                     
                     ?>    
                         <div class="event-img-sec">
@@ -138,24 +136,50 @@ get_header();  ?>
                                      $eventtime = get_eventscheduletime($arrayevid[1]);
                                      $keys = $eventtime['scheduled_program_dates'];
 
-                                     $lastKey = $keys[count($keys)-1];
+                                     //$lastKey = $keys[count($keys)-1];
+                                    if($arrayResult['program']['program_type_name'] != "Class")
+                                    { 
+                                        foreach ($eventtime['scheduled_program_dates'] as $key => $daytime) {
+                                        ?>
+                                        <div class="ragister-sec">
+                                            <div class="reg-sec">
+                                                <a href="<?=$registerurl?>" target="<?=$eventwindow?>" style="background-color: <?=$bgcolor?>">Register</a>
+                                            </div>
+                                            
+                                            <div class="evtdate">
+                                                <p><?=date('D, M d, Y', strtotime($daytime['start']))?></p>
+                                            </div>
+                                            
+                                            <div class="time">
+                                                <p><?=date('H:i', strtotime($daytime['start']))?> – <?=date('H:i', strtotime($daytime['end']))?></p>
+                                            </div>
+                                        </div>
+                                        <?php } 
+                                    }    
+                                    else
+                                    {
+                                         $keys = array_keys($eventtime['scheduled_program_dates']);
+                                         $lastKey = $keys[count($keys)-1];
+                                         
 
-                                    foreach ($eventtime['scheduled_program_dates'] as $key => $daytime) {
-                                    ?>
-                                <div class="ragister-sec">
-                                    <div class="reg-sec">
-                                        <a href="<?=$blockname['register_url']?>" style="background-color: <?=$bgcolor?>">Register</a>
-                                    </div>
-                                    
-                                    <div class="evtdate">
-                                        <p><?=date('D, M d, Y', strtotime($daytime['start']))?></p>
-                                    </div>
-                                    
-                                    <div class="time">
-                                        <p><?=date('H:i', strtotime($daytime['start']))?> – <?=date('H:i', strtotime($daytime['end']))?></p>
-                                    </div>
-                                </div>
-                                <?php } ?>
+                                         $start=date_create($eventtime['scheduled_program_dates'][$lastKey]['start']);
+                                         $end=date_create($eventtime['scheduled_program_dates'][$lastKey]['end']);
+                                       
+                                        echo "<div class='ragister-sec'>";
+                                        echo   "<div class='reg-sec'>";
+                                        echo   "<a href=".$registerurl." target=".$eventwindow." style='background-color:".$bgcolor."'>Register</a>";
+                                        echo   "</div>";
+                                            
+                                        echo  "<div class='evtdate'>";
+                                                echo "<p>".date_format($start,"D, M d, Y")."</p>";
+                                        echo  "</div>";
+                                            
+                                        echo "<div class='time'>";
+                                        echo "<p>".date_format($start,"H:i"). " – ".date_format($end,"H:i"). "</p>";
+                                        echo "</div>";
+                                        echo "</div>";
+                                    }
+                                ?>
 
                                 <div class="location-sec">
                                     <h3>Location</h3>

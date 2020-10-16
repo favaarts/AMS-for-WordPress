@@ -403,9 +403,11 @@ function wpams_plugin_settings(){
     register_setting( 'wpams-settings', 'wpams_url_btn_label' );
     register_setting( 'wpams-settings', 'wpams_apikey_btn_label' );
     register_setting( 'wpams-settings', 'wpams_landing_url_btn_label' );
+    register_setting( 'wpams-settings', 'wpams_landing_register_url_btn_label' );
     register_setting( 'wpams-settings', 'wpams_button_colour_btn_label' );
     
     register_setting('wpams-settings', 'url_window');
+    register_setting('wpams-settings', 'register_url_window');
 
     add_settings_section( 'wpams_label_settings_section', '', 'wpams_plugin_settings_section_cb', 'wpams-settings' );
 
@@ -414,6 +416,8 @@ function wpams_plugin_settings(){
     add_settings_field( 'wpams_apikey_label_field', 'API  Key', 'wpams_apikey_label_field_cb', 'wpams-settings', 'wpams_label_settings_section' );
    
     add_settings_field( 'wpams_landing_url_label_field', 'Booking  URL', 'wpams_landing_url_label_field_cb', 'wpams-settings', 'wpams_label_settings_section' );
+
+    add_settings_field( 'wpams_landing_register_url_label_field', 'Register  URL', 'wpams_landing_register_url_label_field_cb', 'wpams-settings', 'wpams_label_settings_section' );
 
     add_settings_field( 'wpams_button_colour_label_field', 'Button  colour', 'wpams_button_colour_label_field_cb', 'wpams-settings', 'wpams_label_settings_section' );
 }
@@ -473,6 +477,22 @@ function wpams_landing_url_label_field_cb(){
     <select name="url_window" id="urlwindow" style="width: 140px;">
       <option value="_self" <?php selected(get_option('url_window'), "_self"); ?>>Same Tab</option>
       <option value="_blank" <?php selected(get_option('url_window'), "_blank"); ?>>New Tab</option>
+    </select>
+
+    <?php
+}
+
+// Field for register url
+function wpams_landing_register_url_label_field_cb()
+{
+    $setting = get_option('wpams_landing_register_url_btn_label');
+    // output the field
+    ?>
+    <input type="url" required="" name="wpams_landing_register_url_btn_label" style="width: 350px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
+
+    <select name="register_url_window" id="urlwindow" style="width: 140px;">
+      <option value="_self" <?php selected(get_option('register_url_window'), "_self"); ?>>Same Tab</option>
+      <option value="_blank" <?php selected(get_option('register_url_window'), "_blank"); ?>>New Tab</option>
     </select>
 
     <?php

@@ -131,7 +131,7 @@ get_header();  ?>
                                     $date=date_create($arrayResult['program']['created_at']);
                                     
                                     ?>
-                                    
+                                    <h3>Date And Time</h3>
                                 </div>
                                 
                                 <?php 
@@ -142,9 +142,6 @@ get_header();  ?>
 
                                     foreach ($eventtime['scheduled_program_dates'] as $key => $daytime) {
                                     ?>
-                                <div class="datetimelable">    
-                                    <h3>Date And Time</h3>    
-                                </div>
                                 <div class="ragister-sec">
                                     <div class="reg-sec">
                                         <a href="<?=$blockname['register_url']?>" style="background-color: <?=$bgcolor?>">Register</a>

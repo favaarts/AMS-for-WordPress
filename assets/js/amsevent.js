@@ -26,6 +26,10 @@
         selector: 'img',
         attribute: 'src'
       },
+      eventsidebar: {
+      type: 'boolean',
+      default: true
+     },
      radio_attr_event: {
       type: 'string',
       default: 'three_col',
@@ -34,14 +38,18 @@
       type: 'string',
       default: '8',
     },
-     categoryoption: {
+    member: {
       type: 'boolean',
       default: true
-     },
-     equipmentoption: {
+    },
+    nonmember: {
       type: 'boolean',
       default: true
-     },
+    },
+    earlybird: {
+      type: 'boolean',
+      default: true
+    },
      type: { type: 'string', default: 'amseventlisting' },
       alignment: {
         type: 'string',
@@ -77,7 +85,13 @@
               initialOpen: true
             },
             el('p', {}, i18n.__('Add custom meta options for events.', 'amsnetwork-gutenbergevent-block')),
-            
+            el(ToggleControl, {
+              label: 'Sidebar',
+              onChange: ( value ) => {
+                 props.setAttributes( { eventsidebar: value } );
+              },
+              checked: props.attributes.eventsidebar,
+            }),
             el( RadioControl,
               {
                 label: 'Grid Layout',
@@ -110,7 +124,28 @@
                 selected: props.attributes.event_pagination
               }
             ),
-            
+            el('p', {}, i18n.__('Hide show event price.', 'amsnetwork-gutenbergevent-block')),
+            el(ToggleControl, {
+              label: 'Member Enrollment Price',
+              onChange: ( value ) => {
+                 props.setAttributes( { member: value } );
+              },
+              checked: props.attributes.member,
+            }),
+            el(ToggleControl, {
+              label: 'Non Member Price',
+              onChange: ( value ) => {
+                 props.setAttributes( { nonmember: value } );
+              },
+              checked: props.attributes.nonmember,
+            }),
+            el(ToggleControl, {
+              label: 'Earlybird Discount',
+              onChange: ( value ) => {
+                 props.setAttributes( { earlybird: value } );
+              },
+              checked: props.attributes.earlybird,
+            }),
             
           )
         ),
@@ -147,9 +182,12 @@
            el('div', {className: 'header-right-part wp-block-shortcode'},
                            el( wp.element.RawHTML, null, '['+props.attributes.type+']')
            ),
+           el( 'input', { 'type': 'hidden', 'name' : 'eventsidebar', 'value' : ( props.attributes.eventsidebar == true ? 'yes' : 'no') } ),
            el( 'input', { 'type': 'hidden', 'name' : 'radio_attr_event', 'value' : ( props.attributes.radio_attr_event) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'event_pagination', 'value' : ( props.attributes.event_pagination) } ),
-
+           el( 'input', { 'type': 'hidden', 'name' : 'member', 'value' : ( props.attributes.member == true ? 'yes' : 'no') } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'nonmember', 'value' : ( props.attributes.nonmember == true ? 'yes' : 'no') } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'earlybird', 'value' : ( props.attributes.earlybird == true ? 'yes' : 'no') } ),
          )
 
       )

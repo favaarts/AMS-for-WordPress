@@ -25,6 +25,10 @@ get_header();  ?>
                     $registerurl = get_option('wpams_landing_register_url_btn_label');
                     $eventwindow = get_option('register_url_window');
                     
+                    //
+                    $post = get_post($arrayevid[0]);
+                    $blocks = parse_blocks($post->post_content);
+
                     ?>    
                         <div class="event-img-sec">
                             <div class="img-sec">
@@ -46,6 +50,8 @@ get_header();  ?>
 
                                 <?php if(!empty($arrayResult['program']['member_enrollment_price']))
                                 { 
+                                    if (!isset($blocks[0]['attrs']['member']))
+                                    {
                                 ?>
                                 <div class="enrollment enrtop">
                                     <h3>Member Enrollment Price</h3>
@@ -65,9 +71,12 @@ get_header();  ?>
                                     </p>
                                 </div>
                                 <?php
+                                    }
                                 }
                                 if(!empty($arrayResult['program']['enrollment_price']))
-                                { 
+                                {
+                                    if (!isset($blocks[0]['attrs']['nonmember']))
+                                    { 
                                 ?>
                                 <div class="enrollment">
                                     <h3>Non MemberPrice</h3>
@@ -84,9 +93,13 @@ get_header();  ?>
                                         ?>    
                                     </p>
                                 </div>
-                                <?php }
-                                 if(!empty($arrayResult['program']['earlybird_discount']))
-                                 {
+                                <?php 
+                                    }
+                                }
+                                if(!empty($arrayResult['program']['earlybird_discount']))
+                                {
+                                    if (!isset($blocks[0]['attrs']['earlybird']))
+                                    {
                                  ?>
                                 <div class="enrollment">
                                     <h3>Earlybird Discount</h3>
@@ -103,7 +116,10 @@ get_header();  ?>
                                         ?>    
                                     </p>
                                 </div>
-                                <?php } ?>
+                                <?php 
+                                    }
+                                } 
+                                ?>
 
                             </div>
                         </div>

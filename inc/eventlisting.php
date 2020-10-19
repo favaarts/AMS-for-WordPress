@@ -20,6 +20,7 @@ main-content main-content-four-col - this class is for four columns.
 
 $blockdata = get_sidebaroption();
 
+$bgcolor = get_option('wpams_button_colour_btn_label');
 $gridlayout = $blockdata['radio_attr_event'];
 
 if($gridlayout == "four_col")
@@ -44,12 +45,17 @@ else
    
   <input type="hidden" name="slugurl" id="slugurl" value="<?=$post_slug?>">  
 
+    <?php
+    //Block option
+    //$blockdata = get_sidebaroption();
+    if (!isset($blockdata['eventsidebar']))
+      {
+    ?>
     <!-- Sidebar -->
     <div class="wp-block-column left-col" >
         <?php
 
         $locationArrayResult = get_eventlocation();
-        $bgcolor = get_option('wpams_button_colour_btn_label');
         /*echo $locationArrayResult['json']['locations'][0];
         echo "<pre>";
         print_r($locationArrayResult);
@@ -107,7 +113,8 @@ else
             
     </div>  
     <!-- End sidebar -->
-
+    <?php } ?>
+    
     <div class="categorysearchdata right-col eventpage" >
         <div class="productdetail"></div>
         <div class="right-col-wrap">

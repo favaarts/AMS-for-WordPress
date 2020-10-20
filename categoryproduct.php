@@ -88,7 +88,8 @@ get_header();  ?>
                       }
                       else
                       {
-                        echo "<option value=".$blocks[0]['attrs']['all_items_url'].">All Items</option>";
+                        $customurl = site_url($pageslugnew)."/".$blocks[0]['attrs']['all_items_url'];
+                        echo "<option value=".$customurl.">All Items</option>";
                       }
 
                       foreach($catArrayResult['categories'] as $c => $c_value) {
@@ -106,7 +107,8 @@ get_header();  ?>
                 $parts = explode("/", $url);
                 $pageslug = $parts[count($parts) - 2];
                 
-                //$catArrayResult = get_sidebarcategory();
+                $post_data = get_page_by_path($pageslug);
+                $pageid = $post_data->ID;
                 
                 // get slug
                 $categoryinurl = $wp->query_vars['categoryslug'];
@@ -136,7 +138,8 @@ get_header();  ?>
                       }
                       else
                       {
-                        echo "<li><a href='".$blocks[0]['attrs']['all_items_url']."'>All Items</a></li>";
+                        $customurl = site_url($pageslug)."/".$blocks[0]['attrs']['all_items_url'];
+                        echo "<li><a href='".$customurl."'>All Items</a></li>";
                       }
                       
                       foreach($catArrayResult['categories'] as $c => $c_value) {
@@ -202,7 +205,7 @@ get_header();  ?>
                               {
                                 $assetstitle = (strlen($x_value['name']) > 34) ? substr($x_value['name'],0,34).'..' : $x_value['name'];
                                 
-                                  echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
+                                  echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
                                   
                                   if($x_value['photo'] == NULL || $x_value['photo'] == "")
                                   {                                    
@@ -227,11 +230,14 @@ get_header();  ?>
                                       
                                   echo "</div>";    
                                   }
-              
+                               if (!isset($blocks[0]['attrs']['member']))
+                              {
                               echo "<p class='memberprice'>".$x_value['price_types'][0][0]."</p>";
-                                       
+                               }
+                              if (!isset($blocks[0]['attrs']['nonmember']))
+                              {          
                               echo "<p class='price-non-mem'>".$x_value['price_types'][1][0]."</p>";
-              
+                              }
                               
                           echo "</div>";
                       }

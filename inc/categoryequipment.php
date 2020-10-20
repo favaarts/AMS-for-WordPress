@@ -81,7 +81,8 @@ else
                   }
                   else
                   {
-                    echo "<option value=".$blockdata['all_items_url'].">All Items</option>";
+                    $customurl = site_url($post_slug)."/".$blockdata['all_items_url'];
+                    echo "<option value=".$customurl.">All Items</option>";
                   }
 
                   foreach($catArrayResult['categories'] as $c => $c_value) {
@@ -101,7 +102,7 @@ else
            
             $pageslug = $post->post_name;
 
-            
+            $pageid = $post->ID;
 
             // Comparison function 
             if(!function_exists('dateCompare'))
@@ -123,7 +124,8 @@ else
                 }  
                 else
                 {
-                  echo "<li><a href='".$blockdata['all_items_url']."'>All Items</a></li>";
+                  $customurl = site_url($pageslug)."/".$blockdata['all_items_url'];
+                  echo "<li><a href='".$customurl."'>All Items</a></li>";
                 }
 
                 foreach($catArrayResult['categories'] as $c => $c_value) {
@@ -200,7 +202,7 @@ else
                                 {
                                     $assetstitle = (strlen($x_value['name']) > 43) ? substr($x_value['name'],0,40).'...' : $x_value['name'];
 
-                                    echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title 123'>". $assetstitle ."</p> </a>";
+                                    echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
                                     
                                     if($x_value['photo'] == NULL || $x_value['photo'] == "")
                                     {                                    
@@ -225,11 +227,14 @@ else
                                         
                                     echo "</div>";    
                                     }
-
+                                if (!isset($blockdata['member']))
+                                {     
                                 echo "<p class='memberprice'>".$x_value['price_types'][0][0]."</p>";
-                                         
+                                }
+                                if(!isset($blockdata['nonmember']))          
+                                {         
                                 echo "<p class='price-non-mem'>".$x_value['price_types'][1][0]."</p>";
-
+                                }
                                 
                             echo "</div>";
                         }

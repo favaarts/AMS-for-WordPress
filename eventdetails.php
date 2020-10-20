@@ -177,23 +177,46 @@ get_header();  ?>
                                          $keys = array_keys($eventtime['scheduled_program_dates']);
                                          $lastKey = $keys[count($keys)-1];
                                          
+                                        $total = count($keys);
+                                        $start=date_create($eventtime['scheduled_program_dates'][$lastKey]['start']);
+                                        $end=date_create($eventtime['scheduled_program_dates'][$lastKey]['end']);
 
-                                         $start=date_create($eventtime['scheduled_program_dates'][$lastKey]['start']);
-                                         $end=date_create($eventtime['scheduled_program_dates'][$lastKey]['end']);
-                                       
-                                        echo "<div class='ragister-sec'>";
-                                        echo   "<div class='reg-sec'>";
-                                        echo   "<a href=".$registerurl." target=".$eventwindow." style='background-color:".$bgcolor."'>Register</a>";
-                                        echo   "</div>";
+                                        if($total > 1)
+                                        {
+                                            echo "<div class='ragister-sec'>";
+                                            echo  "<div class='evtdateclass'>";
+                                                    echo "<p>".date_format($start,"D, M d, Y")."</p>";
+                                            echo  "</div>";
                                             
-                                        echo  "<div class='evtdate'>";
-                                                echo "<p>".date_format($start,"D, M d, Y")."</p>";
-                                        echo  "</div>";
-                                            
-                                        echo "<div class='time'>";
-                                        echo "<p>".date_format($start,"H:i"). " – ".date_format($end,"H:i"). "</p>";
-                                        echo "</div>";
-                                        echo "</div>";
+                                            foreach ($eventtime['scheduled_program_dates'] as $key => $daytime) {     
+                                            echo "<div class='timeclass'>";
+                                            echo "<p>".date('H:i', strtotime($daytime['start'])). " – ".date('H:i', strtotime($daytime['end'])). "</p>";
+                                            echo "</div>";
+                                            }
+                                            echo   "<br>";
+                                            echo   "<div class='reg-sec'>";
+                                            echo   "<a href=".$registerurl." target=".$eventwindow." style='background-color:".$bgcolor."'>Register</a>";
+                                            echo   "</div>";
+                                            echo "</div>";
+                                        }
+                                        else
+                                        {
+                                           
+
+                                            echo "<div class='ragister-sec'>";
+                                            echo   "<div class='reg-sec'>";
+                                            echo   "<a href=".$registerurl." target=".$eventwindow." style='background-color:".$bgcolor."'>Register</a>";
+                                            echo   "</div>";
+                                                
+                                            echo  "<div class='evtdate'>";
+                                                    echo "<p>".date_format($start,"D, M d, Y")."</p>";
+                                            echo  "</div>";
+                                                
+                                            echo "<div class='time'>";
+                                            echo "<p>".date_format($start,"H:i"). " – ".date_format($end,"H:i"). "</p>";
+                                            echo "</div>";
+                                            echo "</div>";
+                                        }
                                     }
                                 ?>
 

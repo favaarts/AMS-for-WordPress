@@ -394,6 +394,9 @@ p.price-non-mem {
 .ragister-sec .evtdate {display: inline-block; margin-right: 10px; }
 .datetimelable {margin-bottom: 10px;}
 
+.ragister-sec  .timeclass{padding: 2px 0px 2px 0px;}
+
+
 .row.member-entry {
     border: 1px solid #f1f1f1;
     margin-top: 1rem;
@@ -418,3 +421,4 @@ img.member-image {
     border-radius: 4px;
     padding: 0.5rem;
 }
+

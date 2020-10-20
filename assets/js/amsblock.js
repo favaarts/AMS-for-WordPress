@@ -44,6 +44,14 @@
       type: 'boolean',
       default: true
      },
+    member: {
+      type: 'boolean',
+      default: true
+    },
+    nonmember: {
+      type: 'boolean',
+      default: true
+    },
      type: { type: 'string', default: 'amscategoryequipment' },
       alignment: {
         type: 'string',
@@ -110,7 +118,22 @@
                 },
                 value: props.attributes.all_items_url
               }
-            )
+            ),
+            el('p', {}, i18n.__('Hide show assets price.', 'amsnetwork-gutenbergevent-block')),
+            el(ToggleControl, {
+              label: 'Member Price',
+              onChange: ( value ) => {
+                 props.setAttributes( { member: value } );
+              },
+              checked: props.attributes.member,
+            }),
+            el(ToggleControl, {
+              label: 'Non Member Price',
+              onChange: ( value ) => {
+                 props.setAttributes( { nonmember: value } );
+              },
+              checked: props.attributes.nonmember,
+            }),
             //
             
           )
@@ -151,6 +174,8 @@
            el( 'input', { 'type': 'hidden', 'name' : 'sidebar_option_in', 'value' : ( props.attributes.sidebaroption == true ? 'yes' : 'no' ) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'radio_attr', 'value' : ( props.attributes.radio_attr) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'all_items_url', 'value' : ( props.attributes.all_items_url) } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'member', 'value' : ( props.attributes.member == true ? 'yes' : 'no') } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'nonmember', 'value' : ( props.attributes.nonmember == true ? 'yes' : 'no') } ),
          )
 
       )

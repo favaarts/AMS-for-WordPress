@@ -19,14 +19,20 @@ get_header();  ?>
                 
                 global $wp, $wpdb;
                 
-                $prodictid = $wp->query_vars['proname'];
+                $prodictidaray = $wp->query_vars['proname'];
+                $prodictid = explode("-",$prodictidaray);
+
                 $ab = $wp->query_vars['category'];
                 
                 $landingurl = get_option('wpams_landing_url_btn_label');
                 $bgcolor = get_option('wpams_button_colour_btn_label');
                 $targeturl = get_option('url_window');
+
+                //
+                $post = get_post($prodictid[0]);
+                $blocks = parse_blocks($post->post_content);
                 
-                $arrayResult = get_apirequest(NULL,NULL,$prodictid);
+                $arrayResult = get_apirequest(NULL,NULL,$prodictid[1]);
                 
                 if(isset($arrayResult['error']))
                 {   
@@ -75,9 +81,14 @@ get_header();  ?>
                     echo "<div class='cat-name'>"; 
                     echo "<p >Prices(per day)</p>";
                     echo "</div>";
-                    
+                    if (!isset($blocks[0]['attrs']['member']))
+                    {
                     echo "<p class='memberprice'>". $json_value['price_types'][0][0] ."</p>";
+                    }
+                    if (!isset($blocks[0]['attrs']['nonmember']))
+                    {
                     echo "<p class='price-non-mem'>". $json_value['price_types'][1][0] ."</p>";
+                    }
                     echo "</div>";
                     
                     echo "<div class='available-details'>"; 
@@ -106,7 +117,7 @@ get_header();  ?>
                     
                     echo "<div class='barcode cat-name'>"; 
                     echo "<p>Insurance Value:</p>";
-                    echo "<spna class='B-text'>31738.25</span>";
+                    echo "<spna class='B-text'>".$json_value['insurance_value']."</span>";
                     echo "</div>";
                     
                     

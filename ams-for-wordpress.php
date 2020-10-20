@@ -964,6 +964,12 @@ function infinitescroll_action()
     $page = $_POST['page'];
     $newslugname = $_POST['slugname'];
 
+    //
+    $post_data = get_page_by_path($newslugname);
+    $pageid = $post_data->ID;
+    $post = get_post($pageid);
+    $blocks = parse_blocks($post->post_content);
+
     $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/assets?type=Equipment&category_ids=%5B".$categoryid."%5D&page=".$page."&access_token=".$apikey."&method=get&format=json";
 
         $ch = curl_init();
@@ -992,7 +998,7 @@ function infinitescroll_action()
 
                                 $assetstitle = (strlen($x_value['name']) > 34) ? substr($x_value['name'],0,34).'..' : $x_value['name'];
                                 
-                                echo "<a href='".site_url('/'.$newslugname.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title'>".$assetstitle ."</p> </a>";
+                                echo "<a href='".site_url('/'.$newslugname.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>".$assetstitle ."</p> </a>";
 
                                 if($x_value['photo'] == NULL || $x_value['photo'] == "")
                                 {                                    
@@ -1018,9 +1024,14 @@ function infinitescroll_action()
                                      
                                 echo "</div>";
                             }
-                           
-                            echo "<p class='memberprice'>".$x_value['price_types'][0][0]."</p>";    
+                            if (!isset($blocks[0]['attrs']['member']))
+                            {
+                            echo "<p class='memberprice'>".$x_value['price_types'][0][0]."</p>";
+                            }
+                            if (!isset($blocks[0]['attrs']['nonmember']))
+                            {    
                             echo "<p class='price-non-mem'>".$x_value['price_types'][1][0]."</p>";
+                            }
 
                         echo "</div>";
                     }    

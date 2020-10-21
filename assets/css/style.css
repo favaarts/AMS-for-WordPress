@@ -422,3 +422,14 @@ img.member-image {
     padding: 0.5rem;
 }
 
+.statusstring{
+    background: #6e7780;
+    color: #f5f9fc;
+    padding: 5px 25px;
+    position: relative;
+    bottom: 25px;
+    border-radius: 2px;
+}
+.timeclass p {
+    padding-bottom: 5px;
+}

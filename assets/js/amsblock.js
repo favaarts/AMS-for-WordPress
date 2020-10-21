@@ -112,7 +112,7 @@
             ),
             el( TextControl,
               {
-                label: 'All Items URL',
+                label: 'All Items',
                 onChange: ( value ) => {
                   props.setAttributes( { all_items_url: value } );
                 },

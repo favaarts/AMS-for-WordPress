@@ -430,6 +430,9 @@ img.member-image {
     bottom: 25px;
     border-radius: 2px;
 }
-.timeclass p {
+.time p {
+    padding-bottom: 5px;
+}
+.evtdate p {
     padding-bottom: 5px;
 }

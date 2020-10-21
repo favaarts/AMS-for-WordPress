@@ -46,6 +46,16 @@ get_header();  ?>
                                 <?php } ?>
                             </div>
                             <div class="ing-title">
+                                <?php
+                                if($arrayResult['program']['status_string'] == "Cancelled")
+                                {
+                                    echo "<span class='statusstring'>Event Cancelled</span>";
+                                }
+                                elseif ($arrayResult['program']['status_string'] == "Finished") {
+                                    echo "<span class='statusstring'>Event Finished</span>";
+                                }
+                                ?>
+
                                 <h1><?=$arrayResult['program']['name']?></h1>
 
                                 <?php if(!empty($arrayResult['program']['member_enrollment_price']))
@@ -184,15 +194,17 @@ get_header();  ?>
                                         if($total > 1)
                                         {
                                             echo "<div class='ragister-sec'>";
-                                            echo  "<div class='evtdateclass'>";
-                                                    echo "<p>".date_format($start,"D, M d, Y")."</p>";
-                                            echo  "</div>";
-                                            
-                                            foreach ($eventtime['scheduled_program_dates'] as $key => $daytime) {     
-                                            echo "<div class='timeclass'>";
-                                            echo "<p>".date('H:i', strtotime($daytime['start'])). " – ".date('H:i', strtotime($daytime['end'])). "</p>";
-                                            echo "</div>";
-                                            }
+                                                echo "<div class='classevent'>"; 
+                                                foreach ($eventtime['scheduled_program_dates'] as $key => $daytime) { 
+                                                echo  "<div class='evtdate'>";
+                                                        echo "<p>".date('D, M d, Y', strtotime($daytime['start']))."</p>";
+                                                echo  "</div>";
+                                                
+                                                echo "<div class='time'>";
+                                                echo "<p>".date('H:i', strtotime($daytime['start'])). " – ".date('H:i', strtotime($daytime['end'])). "</p>";
+                                                echo "</div>";
+                                                }
+                                                echo "</div>";
                                             echo   "<br>";
                                             echo   "<div class='reg-sec'>";
                                             echo   "<a href=".$registerurl." target=".$eventwindow." style='background-color:".$bgcolor."'>Register</a>";

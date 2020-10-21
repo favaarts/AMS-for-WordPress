@@ -79,7 +79,10 @@ get_header();  ?>
                     
                     echo "<div class='price_types'>";
                     echo "<div class='cat-name'>"; 
+                    if(!isset($blocks[0]['attrs']['member']) || !isset($blocks[0]['attrs']['nonmember']))
+                    {
                     echo "<p >Prices(per day)</p>";
+                    }
                     echo "</div>";
                     if (!isset($blocks[0]['attrs']['member']))
                     {

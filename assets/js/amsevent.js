@@ -100,6 +100,7 @@
                   { label: 'Two Column', value: 'two_col' },
                   { label: 'Three Column', value: 'three_col' },
                   { label: 'Four Column', value: 'four_col' },
+                  { label: 'List View', value: 'list_view' },
                 ],
                 onChange: ( value ) => {
                   props.setAttributes( { radio_attr_event: value } );

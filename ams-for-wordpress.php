@@ -877,6 +877,9 @@ function search_category_action()
     $categoryid = $_POST['catid'];
     $productname = urlencode($prodname);
 
+    $post_data = get_page_by_path($pageslug);
+    $pageid = $post_data->ID;
+
     //$arrayResult = get_apirequest($categoryid,$productname,NULL);
 
     $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/assets?type=Equipment&category_ids=%5B".$categoryid."%5D&query_string=".$productname."&access_token=".$apikey."&method=get&format=json";
@@ -908,7 +911,7 @@ function search_category_action()
                        
                         if(isset($x_value['name']))
                         {
-                            echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'> <p class='product-title 123'>". $x_value['name'] ."</p> </a>";
+                            echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title 123'>". $x_value['name'] ."</p> </a>";
                             
                             if($x_value['photo'] == NULL || $x_value['photo'] == "")
                             {                                    
@@ -926,10 +929,10 @@ function search_category_action()
 
                             echo "<div class='bottom-fix'>"; 
                             if($x_value['status_text'] == "Active")
-                                echo "<span class='label label-success btn-common' style='background-color: $bgcolor;'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Available</a></span>";
+                                echo "<span class='label label-success btn-common' style='background-color: $bgcolor;'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'>Available</a></span>";
                                 else
                                 {
-                                    echo "<span class='label label-danger btn-common'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Unavailable</a></span>";
+                                    echo "<span class='label label-danger btn-common'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'>Unavailable</a></span>";
                                 }
                                 
                             echo "</div>";    
@@ -1004,51 +1007,103 @@ function search_event_action()
     
     if(!empty($arrayResult['programs']))
     {
-    
-        foreach($arrayResult['programs'] as $x_value) { 
+        $post = get_post($pageid);
+        $blocks = parse_blocks($post->post_content);
+        $gridlayout = $blocks[0]['attrs']['radio_attr_event'];
+        
+        if($gridlayout == "list_view")
+        {
+            foreach($arrayResult['programs'] as $x_value) 
+            { 
+                  if(isset($x_value['id']))
+                  {
 
-                if(isset($x_value['id']))
-                {
-                    
-                    echo "<div class='productstyle eventlayout'>";
-                    
-                        if(isset($x_value['name']))
-                        {
-                            $assetstitle = (strlen($x_value['name']) > 43) ? substr($x_value['name'],0,40).'...' : $x_value['name'];
+                   $assetstitle = (strlen($x_value['name']) > 43) ? substr($x_value['name'],0,40).'...' : $x_value['name'];  
+                //List View
+                echo "<div class='listview-events'>";
+                  echo "<div class='productstyle-list-items'>";
+                     
+                      if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
+                      {                                    
+                          echo "<div class='product-img'>";
+                          echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ )." >"; 
+                          echo "</div>";
+                      }
+                      else
+                      {
+                           echo "<div class='product-img'>";
+                              echo "<img src=".$x_value['photo']['photo']['medium']['url'].">";
+                           echo "</div>";
+                      }
 
+                      echo "<div class='product-content'>";
+                        $date=$x_value['earliest_scheduled_program_date'];
+                          if(empty($date))
+                          {
+                            echo "<p>No Date Scheduled</P>";
+                          }
+                          else
+                          {
+                            echo "<p class='product-date'>".date('D, M d', strtotime($date))."</P>"; 
+                          }
+                          echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                      echo "</div>";
+                      
+                        
+                    echo "</div>";
+                echo "</div>";
+                //End list view
+                   } // End if
+            } // End foreach
+        }
+        else
+        {
 
-                            if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
-                            {                                    
-                                echo "<div class='product-img-wrap'>";
-                                echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ ).">";   
-                                echo "</div>";
+            foreach($arrayResult['programs'] as $x_value) { 
 
-                            }
-                            else
+                    if(isset($x_value['id']))
+                    {
+                        
+                        echo "<div class='productstyle eventlayout'>";
+                        
+                            if(isset($x_value['name']))
                             {
-                                 echo "<div class='eventlayout-image'>";
-                                    echo "<img src=".$x_value['photo']['photo']['medium']['url'].">";
-                                 echo "</div>";
-                            }
+                                $assetstitle = (strlen($x_value['name']) > 43) ? substr($x_value['name'],0,40).'...' : $x_value['name'];
 
-                            echo "<div class='eventtitle'>";
-                                $date=$x_value['earliest_scheduled_program_date'];
-                                if(empty($date))
-                                {
-                                  echo "<p>No Date Scheduled</P>";
+
+                                if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
+                                {                                    
+                                    echo "<div class='product-img-wrap'>";
+                                    echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ ).">";   
+                                    echo "</div>";
+
                                 }
                                 else
                                 {
-                                  echo "<p>".date('D, M d', strtotime($date))."</P>"; 
-                                } 
-                                echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
-                            echo "</div>";
-                              
-                            }
-                        
-                    echo "</div>";
+                                     echo "<div class='eventlayout-image'>";
+                                        echo "<img src=".$x_value['photo']['photo']['medium']['url'].">";
+                                     echo "</div>";
+                                }
+
+                                echo "<div class='eventtitle'>";
+                                    $date=$x_value['earliest_scheduled_program_date'];
+                                    if(empty($date))
+                                    {
+                                      echo "<p>No Date Scheduled</P>";
+                                    }
+                                    else
+                                    {
+                                      echo "<p>".date('D, M d', strtotime($date))."</P>"; 
+                                    } 
+                                    echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
+                                echo "</div>";
+                                  
+                                }
+                            
+                        echo "</div>";
+                    }
                 }
-            }
+        }        
     }
     else
     {
@@ -1126,11 +1181,11 @@ function infinitescroll_action()
 
                                 echo "<div class='bottom-fix'>"; 
                                 if($x_value['status_text'] == "Active")
-                                    echo "<span class='label label-success btn-common' style='background-color: $bgcolor;'><a href='".site_url('/'.$newslugname.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Available</a></span>";
+                                    echo "<span class='label label-success btn-common' style='background-color: $bgcolor;'><a href='".site_url('/'.$newslugname.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'>Available</a></span>";
                                 else
                                 {
                                     
-                                    echo "<span class='label label-danger btn-common'><a href='".site_url('/'.$newslugname.'/'.$x_value['category_name'].'/'.$x_value['id'])."'>Unavailable</a></span>";
+                                    echo "<span class='label label-danger btn-common'><a href='".site_url('/'.$newslugname.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'>Unavailable</a></span>";
                                 }
                                      
                                 echo "</div>";
@@ -1252,7 +1307,59 @@ function geteventonclick_action()
 
         $arrayResult = json_decode($json, true);
 
+        $post = get_post($pageslugid);
+        $blocks = parse_blocks($post->post_content);
+        $gridlayout = $blocks[0]['attrs']['radio_attr_event'];
         
+        if($gridlayout == "list_view")
+        {
+            foreach($arrayResult['programs'] as $x_value) 
+                { 
+                  if(isset($x_value['id']))
+                  {
+
+                   $assetstitle = (strlen($x_value['name']) > 43) ? substr($x_value['name'],0,40).'...' : $x_value['name'];  
+                //List View
+                echo "<div class='listview-events'>";
+                  echo "<div class='productstyle-list-items'>";
+                     
+                      if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
+                      {                                    
+                          echo "<div class='product-img'>";
+                          echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ )." >"; 
+                          echo "</div>";
+                      }
+                      else
+                      {
+                           echo "<div class='product-img'>";
+                              echo "<img src=".$x_value['photo']['photo']['medium']['url'].">";
+                           echo "</div>";
+                      }
+
+                      echo "<div class='product-content'>";
+                        $date=$x_value['earliest_scheduled_program_date'];
+                          if(empty($date))
+                          {
+                            echo "<p>No Date Scheduled</P>";
+                          }
+                          else
+                          {
+                            echo "<p class='product-date'>".date('D, M d', strtotime($date))."</P>"; 
+                          }
+                          echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                      echo "</div>";
+                      
+                        
+                    echo "</div>";
+                echo "</div>";
+                //End list view
+                   } // End if
+                } // End foreach
+        
+        }
+        else
+        {
+
             foreach($arrayResult['programs'] as $x_value) { 
 
                 if(isset($x_value['id']))
@@ -1290,6 +1397,7 @@ function geteventonclick_action()
                 }
             }
         
+        }
         //echo "<img src=". esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) . ">";
 
     die();

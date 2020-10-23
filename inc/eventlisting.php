@@ -129,6 +129,58 @@ else
             $pageid = $post->ID;
             $pageslug = $post->post_name;
 
+            if($blockdata['radio_attr_event'] == "list_view")
+        {
+                foreach($arrayResult['programs'] as $x_value) 
+                { 
+                  if(isset($x_value['id']))
+                  {
+
+                   $assetstitle = (strlen($x_value['name']) > 43) ? substr($x_value['name'],0,40).'...' : $x_value['name'];  
+                //List View
+                echo "<div class='listview-events'>";
+                  echo "<div class='productstyle-list-items'>";
+                     
+                      if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
+                      {                                    
+                          echo "<div class='product-img'>";
+                          ?>
+                          <img src="<?php echo plugin_dir_url( dirname( __FILE__ ) ) . 'assets/img/bg-image.png'; ?>">
+                          <?php    
+                          echo "</div>";
+                      }
+                      else
+                      {
+                           echo "<div class='product-img'>";
+                              echo "<img src=".$x_value['photo']['photo']['medium']['url'].">";
+                           echo "</div>";
+                      }
+
+                      echo "<div class='product-content'>";
+                        $date=$x_value['earliest_scheduled_program_date'];
+                          if(empty($date))
+                          {
+                            echo "<p>No Date Scheduled</P>";
+                          }
+                          else
+                          {
+                            echo "<p class='product-date'>".date('D, M d', strtotime($date))."</P>"; 
+                          }
+                          echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                      echo "</div>";
+                      
+                        
+                    echo "</div>";
+                echo "</div>";
+                //End list view
+                   } // End if
+                } // End foreach
+
+        
+        } // End list view if condition
+        else
+        { 
+          
             foreach($arrayResult['programs'] as $x_value) { 
 
                 if(isset($x_value['id']))
@@ -175,7 +227,8 @@ else
                 }
             }
                         
-            
+         //End grid view                
+        } // End grid view else condition      
           ?>
             
        </div>  

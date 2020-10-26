@@ -625,6 +625,12 @@ if(!empty($apiurlcheck) && !empty($apikeycheck))
           plugins_url( 'assets/css/amsblockstyle.css', __FILE__ ),
           array()
        );
+       
+       wp_enqueue_script(
+        'amsmember-js',
+        plugins_url( 'assets/js/amsmember.js', __FILE__ ),
+        array( 'wp-blocks', 'wp-element', 'wp-plugins', 'wp-editor', 'wp-edit-post', 'wp-i18n', 'wp-components', 'wp-data' )
+     );
     }
     add_action( 'enqueue_block_editor_assets', 'ams_gutenberg_api_block_admin' );
 }
@@ -1248,7 +1254,7 @@ function member_ajax()
 
     $arrayResult = json_decode($json, true);
     foreach ($arrayResult["users"] as $member) {
-        echo '<a class="member-item" href="'.site_url('/'.$newslugname.'/'.$member["id"].'/details' ).'">';
+        echo '<a class="member-item" href="'.site_url('/members/'.$member["id"].'/details' ).'">';
         echo '<div class="row member-entry">';
             echo '<div class="col-xs-12 col-sm-3 col-md-3 user-image">';
                 echo '<img src="'.$member['photo'] .'" onerror=\'this.src="'.$dummy_image.'"\' alt="'.$member["email"].'" style="height:150px; border-radius:5px">';

@@ -479,3 +479,94 @@ img.member-image {
     min-height: auto;
     font-weight: bold;
 }
+
+/**/
+
+.assets-list-items {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: white;
+    display: flex;
+    flex-wrap:wrap;
+    box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.2);
+}
+
+.listview-assets {
+    width: 90%;
+}
+
+.assets-list-items .product-img img
+{
+    width: 100%;
+    height: 165px;
+}
+
+.product-date p{
+        margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.assetsproduct-content .product-title
+{
+    font-size: 16px;
+    line-height: 26px;
+    min-height: auto;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.assetsproductlabel
+{
+    background-color: #43c8df;
+    display: inline;
+    padding: 7px 9px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 400ms ease;
+}
+
+.assetsproductlabel a{color: #fff;}
+.assetsproduct-content{padding: 10px 40px;}
+.assetsprice{
+        clear: both;
+        margin-top: 0px;
+        margin-bottom: 15px;
+}
+.assetsprice p{
+        padding-bottom: 0px;
+    margin-bottom: 5px;
+}
+
+.listview-assets .btn-common.label-danger {
+    background-color: #6c757d;
+}
+
+.listview-assets .btn-common {
+    background-color: #007bff;
+    display: inline;
+    padding: 7px 9px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 400ms ease;
+}
+
+.listview-assets .btn-common.label-danger a {
+    color: #fff;
+    text-decoration: none;
+}

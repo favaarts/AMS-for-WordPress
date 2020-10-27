@@ -87,7 +87,6 @@ get_header();  ?>
                                     echo "<h2 class='infotitle'>Information</h2>";
                                     echo "<div class='text-sec assetsdescription'>";
                                     echo "<p class='text-italic'>". $json_value['description'] ."</p>";
-                                    echo "<hr>";
                                     echo "</div>";
                                     
                                 }

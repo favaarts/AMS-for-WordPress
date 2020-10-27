@@ -592,7 +592,7 @@ line-height: 28px;
     text-transform: capitalize;
 }
 .assetsdetail .event-detail-sec .left-sec {
-    padding: 0px 60px 50px;
+    padding: 50px 60px 50px;
 }
 
 .assetsdetail hr {
@@ -606,4 +606,8 @@ line-height: 28px;
     object-fit: cover;
     height: 360px;
     width: 360px;
+}
+
+.assetsdetail .event-img-sec .img-sec {
+    background-color: #fff;
 }

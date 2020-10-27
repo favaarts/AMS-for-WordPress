@@ -142,8 +142,6 @@ get_header();  ?>
                                     <p class="text-italic">
                                         <?php echo $arrayResult['program']['description']; ?>
                                     </p>
-                                    <hr>
-                                    
                                 </div>
                             </div>
                             

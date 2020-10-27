@@ -62,7 +62,7 @@ function members_function($slug)
                     $dummy_image = "https://ssl.gstatic.com/images/branding/product/1x/avatar_square_blue_512dp.png";
                     foreach ($arrayResult["users"] as $member) {
                 ?>
-                    <a class="member-item" href="<?= site_url('/'.$post_slug.'/'.$member["id"].'/details' )?>">
+                    <a class="member-item" href="<?= site_url('/members/'.$member["id"].'/details' )?>">
                         <div class="row member-entry">
                             <div class="col-xs-12 col-sm-3 col-md-3 user-image">
                                 <img src="<?= $member['photo'] ?>" onerror='this.src="<?= $dummy_image ?>"'  alt="<?= $member["email"] ?>" style="height:150px; border-radius:5px">

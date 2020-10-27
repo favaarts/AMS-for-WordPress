@@ -415,6 +415,9 @@ p.price-non-mem {
 .member-item {
     color: #3a3a3a;
 }
+.user-image {
+    text-align: center;
+}
 img.member-image {
     width: 100%;
     max-width: 200px;
@@ -608,6 +611,8 @@ line-height: 28px;
     width: 360px;
 }
 
+
 .assetsdetail .event-img-sec .img-sec {
     background-color: #fff;
 }
+

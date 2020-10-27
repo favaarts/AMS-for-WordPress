@@ -573,3 +573,41 @@ img.member-image {
     color: #fff;
     text-decoration: none;
 }
+
+/* Assets details page*/
+.assetsdetail .img-sec{text-align: center;}
+.assetsdescription{white-space: pre-line;
+line-height: 28px;
+}
+.assetsinfo
+{
+   
+    line-height: 28px;
+    font-size: 16px;
+    white-space: pre-line;
+    color: #6F7287;
+}
+
+.infotitle
+{
+    font-size: 20px;
+    margin-bottom: 0;
+    text-transform: capitalize;
+}
+.assetsdetail .event-detail-sec .left-sec {
+    padding: 0px 60px 50px;
+}
+
+.assetsdetail hr {
+    border: 0;
+    border-top: 0;
+    height: 2px;
+    margin-bottom: 30px;
+    border-bottom: 2px dashed #6F7287;
+}
+.assetsdetail .event-img-sec .img-sec img {
+    object-fit: cover;
+    height: 360px;
+    width: 360px;
+}
+

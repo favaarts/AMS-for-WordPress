@@ -904,54 +904,116 @@ function search_category_action()
 
     $totalitems = $arrayResult['assets'];
 
+    $post = get_post($pageid);
+    $blocks = parse_blocks($post->post_content);
+    
     //print_r($arrayResult);   
     if(!empty($totalitems))
     {
-    
-        foreach($arrayResult as $json_value) {
+        if($blocks[0]['attrs']['radio_attr'] == "list_view")
+            {  
+            foreach($arrayResult as $json_value) {
             
-            foreach($json_value as $x_value) { 
-                if(isset($x_value['id']))
-                {
-                    echo "<div class='productstyle'>";
-                       
-                        if(isset($x_value['name']))
-                        {
-                            echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title 123'>". $x_value['name'] ."</p> </a>";
-                            
-                            if($x_value['photo'] == NULL || $x_value['photo'] == "")
-                            {                                    
-                                echo "<div class='product-img-wrap'>";
-                                    echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ )." alt=".$x_value['name'].">";
-                                 echo "</div>";
-                            }
-                            else
-                            {
-                                echo "<div class='product-img-wrap'>";
-                                    echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
-                                echo "</div>";
-                            }
-                             
+                foreach($json_value as $x_value) { 
+            
+                    if(isset($x_value['id']))
+                    {
+                        
+                        echo "<div class='listview-assets'>";
+                        
+                          echo   "<div class='assets-list-items'>";
+                              if($x_value['photo'] == NULL || $x_value['photo'] == "")
+                              {                                    
+                                  echo "<div class='product-img'>";
+                                      echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ )." alt=".$x_value['name'].">";
+                                   echo "</div>";
+                              }
+                              else
+                              {
+                               echo "<div class='product-img'>";
+                                  echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
+                               echo "</div>";
+                              }
+                              echo"<div class='assetsproduct-content'>"; 
 
-                            echo "<div class='bottom-fix'>"; 
-                            if($x_value['status_text'] == "Active")
-                                echo "<span class='label label-success btn-common' style='background-color: $bgcolor;'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'>Available</a></span>";
+                                $assetstitle = (strlen($x_value['name']) > 43) ? substr($x_value['name'],0,40).'...' : $x_value['name'];
+                                echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
+                                
+                                echo"<div class='assetsprice'>" ;
+                                if (!isset($blocks[0]['attrs']['member']))
+                                {     
+                                echo "<p class='memberprice'>".$x_value['price_types'][0][0]."</p>";
+                                }
+                                if(!isset($blocks[0]['attrs']['nonmember']))          
+                                {         
+                                echo "<p class='price-non-mem'>".$x_value['price_types'][1][0]."</p>";
+                                }
+                                echo"</div>"; 
+                                
+                                if($x_value['status_text'] == "Active")
+                                {  
+                                 echo "<span class='assetsproductlabel label-success btn-common' style='background-color: $bgcolor;'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'>Available</a></span>";
+                                } 
                                 else
                                 {
-                                    echo "<span class='label label-danger btn-common'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'>Unavailable</a></span>";
+                                  echo "<span class='label label-danger btn-common'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'>Unavailable</a></span>";
                                 }
                                 
-                            echo "</div>";    
-                            }
+                              echo "</div>";
+                          echo "</div>";
 
-                        echo "<p class='memberprice'>".$x_value['price_types'][0][0]."</p>";    
-                        echo "<p class='price-non-mem'>".$x_value['price_types'][1][0]."</p>";
-
-                        
-                    echo "</div>";
+                        echo "</div>";
+                    }
                 }
             }
         }
+        else 
+        {
+            foreach($arrayResult as $json_value) {
+                
+                foreach($json_value as $x_value) { 
+                    if(isset($x_value['id']))
+                    {
+                        echo "<div class='productstyle'>";
+                           
+                            if(isset($x_value['name']))
+                            {
+                                echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title 123'>". $x_value['name'] ."</p> </a>";
+                                
+                                if($x_value['photo'] == NULL || $x_value['photo'] == "")
+                                {                                    
+                                    echo "<div class='product-img-wrap'>";
+                                        echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ )." alt=".$x_value['name'].">";
+                                     echo "</div>";
+                                }
+                                else
+                                {
+                                    echo "<div class='product-img-wrap'>";
+                                        echo "<img src=".$x_value['photo']." alt=".$x_value['name'].">";
+                                    echo "</div>";
+                                }
+                                 
+
+                                echo "<div class='bottom-fix'>"; 
+                                if($x_value['status_text'] == "Active")
+                                    echo "<span class='label label-success btn-common' style='background-color: $bgcolor;'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'>Available</a></span>";
+                                    else
+                                    {
+                                        echo "<span class='label label-danger btn-common'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'>Unavailable</a></span>";
+                                    }
+                                    
+                                echo "</div>";    
+                                }
+
+                            echo "<p class='memberprice'>".$x_value['price_types'][0][0]."</p>";    
+                            echo "<p class='price-non-mem'>".$x_value['price_types'][1][0]."</p>";
+
+                            
+                        echo "</div>";
+                    }
+                }
+            }
+        }    
     }
     else
     {
@@ -1183,7 +1245,7 @@ function infinitescroll_action()
                               echo"<div class='assetsproduct-content'>"; 
 
                                 $assetstitle = (strlen($x_value['name']) > 43) ? substr($x_value['name'],0,40).'...' : $x_value['name'];
-                                echo "<a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
+                                echo "<a href='".site_url('/'.$newslugname.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
                                 
                                 echo"<div class='assetsprice'>" ;
                                 if (!isset($blocks[0]['attrs']['member']))
@@ -1198,11 +1260,11 @@ function infinitescroll_action()
                                 
                                 if($x_value['status_text'] == "Active")
                                 {  
-                                 echo "<span class='assetsproductlabel label-success btn-common' style='background-color: $bgcolor;'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'>Available</a></span>";
+                                 echo "<span class='assetsproductlabel label-success btn-common' style='background-color: $bgcolor;'><a href='".site_url('/'.$newslugname.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'>Available</a></span>";
                                 } 
                                 else
                                 {
-                                  echo "<span class='label label-danger btn-common'><a href='".site_url('/'.$pageslug.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'>Unavailable</a></span>";
+                                  echo "<span class='label label-danger btn-common'><a href='".site_url('/'.$newslugname.'/'.$x_value['category_name'].'/'.$pageid.'-'.$x_value['id'])."'>Unavailable</a></span>";
                                 }
                                 
                               echo "</div>";
@@ -1410,7 +1472,7 @@ function geteventonclick_action()
                           {
                             echo "<p class='product-date'>".date('D, M d', strtotime($date))."</P>"; 
                           }
-                          echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                          echo "<a href='".site_url('/'.$pageslug.'/'.$pageslugid.'-'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
                       echo "</div>";
                       
                         

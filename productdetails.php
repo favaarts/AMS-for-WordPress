@@ -10,13 +10,9 @@ get_header();  ?>
             <main id="main" class="site-main" role="main">
         <!-- Entry content -->
         <div class="entry-content">
-            <div class="wp-block-columns main-content main-content-three-col" >
-                <div class="categorysearchdata right-col" >
-                <div class="productdetail"></div>
-                    <div class="right-col-wrap">
-                
-                <?php
-                
+
+            <!-- New Asstes Details page -->
+            <?php
                 global $wp, $wpdb;
                 
                 $prodictidaray = $wp->query_vars['proname'];
@@ -33,17 +29,12 @@ get_header();  ?>
                 $blocks = parse_blocks($post->post_content);
                 
                 $arrayResult = get_apirequest(NULL,NULL,$prodictid[1]);
-                
-                if(isset($arrayResult['error']))
-                {   
-                echo "<p class='centertext'>".$arrayResult['error']."</p>";
-                } 
-                elseif($arrayResult == NULL && $arrayResult == "")
+            ?>
+            <div class="wp-block-columns main-content main-content-three-col">
+                <?php
+                foreach($arrayResult as $json_value) 
                 {
-                echo "<p class='centertext'>Something went wrong! Please check subdomain and API key </p>";    
-                }
-                else
-                {
+
                 
                     echo "<div class='product-detail-wrap'>";
                     foreach($arrayResult as $json_value) {
@@ -167,10 +158,142 @@ get_header();  ?>
 
                 }   
 
+
+                    $priceone = explode("-",$json_value['price_types'][0][0]);
+                    $pricetwo = explode("-",$json_value['price_types'][1][0]);
+
                 ?>
-                </div>   
+                <div class="categorysearchdata right-col">
+                    <div class="eventdetail assetsdetail">
+                        <div class="event-img-sec">
+                            <?php
+                                echo"<div class='img-sec'>";
+                                if($json_value['photo'] == NULL || $json_value['photo'] == "")
+                                {  
+                                     echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ )." alt=".$json_value['name'].">";
+                                }
+                                else
+                                {
+                                    echo "<img src=".$json_value['photo_medium']." alt=".$json_value['name'].">";
+                                } 
+                                echo "</div>";
+
+
+                                echo "<div class='ing-title'>
+                                    <h1>". $json_value['name'] ."</h1>
+                                    <span>". $json_value['category_name'] ."</span>";
+                                echo "<div class='enrollment enrtop'>
+                                        <h3>Member Price</h3>";
+                                        if (!isset($blocks[0]['attrs']['member']))
+                                        {
+                                            echo "<p>". $priceone[1] ."</p>";
+                                        } 
+                                      
+                                echo "</div>";
+                                
+                                echo "<div class='enrollment enrtop'>
+                                        <h3>Non - Member Price</h3>";
+                                        if (!isset($blocks[0]['attrs']['member']))
+                                        {
+                                            echo "<p>". $pricetwo[2] ."</p>";
+                                        } 
+                                      
+                                echo "</div>";    
+                                    
+                                echo "</div>";
+                            ?>
+                            
+                        </div>
+
+                        <div class="event-detail-sec">
+                            <div class="left-sec">
+                                <?php
+                                if($json_value['description'])
+                                {
+                                    echo "<h2 class='infotitle'>Information</h2>";
+                                    echo "<div class='text-sec assetsdescription'>";
+                                    echo "<p class='text-italic'>". $json_value['description'] ."</p>";
+                                    echo "<hr>";
+                                    echo "</div>";
+                                    
+                                }
+
+                                if($json_value['included_accessories'])
+                                {
+                                    echo "<h2 class='infotitle'>Included Accessories</h2>";
+                                    echo "<div class='text-sec assetsinfo'>";
+                                        echo $json_value['included_accessories'];
+                                    echo "</div>";
+                                }
+
+                                if($json_value['warranty_info'])
+                                {
+                                    echo "<h2 class='infotitle'>Warranty Information</h2>";
+                                    echo "<div class='text-sec assetsinfo'>";
+                                    echo  $json_value['warranty_info'];
+                                    echo "</div>";
+                                }
+
+                                ?>
+                                
+                            </div>
+                            
+
+                            <div class="right-sec">
+                                
+                                <div class="ragister-sec">
+                                    <div class="reg-sec">
+                                        <?php
+                                        if($json_value['status_text'] == "Active")
+                                        {
+                                        echo "<a href='$landingurl' target='$targeturl' style='background-color: $bgcolor;'>Book This Item</a>";
+                                        }    
+                                        else
+                                        {
+                                        echo "<p><span class='label label-danger btn-common' disabled>Unavailable</span></p>";
+                                        }
+                                        ?>
+                                        
+                                    </div>
+                                
+                                </div>
+                                
+                                <?php
+                                    if(isset($json_value['barcode']))
+                                    {
+                                    echo "<div class='location-sec'>";
+                                    echo "<h3>Barcode Number</h3>";
+                                    echo "<p>".$json_value['barcode']."</p>";
+                                    echo "</div>";
+                                    }
+
+                                    if(isset($json_value['serial_number']))
+                                    {
+                                    echo "<div class='location-sec'>";
+                                    echo "<h3>Serial Number</h3>";
+                                    echo "<p>".$json_value['serial_number']."</p>";
+                                    echo "</div>";
+                                    }
+
+                                    if(isset($json_value['insurance_value']))
+                                    {
+                                    echo "<div class='location-sec'>";
+                                    echo "<h3>Serial Number</h3>";
+                                    echo "<p>".$json_value['insurance_value']."</p>";
+                                    echo "</div>";
+                                    }
+                                ?>        
+                                
+                           </div>
+                            
+                        </div>
+                    </div>  
                 </div> 
+            <?php } ?>
             </div>
+            <!-- End asstes details page -->
+
+            
         </div>
         <!-- .entry-content -->
 

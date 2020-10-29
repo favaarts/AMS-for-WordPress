@@ -70,37 +70,13 @@ get_header();  ?>
               ?>
 
               <div class="wp-block-column left-col col-fit" >
+               <div class="assetssidebar">
                 
                 <div class="searchbox">
                   <h4>Search Box</h4>
                   <input type="text" class="searrch-input" name="keyword" id="keyword" onkeyup="fetchequipment()"></input>
                 </div>
                 
-                <!-- Mobile view only -->
-                <div class="mobileviewonly">
-                  <select class='ul-cat-wrap' id='cagegorydata'>
-                  
-                    <?php
-
-                      if(empty($blocks[0]['attrs']['all_items_url']))
-                      {
-                        echo "<option value=".site_url($pageslugnew).">All Items</option>";
-                      }
-                      else
-                      {
-                        $customurl = site_url($pageslugnew)."/".$blocks[0]['attrs']['all_items_url'];
-                        echo "<option value=".$customurl.">All Items</option>";
-                      }
-
-                      foreach($catArrayResult['categories'] as $c => $c_value) {
-                        echo "<option  value='".site_url('/'.$pageslugnew.'/'.$c_value['name'])."'>".$c_value['name']."</option>";     
-                      }
-
-                  ?>
-                  </select>
-                </div>
-                <!-- Mobile view only --> 
-
                 <?php
                 global $wp;
                 $url = home_url( $wp->request );
@@ -158,6 +134,34 @@ get_header();  ?>
                   // End get sidebar category
                 
                 ?>
+
+                <!-- Mobile view only -->
+                <div class="mobileviewonly">
+                  <select class='ul-cat-wrap' id='cagegorydata'>
+                  
+                    <?php
+
+                      if(empty($blocks[0]['attrs']['all_items_url']))
+                      {
+                        echo "<option value=".site_url($pageslugnew).">All Items</option>";
+                      }
+                      else
+                      {
+                        $customurl = site_url($pageslugnew)."/".$blocks[0]['attrs']['all_items_url'];
+                        echo "<option value=".$customurl.">All Items</option>";
+                      }
+
+                      foreach($catArrayResult['categories'] as $c => $c_value) {
+                        echo "<option  value='".site_url('/'.$pageslugnew.'/'.$c_value['name'])."'>".$c_value['name']."</option>";     
+                      }
+
+                  ?>
+                  </select>
+                </div>
+                <!-- Mobile view only --> 
+
+               </div>
+                
               </div>  
               
               <?php } 

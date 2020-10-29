@@ -65,95 +65,95 @@ else
             
               
         ?>
-
+          <div class="assetssidebar">
             <div class="searchbox">
                 <h4>Search Box</h4>
                 <input type="text" class="searrch-input" name="keyword" id="keyword" onkeyup="fetchequipment()"></input>
             </div>
 
-            <!-- Mobile view only -->
-            <div class="mobileviewonly">
-              <select class='ul-cat-wrap' id='cagegorydata'>
-                <?php
-                 if(empty($blockdata['all_items_url']))
-                  {
-                    echo "<option value=".site_url($post_slug).">All Items</option>";
-                  }
-                  else
-                  {
-                    $customurl = site_url($post_slug)."/".$blockdata['all_items_url'];
-                    echo "<option value=".$customurl.">All Items</option>";
-                  }
-
-                  foreach($catArrayResult['categories'] as $c => $c_value) {
-                      echo "<option  value='".site_url('/'.$post_slug.'/'.$c_value['name'])."'>".$c_value['name']."</option>";     
-                  }
-                   
-
-              ?>
-              </select>
-            </div>
-            <!-- Mobile view only -->
-
-            <?php
+            
+              <?php
                   
 
-            global $post;
-           
-            $pageslug = $post->post_name;
+                global $post;
+               
+                $pageslug = $post->post_name;
 
-            $pageid = $post->ID;
+                $pageid = $post->ID;
 
-            // Comparison function 
-            if(!function_exists('dateCompare'))
-            {    
-                function dateCompare($element1, $element2) { 
-                    
-                    return strcmp($element1['name'],$element2['name']); 
-                }
-                usort($catArrayResult['categories'], 'dateCompare');
-            }    
- 
-           
-                echo '<h4>Categories</h4>';
-                echo "<ul class='ul-cat-wrap getcategoryid'>";
+                // Comparison function 
+                if(!function_exists('dateCompare'))
+                {    
+                    function dateCompare($element1, $element2) { 
+                        
+                        return strcmp($element1['name'],$element2['name']); 
+                    }
+                    usort($catArrayResult['categories'], 'dateCompare');
+                }    
+     
+               
+                    echo '<h4>Categories</h4>';
+                    echo "<ul class='ul-cat-wrap getcategoryid'>";
 
-                if(empty($blockdata['all_items_url']))
+                    if(empty($blockdata['all_items_url']))
+                    {
+                      echo "<li><a href='".site_url($pageslug)."'>All Items</a></li>";
+                    }  
+                    else
+                    {
+                      $customurl = site_url($pageslug)."/".$blockdata['all_items_url'];
+                      echo "<li><a href='".$customurl."'>All Items</a></li>";
+                    }
+
+                    foreach($catArrayResult['categories'] as $c => $c_value) {
+
+                       /* $arrayResult = get_apirequest($c_value[0],NULL,NULL);
+                        $categorycount = $arrayResult['meta']['total_count'];*/
+                        if($c_value['bookable_by_admin_only'] != 1)
+                        {
+                          echo "<li>";
+                         
+                          ?>
+
+                          <a href='<?= site_url('/'.$pageslug.'/'.$c_value['name']); ?>'><?= $c_value['name']?> </a>
+
+                          
+                          
+                          <?php   
+                          
+                          echo "</li>";
+                        }
+                    }
+                    echo "</ul>";
+                }    
+
+              ?>
+
+          <!-- Mobile view only -->
+          <div class="mobileviewonly">
+            <select class='ul-cat-wrap' id='cagegorydata'>
+              <?php
+               if(empty($blockdata['all_items_url']))
                 {
-                  echo "<li><a href='".site_url($pageslug)."'>All Items</a></li>";
-                }  
+                  echo "<option value=".site_url($post_slug).">All Items</option>";
+                }
                 else
                 {
-                  $customurl = site_url($pageslug)."/".$blockdata['all_items_url'];
-                  echo "<li><a href='".$customurl."'>All Items</a></li>";
+                  $customurl = site_url($post_slug)."/".$blockdata['all_items_url'];
+                  echo "<option value=".$customurl.">All Items</option>";
                 }
 
                 foreach($catArrayResult['categories'] as $c => $c_value) {
-
-                   /* $arrayResult = get_apirequest($c_value[0],NULL,NULL);
-                    $categorycount = $arrayResult['meta']['total_count'];*/
-                    if($c_value['bookable_by_admin_only'] != 1)
-                    {
-                      echo "<li>";
-                     
-                      ?>
-
-                      <a href='<?= site_url('/'.$pageslug.'/'.$c_value['name']); ?>'><?= $c_value['name']?> </a>
-
-                      
-                      
-                      <?php   
-                      
-                      echo "</li>";
-                    }
+                    echo "<option  value='".site_url('/'.$post_slug.'/'.$c_value['name'])."'>".$c_value['name']."</option>";     
                 }
-                echo "</ul>";
-                    
+                 
 
-            
-        }    
-
-        ?>
+            ?>
+            </select>
+          </div>
+          <!-- Mobile view only -->
+        </div>    
+        
     </div>  
 
   <?php

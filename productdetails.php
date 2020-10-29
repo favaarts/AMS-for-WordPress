@@ -91,21 +91,47 @@ get_header();  ?>
                                     
                                 }
 
+                                /*-- html tab --*/
+                                if($json_value['included_accessories'] || $json_value['warranty_info'])
+                                {     
+                                echo "<div class='tabs effect-3'>";
+                                    /*-- tab-title --*/
                                 if($json_value['included_accessories'])
-                                {
-                                    echo "<h2 class='infotitle'>Included Accessories</h2>";
-                                    echo "<div class='text-sec assetsinfo'>";
-                                        echo $json_value['included_accessories'];
-                                    echo "</div>";
-                                }
+                                    {    
+                                echo "<input type='radio' id='tab-1' name='tab-effect-3' checked='checked'>
+                                    <span>Included Accessories</span>";
+                                    }
 
                                 if($json_value['warranty_info'])
-                                {
-                                    echo "<h2 class='infotitle'>Warranty Information</h2>";
-                                    echo "<div class='text-sec assetsinfo'>";
-                                    echo  $json_value['warranty_info'];
-                                    echo "</div>";
+                                    {    
+                                echo "<input type='radio' id='tab-2' name='tab-effect-3'>
+                                    <span>Warranty Information</span>";
+                                    }
+                                
+                                if($json_value['included_accessories'] || $json_value['warranty_info'])
+                                    {        
+                                echo "<div class='line ease'></div>";
+                                    }
+                                    /*-- tab-content --*/
+
+                                echo "<div class='tab-content'>";
+                                if($json_value['included_accessories'])
+                                    {
+                                echo    "<section id='tab-item-1'>
+                                            ".$json_value['included_accessories']."
+                                        </section>";
+                                    }
+
+                                if($json_value['warranty_info'])
+                                    {        
+                                echo    "<section id='tab-item-2'>
+                                            ".$json_value['warranty_info']."
+                                        </section>";
+                                    }    
+                                echo "</div>";
+                                echo "</div>";
                                 }
+                                /*-- html end tab --*/
 
                                 ?>
                                 

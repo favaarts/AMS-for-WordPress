@@ -99,18 +99,18 @@ get_header();  ?>
                                 if($json_value['included_accessories'])
                                     {    
                                 echo "<input type='radio' id='tab-1' name='tab-effect-3' checked='checked'>
-                                    <span>Included Accessories</span>";
+                                    <span style='color: $bgcolor;'>Included Accessories</span>";
                                     }
 
                                 if($json_value['warranty_info'])
                                     {    
                                 echo "<input type='radio' id='tab-2' name='tab-effect-3'>
-                                    <span>Warranty Information</span>";
+                                    <span style='color: $bgcolor;'>Warranty Information</span>";
                                     }
                                 
                                 if($json_value['included_accessories'] || $json_value['warranty_info'])
                                     {        
-                                echo "<div class='line ease'></div>";
+                                echo "<div class='line ease' style='background-color: $bgcolor;'></div>";
                                     }
                                     /*-- tab-content --*/
 

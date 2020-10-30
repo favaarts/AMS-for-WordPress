@@ -387,6 +387,7 @@ p.price-non-mem {
     width: 60px;
     padding: 0px 0px 0px 26px;
     display: none;
+    position: absolute;
 }
 
 .ragister-sec {width: 100%; margin-bottom: 20px; }
@@ -770,4 +771,11 @@ line-height: 28px;
 
 .event-detail-sec #tab-2:checked ~ .line {
     left: 50%;
+}
+
+.assetsdetail .btn-common.label-danger {
+    border-radius: 5px;
+    padding: 10px;
+    color: #fff;
+    background-color: #6c757d;
 }

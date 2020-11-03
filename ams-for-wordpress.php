@@ -1112,7 +1112,14 @@ function search_event_action()
                           }
                           else
                           {
-                            echo "<p class='product-date'>".date('D, M d', strtotime($date))."</P>"; 
+                            if($eventtype == 'Classes')
+                            {
+                                echo "<p class='product-date'>".date('D, M d', strtotime($date))."<span class='multidate'> (Multiple Dates)</span></P>";
+                            }
+                            else
+                            {
+                                echo "<p class='product-date'> <span class='datetitle'>Earliest Date: </span>".date('D, M d', strtotime($date))."</P>"; 
+                            }
                           }
                           echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
                       echo "</div>";
@@ -1161,7 +1168,15 @@ function search_event_action()
                                     }
                                     else
                                     {
-                                      echo "<p>".date('D, M d', strtotime($date))."</P>"; 
+                                      if($eventtype == 'Classes')
+                                      {  
+                                      echo "<p>".date('D, M d', strtotime($date))."<span class='multidate'> (Multiple Dates)</span></P>"; 
+                                      }
+                                      else
+                                      {  
+                                      echo "<p><span class='datetitle'>Earliest Date: </span>".date('D, M d', strtotime($date))."</P>"; 
+                                      }
+                                       
                                     } 
                                     echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
                                 echo "</div>";
@@ -1470,7 +1485,7 @@ function geteventonclick_action()
                           }
                           else
                           {
-                            echo "<p class='product-date'>".date('D, M d', strtotime($date))."</P>"; 
+                            echo "<p class='product-date'><span class='datetitle'>Earliest Date: </span>".date('D, M d', strtotime($date))."</P>"; 
                           }
                           echo "<a href='".site_url('/'.$pageslug.'/'.$pageslugid.'-'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
                       echo "</div>";
@@ -1513,7 +1528,7 @@ function geteventonclick_action()
 
                             echo "<div class='eventtitle'>";
                             $date=date_create($arrayResult['program']['created_at']);
-                                echo "<p>".date_format($date, 'D, M d')."</P>"; 
+                                echo "<p><span class='datetitle'>Earliest Date: </span>".date_format($date, 'D, M d')."</P>"; 
                                 echo "<a href='".site_url('/'.$pageslug.'/'.$pageslugid.'-'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
                             echo "</div>";
                               

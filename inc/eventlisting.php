@@ -164,7 +164,7 @@ else
                           }
                           else
                           {
-                            echo "<p class='product-date'>".date('D, M d', strtotime($date))."</P>"; 
+                            echo "<p class='product-date'><span class='datetitle'>Earliest Date: </span>".date('D, M d', strtotime($date))."</P>"; 
                           }
                           echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
                       echo "</div>";
@@ -216,7 +216,7 @@ else
                                 }
                                 else
                                 {
-                                  echo "<p>".date('D, M d', strtotime($date))."</P>"; 
+                                  echo "<p><span class='datetitle'>Earliest Date: </span>".date('D, M d', strtotime($date))."</P>"; 
                                 }
                                 echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
                             echo "</div>";

@@ -57,6 +57,8 @@ function members_function($slug)
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-9">
+
+            <?php  if(false) { ?>
             <div class="members-list">
                 <?php
                     $dummy_image = "https://ssl.gstatic.com/images/branding/product/1x/avatar_square_blue_512dp.png";
@@ -91,6 +93,35 @@ function members_function($slug)
                     }
                 ?>
             </div>
+
+            <?php } else { ?>
+
+            <div class="row members-list">
+                <?php
+                    $dummy_image = "https://ssl.gstatic.com/images/branding/product/1x/avatar_square_blue_512dp.png";
+                    foreach ($arrayResult["users"] as $member) {
+                ?>
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="member">
+                            <a class="member-item" href="<?= site_url('/members/'.$member["id"].'/details' )?>">
+                                <div class="col-lg-12 member-overlay"></div>
+                                <img class="member-image-tile" src="<?= $member['photo'] ?>" onerror='this.src="<?= $dummy_image ?>"'  alt="<?= $member["email"] ?>">
+                                <div class="member-details fadeIn-bottom">
+                                    <h4 class="member-title"><?= $member["first_name"] ?> <?= $member["last_name"] ?></h3>
+                                    <p class="member-text"><?= getDataOrDash($member["job_position"]) ?></p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                <?php
+                    }
+                ?>
+            </div>
+
+            <?php  } ?>
+
+            <!-- HHHHHHH -->
+
             <?php if (!isset($catArrayResult['error'])) { ?>
                 <div class="loaderdiv">
                     <a id="inifiniteLoader" style="display:none;" data-totalequipment="<?php echo $arrayResult['meta']['total_count']; ?>"><img src="<?php echo esc_url(plugins_url('assets/img/loader.svg', dirname(__FILE__))) ?>"></a>

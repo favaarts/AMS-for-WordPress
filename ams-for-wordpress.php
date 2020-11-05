@@ -1388,29 +1388,46 @@ function member_ajax()
     $dummy_image = "https://ssl.gstatic.com/images/branding/product/1x/avatar_square_blue_512dp.png";
 
     $arrayResult = json_decode($json, true);
-    foreach ($arrayResult["users"] as $member) {
-        echo '<a class="member-item" href="'.site_url('/members/'.$member["id"].'/details' ).'">';
-        echo '<div class="row member-entry">';
-            echo '<div class="col-xs-12 col-sm-3 col-md-3 user-image">';
-                echo '<img src="'.$member['photo'] .'" onerror=\'this.src="'.$dummy_image.'"\' alt="'.$member["email"].'" style="height:150px; border-radius:5px">';
-            echo "</div>";
-            echo '<div class="col-xs-12 col-sm-9 col-md-9">';
-                echo '<div class="name">';
-                    echo '<h5> '.$member["first_name"].' '.$member["last_name"].' </h5>';
-                    echo '<p>';
-                        echo '<strong>Job Position:</strong> <?= getDataOrDash($member["job_position"]) ?>';
-                        echo '<br>';
-                        echo '<strong>City:</strong> <?= getDataOrDash($member["city"]) ?>';
-                        echo "<br>";
-                        $join_date = strtotime($member['created_at']);
-                        $newformat = date('M Y', $join_date);
-                        echo "Member since: ".$newformat;
-                        echo "<br>";
-                    echo "</p>";
+    if (false) {
+        foreach ($arrayResult["users"] as $member) {
+            echo '<a class="member-item" href="'.site_url('/members/'.$member["id"].'/details' ).'">';
+            echo '<div class="row member-entry">';
+                echo '<div class="col-xs-12 col-sm-3 col-md-3 user-image">';
+                    echo '<img src="'.$member['photo'] .'" onerror=\'this.src="'.$dummy_image.'"\' alt="'.$member["email"].'" style="height:150px; border-radius:5px">';
+                echo "</div>";
+                echo '<div class="col-xs-12 col-sm-9 col-md-9">';
+                    echo '<div class="name">';
+                        echo '<h5> '.$member["first_name"].' '.$member["last_name"].' </h5>';
+                        echo '<p>';
+                            echo '<strong>Job Position:</strong> <?= getDataOrDash($member["job_position"]) ?>';
+                            echo '<br>';
+                            echo '<strong>City:</strong> <?= getDataOrDash($member["city"]) ?>';
+                            echo "<br>";
+                            $join_date = strtotime($member['created_at']);
+                            $newformat = date('M Y', $join_date);
+                            echo "Member since: ".$newformat;
+                            echo "<br>";
+                        echo "</p>";
+                    echo "</div>";
                 echo "</div>";
             echo "</div>";
-        echo "</div>";
-        echo "</a>";
+            echo "</a>";
+        }
+    } else {
+        foreach ($arrayResult["users"] as $member) {
+            echo '<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">';
+                echo '<div class="member">';
+                    echo '<a class="member-item" href="'.site_url('/members/'.$member["id"].'/details' ).'">';
+                        echo '<div class="col-lg-12 member-overlay"></div>';
+                        echo '<img class="member-image-tile" src="'.$member['photo'] .'" onerror=\'this.src="'.$dummy_image.'"\' alt="'.$member["email"].'">';
+                        echo '<div class="member-details fadeIn-bottom">';
+                            echo '<h4 class="member-title">'.$member["first_name"].' '.$member["last_name"].'</h3>';
+                            echo '<p class="member-text">'.$member["job_position"].'</p>';
+                        echo "</div>";
+                    echo "</a>";
+                echo '</div>';
+            echo '</div>';
+        }
     }
     die();
 }

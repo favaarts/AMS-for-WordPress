@@ -780,6 +780,7 @@ line-height: 28px;
     background-color: #6c757d;
 }
 
+
 .allavailability select
 {
   font-size: 16px;
@@ -787,3 +788,78 @@ line-height: 28px;
     margin: 0px 0px 25px 0px;
     width: 100%;  
 }
+
+.member {
+    position: relative;
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+    margin-bottom: 1em;
+}
+
+.member .member-overlay {
+    background: rgba(0,0,0,0.7);
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+    -webkit-transition: all 0.4s ease-in-out 0s;
+    -moz-transition: all 0.4s ease-in-out 0s;
+    transition: all 0.4s ease-in-out 0s;
+}
+
+.member:hover .member-overlay{
+    opacity: 1;
+}
+
+.member-image-tile{
+    height:100%;
+    width:100%;
+}
+
+.member-details {
+    position: absolute;
+    text-align: center;
+    padding-left: 1em;
+    padding-right: 1em;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    opacity: 0;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    -moz-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+}
+
+.member:hover .member-details{
+    top: 50%;
+    left: 50%;
+    opacity: 1;
+}
+
+.member-details h3{
+    color: #fff;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5em;
+    text-transform: uppercase;
+}
+.member-title {
+    color: #fff !important;
+    font-weight: 500;
+}
+
+.member-details p{
+    color: #fff;
+    font-size: 0.8em;
+}
+
+.fadeIn-bottom{
+    top: 80%;
+}
+

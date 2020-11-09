@@ -12,7 +12,7 @@
   var SelectControl = components.SelectControl;
 
   registerBlockType('wpdams-amsnetwork-event/amsnetwork-block-event', {
-    title: i18n.__('AMS Events', 'amsnetwork-gutenbergevent-block'),
+    title: i18n.__('AMS Programs', 'amsnetwork-gutenbergevent-block'),
     description: i18n.__('AMS network block setting', 'amsnetwork-gutenbergevent-block'),
     icon: 'screenoptions',
     category: 'common',
@@ -27,6 +27,10 @@
         attribute: 'src'
       },
       eventsidebar: {
+      type: 'boolean',
+      default: true
+     },
+     eventshowbutton: {
       type: 'boolean',
       default: true
      },
@@ -84,13 +88,21 @@
               className: 'block-content',
               initialOpen: true
             },
-            el('p', {}, i18n.__('Add custom meta options for events.', 'amsnetwork-gutenbergevent-block')),
+            el('p', {}, i18n.__('Add custom meta options for programs.', 'amsnetwork-gutenbergevent-block')),
             el(ToggleControl, {
               label: 'Sidebar',
               onChange: ( value ) => {
                  props.setAttributes( { eventsidebar: value } );
               },
               checked: props.attributes.eventsidebar,
+            }),
+            el('p', {}, i18n.__('Show hide view more button.', 'amsnetwork-gutenbergevent-block')),
+            el(ToggleControl, {
+              label: 'View More',
+              onChange: ( value ) => {
+                 props.setAttributes( { eventshowbutton: value } );
+              },
+              checked: props.attributes.eventshowbutton,
             }),
             el( RadioControl,
               {
@@ -133,7 +145,7 @@
                 selected: props.attributes.event_pagination
               }
             ),
-            el('p', {}, i18n.__('Hide show event price.', 'amsnetwork-gutenbergevent-block')),
+            el('p', {}, i18n.__('Hide show programs price.', 'amsnetwork-gutenbergevent-block')),
             el(ToggleControl, {
               label: 'Member Enrollment Price',
               onChange: ( value ) => {
@@ -192,6 +204,7 @@
                            el( wp.element.RawHTML, null, '['+props.attributes.type+']')
            ),
            el( 'input', { 'type': 'hidden', 'name' : 'eventsidebar', 'value' : ( props.attributes.eventsidebar == true ? 'yes' : 'no') } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'eventshowbutton', 'value' : ( props.attributes.eventshowbutton == true ? 'yes' : 'no') } ),
            el( 'input', { 'type': 'hidden', 'name' : 'radio_attr_event', 'value' : ( props.attributes.radio_attr_event) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'event_pagination', 'value' : ( props.attributes.event_pagination) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'member', 'value' : ( props.attributes.member == true ? 'yes' : 'no') } ),

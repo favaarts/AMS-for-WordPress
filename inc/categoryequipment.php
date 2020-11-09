@@ -71,7 +71,15 @@ else
                 <input type="text" class="searrch-input" name="keyword" id="keyword" onkeyup="fetchequipment()"></input>
             </div>
 
-            
+            <div class="allavailability">
+              <h4>Availability</h4>
+              <select class='ul-cat-wrap' id='allavailability'>
+                <option value="">All</option>
+                <option value="true">Available</option>
+                <option value="false">Unavailable</option>
+              </select>
+            </div>
+
               <?php
                   
 
@@ -318,17 +326,19 @@ else
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 
+  var allavailability = "";
+  var count = 2;
+  var total = jQuery("#inifiniteLoader").data("totalequipment");
+  
+  changetotal = jQuery("#totalavailability").val();
+  console.log(changetotal);
 
-   var count = 2;
-   var total = jQuery("#inifiniteLoader").data("totalequipment");
-   console.log(total);
+  console.log("3");
+  console.log(total);  
+    
 
-   $(window).scroll(function(){
-
-     /* var position = $(window).scrollTop();
-      var bottom = $(document).height() - $(window).height();*/
-
-     if( $(window).scrollTop() + window.innerHeight >= document.body.scrollHeight - 400 ) { 
+  $(window).scroll(function(){
+      if( $(window).scrollTop() + window.innerHeight >= document.body.scrollHeight - 400 ) { 
         var numItems = jQuery('.productstyle').length; 
         var numItems = jQuery('.listview-assets').length; 
         console.log(numItems);
@@ -339,22 +349,21 @@ jQuery(document).ready(function($) {
         }
       count++;
      }
-   });
+
+  });
 
 
-   function loadArticle(pageNumber){
+  function loadArticle(pageNumber){
      $('a#inifiniteLoader').show();
 
-     /*console.log(amsjs_ajax_url.ajaxurl);
-     console.log("hello");*/
      var slugvar = $('#inputpageslug').val();
 
      $.ajax({
        url: amsjs_ajax_url.ajaxurl,
        type:'POST',
-       data: "action=infinitescroll_action&page="+ pageNumber + "&loop_file=loop&slugname="+slugvar,
+       data: "action=infinitescroll_action&page="+ pageNumber + "&loop_file=loop&slugname="+slugvar+"&allavailability="+allavailability,
        beforeSend: function(){
-        // Show image container
+        
         $("#inifiniteLoader").show();
        },
        success: function (html) {
@@ -363,15 +372,37 @@ jQuery(document).ready(function($) {
        }
      });
      return false;
-   }
+  }
+   
 
-    $('#cagegorydata').on('change', function () {
-        var url = $(this).val(); // get selected value
-        if (url) { // require a URL
-            window.location = url; // redirect
+  $('body').on('change', '#allavailability', function() {
+    
+    allavailability = $(this).val();  
+    count = 2;
+    var changetotal = "";
+      
+
+        var slugvar = $('#inputpageslug').val();
+        if(allavailability != '') {
+
+          $.ajax({
+           url: amsjs_ajax_url.ajaxurl,
+           type:'POST',
+           data: "action=infinitescroll_action&slugname="+slugvar+"&allavailability="+allavailability,
+           beforeSend: function(){
+            // Show image container
+            $("#inifiniteLoader").show();
+             },
+             success: function (html) {
+                jQuery('.right-col-wrap').html(html);
+               //jQuery('.right-col-wrap').append(html);
+             }
+          });
+          return false;
         }
-        return false;
-    }); 
+
+
+  });
 
 });    
 </script>

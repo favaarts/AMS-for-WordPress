@@ -779,3 +779,11 @@ line-height: 28px;
     color: #fff;
     background-color: #6c757d;
 }
+
+.allavailability select
+{
+  font-size: 16px;
+    padding: 4px 10px;
+    margin: 0px 0px 25px 0px;
+    width: 100%;  
+}

@@ -1213,13 +1213,14 @@ function infinitescroll_action()
     $page = $_POST['page'];
     $newslugname = $_POST['slugname'];
 
+    $allavailability = $_POST['allavailability'];
     //
     $post_data = get_page_by_path($newslugname);
     $pageid = $post_data->ID;
     $post = get_post($pageid);
     $blocks = parse_blocks($post->post_content);
 
-    $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/assets?type=Equipment&category_ids=%5B".$categoryid."%5D&page=".$page."&access_token=".$apikey."&method=get&format=json";
+    $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/assets?type=Equipment&is_available=".$allavailability."&category_ids=%5B".$categoryid."%5D&page=".$page."&access_token=".$apikey."&method=get&format=json";
 
         $ch = curl_init();
         curl_setopt($ch,CURLOPT_URL,$producturl);

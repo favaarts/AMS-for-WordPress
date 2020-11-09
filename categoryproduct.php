@@ -344,9 +344,18 @@ jQuery(document).ready(function($) {
    $(window).scroll(function(){
      if( $(window).scrollTop() + window.innerHeight >= document.body.scrollHeight - 400 ) { 
       var numItems = jQuery('.productstyle').length;
-      var numItems = jQuery('.listview-assets').length;   
-      console.log(numItems);
-      if (numItems >= total){
+      var numItems = jQuery('.listview-assets').length;
+      var totalItems = "";
+      if(numItems != '')  
+      {
+        totalItems = numItems;
+      }
+      else
+      {
+        totalItems = listnumItems;
+      }   
+      console.log(totalItems);
+      if (totalItems >= total){
         return false;
       }else{
         loadArticle(count);

@@ -237,7 +237,12 @@ else
             <div class="eventbutton">
                 <p class="para"></p>
                 <a id="inifiniteLoader"  data-totalequipment="<?php echo $arrayResult['meta']['total_count']; ?>" ><img src="<?php echo esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) ?>" ></a>
-                <input type="button" id="seemore" style="background-color: <?=$bgcolor?>" value="View More">  
+                <?php
+                if (!isset($blockdata['eventshowbutton']))
+                {
+                echo "<input type='button' id='seemore' style='background-color: $bgcolor' value='View More'>";
+                }
+                ?>  
             </div> 
     </div> 
     

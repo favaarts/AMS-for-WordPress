@@ -419,7 +419,12 @@ function get_sidebaroption()
     return $blockname = $blocks[0]['attrs'];
 }
 
-
+function getDataOrDash($data) {
+    if (isset($data) & !is_null($data) & $data != "") {
+        return $data;
+    }
+    return "-";
+}
 // Page template
 
 

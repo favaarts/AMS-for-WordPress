@@ -7,12 +7,7 @@ function members_function($slug)
     $catArrayResult = get_member_types();
     $member_type = get_query_var("member_type");
     $arrayResult = get_members($member_type, NULL);
-    function getDataOrDash($data) {
-        if (isset($data) & !is_null($data) & $data != "") {
-            return $data;
-        }
-        return "-";
-    }
+    
     ob_start();
 ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" integrity="sha512-YHuwZabI2zi0k7c9vtg8dK/63QB0hLvD4thw44dFo/TfBFVVQOqEG9WpviaEpbyvgOIYLXF1n7xDUfU3GDs0sw==" crossorigin="anonymous" />

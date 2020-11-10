@@ -468,8 +468,9 @@ img.member-image {
 
 .productstyle-list-items .product-img img
 {
-        width: 100%;
+    width: 100%;
     height: 165px;
+    object-fit: cover;
 }
 
 .product-date p{

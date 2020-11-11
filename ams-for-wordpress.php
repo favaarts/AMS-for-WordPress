@@ -1238,7 +1238,7 @@ function infinitescroll_action()
         curl_close($ch);
 
         $arrayResult = json_decode($json, true);
-
+        echo "<input type='hidden' id='totalavailability' value='".$arrayResult['meta']['total_count']."'>";
         if($blocks[0]['attrs']['radio_attr'] == "list_view")
             {  
             foreach($arrayResult as $json_value) {

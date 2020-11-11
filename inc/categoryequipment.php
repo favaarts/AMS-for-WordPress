@@ -325,24 +325,64 @@ else
 
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-
   var allavailability = "";
   var count = 2;
   var total = jQuery("#inifiniteLoader").data("totalequipment");
-  
-  changetotal = jQuery("#totalavailability").val();
-  console.log(changetotal);
 
-  console.log("3");
-  console.log(total);  
+
+  $('body').on('change', '#allavailability', function() {
+    
+    allavailability = $(this).val();  
+    count = 2;
+    
     
 
+        var slugvar = $('#inputpageslug').val();
+        if(allavailability != '') {
+
+          $.ajax({
+           url: amsjs_ajax_url.ajaxurl,
+           type:'POST',
+           data: "action=infinitescroll_action&slugname="+slugvar+"&allavailability="+allavailability,
+           beforeSend: function(){
+            // Show image container
+            $("#inifiniteLoader").show();
+             },
+             success: function (html) {
+                jQuery('.right-col-wrap').html(html);
+                AjaxInit()
+             }
+          });
+          return false;
+        }
+
+
+  });
+
+
+function AjaxInit() {
+    var changetotal = jQuery("#totalavailability").val();
+    total = changetotal;
+    console.log(total);
+}
+
+
   $(window).scroll(function(){
+      console.log(total);
       if( $(window).scrollTop() + window.innerHeight >= document.body.scrollHeight - 400 ) { 
         var numItems = jQuery('.productstyle').length; 
-        var numItems = jQuery('.listview-assets').length; 
-        console.log(numItems);
-        if (numItems >= total){
+        var listnumItems = jQuery('.listview-assets').length; 
+        var totalItems = "";
+        if(numItems != '')  
+        {
+          totalItems = numItems;
+        }
+        else
+        {
+          totalItems = listnumItems;
+        }
+        
+        if (totalItems >= total){
           return false;
         }else{
           loadArticle(count);
@@ -373,36 +413,7 @@ jQuery(document).ready(function($) {
      });
      return false;
   }
-   
 
-  $('body').on('change', '#allavailability', function() {
-    
-    allavailability = $(this).val();  
-    count = 2;
-    var changetotal = "";
-      
-
-        var slugvar = $('#inputpageslug').val();
-        if(allavailability != '') {
-
-          $.ajax({
-           url: amsjs_ajax_url.ajaxurl,
-           type:'POST',
-           data: "action=infinitescroll_action&slugname="+slugvar+"&allavailability="+allavailability,
-           beforeSend: function(){
-            // Show image container
-            $("#inifiniteLoader").show();
-             },
-             success: function (html) {
-                jQuery('.right-col-wrap').html(html);
-               //jQuery('.right-col-wrap').append(html);
-             }
-          });
-          return false;
-        }
-
-
-  });
 
 });    
 </script>

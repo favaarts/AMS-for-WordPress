@@ -1,10 +1,4 @@
 <?php
-function getDataOrDash($data) {
-    if (isset($data) & !is_null($data) & $data != "") {
-        return $data;
-    }
-    return "-";
-}
 get_header();  ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" integrity="sha512-YHuwZabI2zi0k7c9vtg8dK/63QB0hLvD4thw44dFo/TfBFVVQOqEG9WpviaEpbyvgOIYLXF1n7xDUfU3GDs0sw==" crossorigin="anonymous" />
 <div class="container-wrap">

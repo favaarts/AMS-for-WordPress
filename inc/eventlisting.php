@@ -104,7 +104,7 @@ else
               </select>
             </div>
             <div class="searchbutton">
-              <input type="button" class="inputsearchbutton" id="searchdata" style="background-color: <?=$bgcolor?>" value="Search" onclick="fetchotherevents()">
+              <input type="button" class="inputsearchbutton" id="searchdata" style="background-color: <?=$bgcolor?>" value="Search">
               <img class="buttonloader" src="<?php echo esc_url( plugins_url( 'assets/img/buttonloader.gif', dirname(__FILE__) ) ) ?>" >
             </div>  
 
@@ -262,22 +262,83 @@ jQuery(document).ready(function($) {
    $('#inifiniteLoader').hide();
    console.log(total);
 
+   /*On serach ajax call*/
+
+    $('#searchdata').click(function(){
+      count = 2;     
+      event.preventDefault();
+      
+      var eventtype = jQuery('#alltypeevent').val();
+      var eventstatus = jQuery('#allstatus').val();
+      var evtlocation = jQuery('#evtlocation').val();
+      var pageslug = jQuery('#inputpageslug').val();
+      var pageid = jQuery('#inputpageid').val();
+
+
+      var eventperpg = <?php echo $blockdata['event_pagination']; ?>;
+      console.log(eventperpg);
+
+      jQuery.ajax({
+            url: amsjs_ajax_url.ajaxurl,
+            type: 'post',
+            data: { action: 'searcheventdata_action', eventtype: eventtype, eventstatus: eventstatus, evtlocation: evtlocation, pageslug: pageslug, pageid: pageid,eventperpg: eventperpg},
+            beforeSend: function(){
+            // Show image container
+                jQuery(".buttonloader").css("display","initial");
+            },
+            success: function(data) {
+              jQuery('.right-col-wrap').html(data);
+              //jQuery('#seemore').hide();
+              jQuery('#getevent').val('');
+              jQuery(".buttonloader").css("display","none");
+              AjaxInitProgram()
+            }
+        });
+    });
+    /*End On serach ajax call*/
+
+   
+
+  function AjaxInitProgram() {
+    var totalprogram = jQuery("#totalprogram").val();
+    total = totalprogram;
+    console.log(total);
+    if(total >= 10)
+    {
+      jQuery('#seemore').show();
+      jQuery(".para").hide();
+    }
+  }  
+    
    $('#seemore').click(function(){
 
      /* var position = $(window).scrollTop();
       var bottom = $(document).height() - $(window).height();*/
         //$('#seemore').hide();
         
-        var numItems = jQuery('.productstyle').length;  
-        console.log(numItems);
-        if (numItems >= total){
+        var numItems = jQuery('.productstyle').length;
+        var listnumItems = jQuery('.listview-events').length;   
+        
+        var totalItems = "";
+        if(numItems != '')  
+        {
+          totalItems = numItems;
+        }
+        else
+        {
+          totalItems = listnumItems;
+        }
+
+        console.log(totalItems);
+        console.log(total);
+
+
+        if (totalItems >= total){
             jQuery('#seemore').hide();
             jQuery(".para").text("No More Events found.");  
-          return false;
         }else{
             jQuery('#seemore').hide();   
-          loadArticle(count);
-          //
+            loadArticle(count);
         }
         count++;
         
@@ -292,10 +353,16 @@ jQuery(document).ready(function($) {
      var slugvar = $('#inputpageslug').val();
      var slugvarid = $('#inputpageid').val();
 
+     //
+     var eventtype = jQuery('#alltypeevent').val();
+      var eventstatus = jQuery('#allstatus').val();
+      var evtlocation = jQuery('#evtlocation').val();
+     //
+
      $.ajax({
        url: amsjs_ajax_url.ajaxurl,
        type:'POST',
-       data: "action=geteventonclick_action&page="+ pageNumber + "&loop_file=loop&pageslugname="+slugvar+"&pageslugid="+slugvarid+"&eventperpg="+eventperpg,
+       data: { action: 'geteventonclick_action', page:pageNumber, eventperpg:eventperpg, eventtype: eventtype, eventstatus: eventstatus, evtlocation: evtlocation, pageslugname: slugvar, pageslugid: slugvarid},
        beforeSend: function(){
         // Show image container
             $("#inifiniteLoader").show();
@@ -309,7 +376,6 @@ jQuery(document).ready(function($) {
      return false;
     }
    
-
 });    
 </script>
 

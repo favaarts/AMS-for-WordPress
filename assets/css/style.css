@@ -864,3 +864,13 @@ line-height: 28px;
     top: 80%;
 }
 
+/*external*/
+.external
+{
+    font-size: 18px;
+    font-weight: 600;
+}
+.wrapper
+{
+    padding-bottom: 12px;
+}

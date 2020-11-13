@@ -77,6 +77,7 @@ else
             <div class="alltypeevent">
               <h4>Programs Type</h4>
               <select class='ul-cat-wrap' id='alltypeevent'>
+                <option value="All">All Programs</option>
                 <option value="Events">Events</option>
                 <option value="Workshops">Workshops</option>
                 <option value="Classes">Classes</option>

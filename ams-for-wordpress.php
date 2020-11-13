@@ -764,7 +764,7 @@ function get_eventlisting($eventid)
         {
             $totalevents = 8;
         }
-        $eventlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=Events&per_page=".$totalevents."&access_token=".$apikey."&method=get&format=json";
+        $eventlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=All&per_page=".$totalevents."&access_token=".$apikey."&method=get&format=json";
     }
 
 
@@ -1052,17 +1052,19 @@ function search_event_action()
 
     $eventstatus = $_POST['eventstatus'];
 
+    $eventperpg = $_POST['eventperpg'];
+
     if(!empty($_POST['getevent']))
     {
-        $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=Events&query=".$productname."&access_token=".$apikey."&method=get&format=json";
+        $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=All&query=".$productname."&access_token=".$apikey."&method=get&format=json";
     }
     else if(isset($eventtype))
     {
-       $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&access_token=".$apikey."&method=get&format=json";
+       $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&page=".$page."&per_page=".$eventperpg."&access_token=".$apikey."&method=get&format=json";
     }
     else
     {
-        $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=Events&access_token=".$apikey."&method=get&format=json";
+        $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=All&access_token=".$apikey."&method=get&format=json";
     }
 
     $ch = curl_init();
@@ -1084,6 +1086,8 @@ function search_event_action()
         $blocks = parse_blocks($post->post_content);
         $gridlayout = $blocks[0]['attrs']['radio_attr_event'];
         
+        echo "<input type='hidden' id='totalprogram' value='".$arrayResult['meta']['total_count']."'>";
+
         if($gridlayout == "list_view")
         {
             foreach($arrayResult['programs'] as $x_value) 
@@ -1457,7 +1461,13 @@ function geteventonclick_action()
     $pageslugid = $_POST['pageslugid'];
     $eventperpg = $_POST['eventperpg'];
 
-    $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=Events&page=".$page."&per_page=".$eventperpg."&access_token=".$apikey."&method=get&format=json";
+    $eventtype = $_POST['eventtype'];
+    $eventstatus = $_POST['eventstatus'];
+    $locaton = $_POST['evtlocation'];
+    $eventlocaton = urlencode($locaton);
+
+
+    $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&page=".$page."&per_page=".$eventperpg."&access_token=".$apikey."&method=get&format=json";
 
         $ch = curl_init();
         curl_setopt($ch,CURLOPT_URL,$producturl);

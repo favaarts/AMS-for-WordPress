@@ -91,6 +91,13 @@ get_header();  ?>
                                     
                                 }
 
+                                if($json_value['external_url_resources'])
+                                {
+                                echo "<div class='wrapper'>";
+                                echo "<a class='external after' href='".$json_value['external_url_resources']."' target='_blank' style='color: $bgcolor;'>External Resources <span><i class='fa fa-external-link' aria-hidden='true'></i></span></a>";
+                                echo "</div>";
+                                }
+                                
                                 /*-- html tab --*/
                                 if($json_value['included_accessories'] || $json_value['warranty_info'])
                                 {     

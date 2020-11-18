@@ -2,6 +2,7 @@
     var el = element.createElement;
     var registerBlockType = blocks.registerBlockType;
     var InspectorControls = editor.InspectorControls;
+    var RadioControl = components.RadioControl;
   
     registerBlockType('wpdams-amsnetwork-member/amsnetwork-block-member', {
       title: i18n.__('AMS Members', 'amsnetwork-gutenbergmember-block'),
@@ -20,7 +21,11 @@
         alignment: {
           type: 'string',
           default: 'center'
-        }
+        },
+        layout_type: {
+          type: 'string',
+          default: 'four_col',
+        },
       },
       edit: function(props) {
         function updateContent( newdata ) {
@@ -36,7 +41,21 @@
                 initialOpen: true
               },
               el('p', {}, i18n.__('Add custom meta options to show or hide sidebar', 'amsnetwork-gutenbergmember-block')),
-            )
+              el(RadioControl, {
+                label: 'Grid Layout',
+                //help: 'Some kind of description',
+                options : [
+                  { label: 'Two Column', value: 'two_col' },
+                  { label: 'Three Column', value: 'three' },
+                  { label: 'Four Column', value: 'four_col' },
+                  { label: 'List View', value: 'list_view' },
+                ],
+                onChange: ( value ) => {
+                  props.setAttributes( { layout_type: value } );
+                },
+                selected: props.attributes.layout_type
+              }),
+            ),
           ),
           el( 'div', {
             className: 'amsblock-box amsblock-' + props.attributes.type
@@ -54,7 +73,11 @@
       },
       save: function(props) {
         var attributes = props.attributes;
-        return el('div', null, '['+props.attributes.type+']')
+        return el(
+          'div', {className: props.attributes.type},
+          el('div', null, '['+props.attributes.type+']'),
+          el( 'input', { 'type': 'hidden', 'name' : 'layout_type', 'value' : props.attributes.layout_type } ),
+        );
       }
     })
   })(

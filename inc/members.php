@@ -4,9 +4,11 @@ function members_function($slug)
 {
     global $post;
     $post_slug = $post->post_name;
+    $blocks = parse_blocks($post->post_content);
     $catArrayResult = get_member_types();
     $member_type = get_query_var("member_type");
     $arrayResult = get_members($member_type, NULL);
+    $layout_type = $blocks[0]['attrs']['layout_type'];
     
     ob_start();
 ?>
@@ -53,7 +55,7 @@ function members_function($slug)
         </div>
         <div class="col-xs-12 col-sm-12 col-md-9">
 
-            <?php  if(false) { ?>
+            <?php if($layout_type == "list_view") { ?>
             <div class="members-list">
                 <?php
                     $dummy_image = "https://ssl.gstatic.com/images/branding/product/1x/avatar_square_blue_512dp.png";
@@ -91,12 +93,18 @@ function members_function($slug)
 
             <?php } else { ?>
 
-            <div class="row members-list">
+            <div class="row members-list <?= $layout_type ?>">
                 <?php
                     $dummy_image = "https://ssl.gstatic.com/images/branding/product/1x/avatar_square_blue_512dp.png";
+                    $grid_size_class = "col-xs-12 col-sm-6 col-md-4 col-lg-3";
+                    if ($layout_type == 'two_col') {
+                        $grid_size_class = "col-xs-12 col-sm-6 col-md-6 col-lg-6";
+                    } else if($layout_type == 'three') {
+                        $grid_size_class = "col-xs-12 col-sm-6 col-md-4 col-lg-4";
+                    }
                     foreach ($arrayResult["users"] as $member) {
                 ?>
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="<?= $grid_size_class ?>">
                         <div class="member">
                             <a class="member-item" href="<?= site_url('/members/'.$member["id"].'/details' )?>">
                                 <div class="col-lg-12 member-overlay"></div>

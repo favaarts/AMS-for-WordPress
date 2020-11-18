@@ -1376,6 +1376,14 @@ function member_ajax()
     $page = $_POST['page'];
     $newslugname = $_POST['slugname'];
 
+    $newslugname = $_POST['slugname'];
+    //
+    $post_data = get_page_by_path($newslugname);
+    $pageid = $post_data->ID;
+    $post = get_post($pageid);
+    $blocks = parse_blocks($post->post_content);
+    $layout_type = $blocks[0]['attrs']['layout_type'];
+
     $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/users?access_token=".$apikey."&method=get&format=json&type=search_and_browse&sub_type=active_members&page=".$page;
 
     if (!is_null($member_type) && $member_type != "") {
@@ -1398,7 +1406,7 @@ function member_ajax()
     $dummy_image = "https://ssl.gstatic.com/images/branding/product/1x/avatar_square_blue_512dp.png";
 
     $arrayResult = json_decode($json, true);
-    if (false) {
+    if ($layout_type == 'list_view') {
         foreach ($arrayResult["users"] as $member) {
             echo '<a class="member-item" href="'.site_url('/members/'.$member["id"].'/details' ).'">';
             echo '<div class="row member-entry">';
@@ -1425,7 +1433,13 @@ function member_ajax()
         }
     } else {
         foreach ($arrayResult["users"] as $member) {
-            echo '<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">';
+            $grid_size_class = "col-xs-12 col-sm-6 col-md-4 col-lg-3";
+            if ($layout_type == 'two_col') {
+                $grid_size_class = "col-xs-12 col-sm-6 col-md-6 col-lg-6";
+            } else if($layout_type == 'three') {
+                $grid_size_class = "col-xs-12 col-sm-6 col-md-4 col-lg-4";
+            }
+            echo '<div class="'.$grid_size_class.'">';
                 echo '<div class="member">';
                     echo '<a class="member-item" href="'.site_url('/members/'.$member["id"].'/details' ).'">';
                         echo '<div class="col-lg-12 member-overlay"></div>';

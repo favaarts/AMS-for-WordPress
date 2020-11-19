@@ -73,7 +73,7 @@ else
 
           <div class="othersearch">
 
-           // <h4 class="othertitle" style="color: <?=$bgcolor?>">Filter By</h4></br>  
+           /* <h4 class="othertitle" style="color: <?=$bgcolor?>">Filter By</h4></br>  */
 
             <div class="alltypeevent">
               <h4>Type</h4>

@@ -73,7 +73,7 @@ else
 
           <div class="othersearch">
 
-            <h4 class="othertitle" style="color: <?=$bgcolor?>">Filter</h4>  
+            <h4 class="othertitle" style="color: <?=$bgcolor?>">Filter By</h4></br>  
             <div class="alltypeevent">
               <h4>Type</h4>
               <select class='ul-cat-wrap' id='alltypeevent'>
@@ -96,7 +96,7 @@ else
             <div class="evtlocation">
               <h4>Location</h4>
               <select class='ul-cat-wrap' id='evtlocation'>
-                <option value="">Locations</option>
+                <option value="">All Locations</option>
                 <?php
                 foreach($locationArrayResult['json']['locations'] as $c => $c_value) {
                   echo "<option  value='".$c_value."'>".$c_value."</option>";     

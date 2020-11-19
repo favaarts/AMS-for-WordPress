@@ -97,7 +97,8 @@ get_header();  ?>
                 
                 // get slug
                 $categoryinurl = $wp->query_vars['categoryslug'];
-                $category = preg_replace("/[^a-zA-Z]+/", " ", $categoryinurl);
+                //$category = preg_replace("/[^a-zA-Z]+/", " ", $categoryinurl);
+                $category = str_replace('%20', ' ', $categoryinurl);
                 // End get slug
                 
                 // Use this function for ascending order

@@ -67,7 +67,7 @@ else
         ?>
 
             <div class="searchbox">
-                <h4>Search By Programs Name</h4>
+                <h4>Search</h4>
                 <input type="text" class="searrch-input" name="getevent" id="getevent" onkeyup="fetchevent()"></input>
             </div>
 
@@ -75,7 +75,7 @@ else
 
             <h4 class="othertitle" style="color: <?=$bgcolor?>">Filter</h4>  
             <div class="alltypeevent">
-              <h4>Programs Type</h4>
+              <h4>Type</h4>
               <select class='ul-cat-wrap' id='alltypeevent'>
                 <option value="All">All Programs</option>
                 <option value="Events">Events</option>
@@ -85,7 +85,7 @@ else
             </div>
             
             <div class="allstatus">
-              <h4>Programs Status</h4>
+              <h4>Status</h4>
               <select class='ul-cat-wrap' id='allstatus'>
                 <option value="1">Active</option>
                 <option value="2">Cancelled</option>
@@ -94,9 +94,9 @@ else
             </div>
 
             <div class="evtlocation">
-              <h4>Programs Location</h4>
+              <h4>Location</h4>
               <select class='ul-cat-wrap' id='evtlocation'>
-                <option value="">All Location</option>
+                <option value="">Locations</option>
                 <?php
                 foreach($locationArrayResult['json']['locations'] as $c => $c_value) {
                   echo "<option  value='".$c_value."'>".$c_value."</option>";     

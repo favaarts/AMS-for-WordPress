@@ -58,7 +58,7 @@ function members_function($slug)
             <?php if($layout_type == "list_view") { ?>
             <div class="members-list">
                 <?php
-                    $dummy_image = "https://ssl.gstatic.com/images/branding/product/1x/avatar_square_blue_512dp.png";
+                    $dummy_image = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/img/bg-image.png';
                     foreach ($arrayResult["users"] as $member) {
                 ?>
                     <a class="member-item" href="<?= site_url('/members/'.$member["id"].'/details' )?>">
@@ -95,7 +95,7 @@ function members_function($slug)
 
             <div class="row members-list <?= $layout_type ?>">
                 <?php
-                    $dummy_image = "https://ssl.gstatic.com/images/branding/product/1x/avatar_square_blue_512dp.png";
+                    $dummy_image = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/img/bg-image.png';
                     $grid_size_class = "col-xs-12 col-sm-6 col-md-4 col-lg-3";
                     if ($layout_type == 'two_col') {
                         $grid_size_class = "col-xs-12 col-sm-6 col-md-6 col-lg-6";

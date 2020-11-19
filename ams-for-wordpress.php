@@ -1403,7 +1403,7 @@ function member_ajax()
         echo curl_error($ch);
     }
     curl_close($ch);
-    $dummy_image = "https://ssl.gstatic.com/images/branding/product/1x/avatar_square_blue_512dp.png";
+    $dummy_image = plugins_url( 'assets/img/bg-image.png', __FILE__ );
 
     $arrayResult = json_decode($json, true);
     if ($layout_type == 'list_view') {

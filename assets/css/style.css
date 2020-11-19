@@ -874,3 +874,7 @@ line-height: 28px;
 {
     padding-bottom: 12px;
 }
+
+.members_list {
+    width: 100% !important;
+}

@@ -24,7 +24,7 @@ get_header();  ?>
                                         $targeturl = get_option('url_window');
 
                                         $arrayResult = get_members(NULL, $member_id);
-                                        $dummy_image = "https://ssl.gstatic.com/images/branding/product/1x/avatar_square_blue_512dp.png";
+                                        $dummy_image = plugins_url( 'assets/img/bg-image.png', __FILE__ );
 
                                         if (isset($arrayResult['error'])) {
                                             echo "<p class='centertext'>" . $arrayResult['error'] . "</p>";
@@ -45,8 +45,6 @@ get_header();  ?>
                                                         <strong>Job Position:</strong> <?= getDataOrDash($member["job_position"]) ?>
                                                         <br>
                                                         <strong>Organization:</strong> <?= getDataOrDash($member["organization_or_name"]) ?>
-                                                        <br>
-                                                        <strong>Address:</strong> <?= getDataOrDash($member["address"]) ?>
                                                         <br>
                                                         <strong>City:</strong> <?= getDataOrDash($member["city"]) ?>
                                                         <br>

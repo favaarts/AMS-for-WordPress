@@ -93,9 +93,12 @@ get_header();  ?>
 
                                 if($json_value['external_url_resources'])
                                 {
-                                echo "<div class='wrapper'>";
-                                echo "<a class='external after' href='".$json_value['external_url_resources']."' target='_blank' style='color: $bgcolor;'>External Resources <span><i class='fa fa-external-link' aria-hidden='true'></i></span></a>";
-                                echo "</div>";
+                                    if (!isset($blocks[0]['attrs']['externallink']))
+                                    {
+                                    echo "<div class='wrapper'>";
+                                    echo "<a class='external after' href='".$json_value['external_url_resources']."' target='_blank' style='color: $bgcolor;'>External Resources <span><i class='fa fa-external-link' aria-hidden='true'></i></span></a>";
+                                    echo "</div>";
+                                    }
                                 }
                                 
                                 /*-- html tab --*/
@@ -103,17 +106,32 @@ get_header();  ?>
                                 {     
                                 echo "<div class='tabs effect-3'>";
                                     /*-- tab-title --*/
-                                if($json_value['included_accessories'])
+                                if (!isset($blocks[0]['attrs']['includedacc']))
+                                {
+                                    
+                                    if($json_value['included_accessories'])
                                     {    
                                 echo "<input type='radio' id='tab-1' name='tab-effect-3' checked='checked'>
                                     <span style='color: $bgcolor;'>Included Accessories</span>";
                                     }
+                                }
+                                else
+                                {
+                                    if($json_value['warranty_info'])
+                                    {    
+                                echo "<input type='radio' id='tab-2' name='tab-effect-3' checked='checked'>
+                                    <span style='color: $bgcolor;'>Warranty Information</span>";
+                                    }
+                                }     
 
-                                if($json_value['warranty_info'])
+                                if (!isset($blocks[0]['attrs']['warrantyinfo']))
+                                {
+                                    if($json_value['warranty_info'])
                                     {    
                                 echo "<input type='radio' id='tab-2' name='tab-effect-3'>
                                     <span style='color: $bgcolor;'>Warranty Information</span>";
                                     }
+                                }    
                                 
                                 if($json_value['included_accessories'] || $json_value['warranty_info'])
                                     {        

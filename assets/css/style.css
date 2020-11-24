@@ -402,7 +402,7 @@ p.price-non-mem {
 .ragister-sec  .timeclass{padding: 2px 0px 2px 0px;}
 
 
-.row.member-entry {
+.fx-row.member-entry {
     border: 1px solid #f1f1f1;
     margin-top: 1rem;
     border-radius: 3px;
@@ -796,6 +796,7 @@ line-height: 28px;
     height: 100%;
     margin: auto;
     overflow: hidden;
+    border: 1px solid #efefef;
 }
 
 .member .member-overlay {

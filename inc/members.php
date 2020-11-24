@@ -12,9 +12,9 @@ function members_function($slug)
     
     ob_start();
 ?>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" integrity="sha512-YHuwZabI2zi0k7c9vtg8dK/63QB0hLvD4thw44dFo/TfBFVVQOqEG9WpviaEpbyvgOIYLXF1n7xDUfU3GDs0sw==" crossorigin="anonymous" />
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-3">
+    <link rel="stylesheet" href="<?= plugin_dir_url( dirname( __FILE__ ) ) . 'assets/css/flexboxgrid.css' ?>" />
+    <div class="fx-row">
+        <div class="fx-col-xs-12 fx-col-sm-12 fx-col-md-3">
             <div class="search">
                 <h4>Search</h4>
                 <input type="text" style="width:100%" class="search-input" name="keyword" id="keyword" onkeyup="searchMembers()"></input>
@@ -53,7 +53,7 @@ function members_function($slug)
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-9">
+        <div class="fx-col-xs-12 fx-col-sm-12 fx-col-md-9">
 
             <?php if($layout_type == "list_view") { ?>
             <div class="members-list">
@@ -62,11 +62,11 @@ function members_function($slug)
                     foreach ($arrayResult["users"] as $member) {
                 ?>
                     <a class="member-item" href="<?= site_url('/members/'.$member["id"].'/details' )?>">
-                        <div class="row member-entry">
-                            <div class="col-xs-12 col-sm-3 col-md-3 user-image">
+                        <div class="fx-row member-entry">
+                            <div class="fx-col-xs-12 fx-col-sm-3 fx-col-md-3 user-image">
                                 <img src="<?= $member['photo'] ?>" onerror='this.src="<?= $dummy_image ?>"'  alt="<?= $member["email"] ?>" style="height:150px; border-radius:5px">
                             </div>
-                            <div class="col-xs-12 col-sm-9 col-md-9">
+                            <div class="fx-col-xs-12 fx-col-sm-9 fx-col-md-9">
                                 <div class="name">
                                     <h5> <?= $member["first_name"] ?> <?= $member["last_name"] ?></h5>
                                     <p> 
@@ -93,21 +93,21 @@ function members_function($slug)
 
             <?php } else { ?>
 
-            <div class="row members-list <?= $layout_type ?>">
+            <div class="fx-row members-list <?= $layout_type ?>">
                 <?php
                     $dummy_image = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/img/bg-image.png';
-                    $grid_size_class = "col-xs-12 col-sm-6 col-md-4 col-lg-3";
-                    if ($layout_type == 'two_col') {
-                        $grid_size_class = "col-xs-12 col-sm-6 col-md-6 col-lg-6";
+                    $grid_size_class = "fx-col-xs-12 fx-col-sm-6 fx-col-md-4 fx-col-lg-3";
+                    if ($layout_type == 'two_fx-col') {
+                        $grid_size_class = "fx-col-xs-12 fx-col-sm-6 fx-col-md-6 fx-col-lg-6";
                     } else if($layout_type == 'three') {
-                        $grid_size_class = "col-xs-12 col-sm-6 col-md-4 col-lg-4";
+                        $grid_size_class = "fx-col-xs-12 fx-col-sm-6 fx-col-md-4 fx-col-lg-4";
                     }
                     foreach ($arrayResult["users"] as $member) {
                 ?>
                     <div class="<?= $grid_size_class ?> member-grid-entry">
                         <div class="member">
                             <a class="member-item" href="<?= site_url('/members/'.$member["id"].'/details' )?>">
-                                <div class="col-lg-12 member-overlay"></div>
+                                <div class="fx-col-lg-12 member-overlay"></div>
                                 <img class="member-image-tile" src="<?= $member['photo'] ?>" onerror='this.src="<?= $dummy_image ?>"'  alt="<?= $member["email"] ?>">
                                 <div class="member-details fadeIn-bottom">
                                     <h4 class="member-title"><?= $member["first_name"] ?> <?= $member["last_name"] ?></h3>

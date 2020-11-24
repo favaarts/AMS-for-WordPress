@@ -1,6 +1,6 @@
 <?php
 get_header();  ?>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" integrity="sha512-YHuwZabI2zi0k7c9vtg8dK/63QB0hLvD4thw44dFo/TfBFVVQOqEG9WpviaEpbyvgOIYLXF1n7xDUfU3GDs0sw==" crossorigin="anonymous" />
+<link rel="stylesheet" href="<?= plugins_url( 'assets/css/flexboxgrid.css', __FILE__ ); ?>"/>
 <div class="container-wrap">
     <div class="site-content">
         <!-- site-content" -->
@@ -34,11 +34,11 @@ get_header();  ?>
                                             $member = $arrayResult['user'];
                                         ?>
                                         <br> <br>
-                                        <div class="row">
-                                            <div class="col-xs-12 col-sm-12 col-md-3 member-image-section">
+                                        <div class="fx-row">
+                                            <div class="fx-col-xs-12 fx-col-sm-12 fx-col-md-3 member-image-section">
                                                 <img class="member-image" src="<?= $member['photo'] ?>" onerror='this.src="<?= $dummy_image ?>"'  alt="<?= $member["email"] ?>">
                                             </div>
-                                            <div class="col-xs-12 col-sm-12 col-md-9">
+                                            <div class="fx-col-xs-12 fx-col-sm-12 fx-col-md-9">
                                                 <div class="name">
                                                     <h3> <?= $member["first_name"] ?> <?= $member["last_name"] ?></h3>
                                                     <p> 

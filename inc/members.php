@@ -104,7 +104,7 @@ function members_function($slug)
                     }
                     foreach ($arrayResult["users"] as $member) {
                 ?>
-                    <div class="<?= $grid_size_class ?>">
+                    <div class="<?= $grid_size_class ?> member-grid-entry">
                         <div class="member">
                             <a class="member-item" href="<?= site_url('/members/'.$member["id"].'/details' )?>">
                                 <div class="col-lg-12 member-overlay"></div>

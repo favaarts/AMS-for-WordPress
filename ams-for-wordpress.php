@@ -1439,7 +1439,7 @@ function member_ajax()
             } else if($layout_type == 'three') {
                 $grid_size_class = "col-xs-12 col-sm-6 col-md-4 col-lg-4";
             }
-            echo '<div class="'.$grid_size_class.'">';
+            echo '<div class="'.$grid_size_class.' member-grid-entry">';
                 echo '<div class="member">';
                     echo '<a class="member-item" href="'.site_url('/members/'.$member["id"].'/details' ).'">';
                         echo '<div class="col-lg-12 member-overlay"></div>';

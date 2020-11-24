@@ -29,6 +29,18 @@
       type: 'boolean',
       default: true
      },
+     externallink: {
+      type: 'boolean',
+      default: true
+     },
+     includedacc: {
+      type: 'boolean',
+      default: true
+     },
+     warrantyinfo: {
+      type: 'boolean',
+      default: true
+     },
      all_items_url: {
         type: 'string',
      },
@@ -94,6 +106,29 @@
                  props.setAttributes( { sidebaroption: value } );
               },
               checked: props.attributes.sidebaroption,
+            }),
+            el('p', {}, i18n.__('Asset Details custom options to show or hide the corresponding content', 'amsnetwork-gutenberg-block')),
+            
+            el(ToggleControl, {
+              label: 'External Resources Link',
+              onChange: ( value ) => {
+                 props.setAttributes( { externallink: value } );
+              },
+              checked: props.attributes.externallink,
+            }),
+            el(ToggleControl, {
+              label: 'Included accessories',
+              onChange: ( value ) => {
+                 props.setAttributes( { includedacc: value } );
+              },
+              checked: props.attributes.includedacc,
+            }),
+            el(ToggleControl, {
+              label: 'Warranty Information',
+              onChange: ( value ) => {
+                 props.setAttributes( { warrantyinfo: value } );
+              },
+              checked: props.attributes.warrantyinfo,
             }),
             el( RadioControl,
               {
@@ -173,6 +208,9 @@
                            el( wp.element.RawHTML, null, '['+props.attributes.type+']')
            ),
            el( 'input', { 'type': 'hidden', 'name' : 'sidebar_option_in', 'value' : ( props.attributes.sidebaroption == true ? 'yes' : 'no' ) } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'sidebar_option_in', 'value' : ( props.attributes.externallink == true ? 'yes' : 'no' ) } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'sidebar_option_in', 'value' : ( props.attributes.includedacc == true ? 'yes' : 'no' ) } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'sidebar_option_in', 'value' : ( props.attributes.warrantyinfo == true ? 'yes' : 'no' ) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'radio_attr', 'value' : ( props.attributes.radio_attr) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'all_items_url', 'value' : ( props.attributes.all_items_url) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'member', 'value' : ( props.attributes.member == true ? 'yes' : 'no') } ),

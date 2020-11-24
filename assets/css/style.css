@@ -612,7 +612,7 @@ line-height: 28px;
 .assetsdetail .event-img-sec .img-sec img {
     object-fit: cover;
     height: 360px;
-    width: 360px;
+    width: auto;
 }
 
 

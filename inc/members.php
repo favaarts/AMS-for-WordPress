@@ -97,7 +97,7 @@ function members_function($slug)
                 <?php
                     $dummy_image = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/img/bg-image.png';
                     $grid_size_class = "fx-col-xs-12 fx-col-sm-6 fx-col-md-4 fx-col-lg-3";
-                    if ($layout_type == 'two_fx-col') {
+                    if ($layout_type == 'two_col') {
                         $grid_size_class = "fx-col-xs-12 fx-col-sm-6 fx-col-md-6 fx-col-lg-6";
                     } else if($layout_type == 'three') {
                         $grid_size_class = "fx-col-xs-12 fx-col-sm-6 fx-col-md-4 fx-col-lg-4";

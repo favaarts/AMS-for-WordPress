@@ -105,7 +105,7 @@ else
               </select>
             </div>
             <div class="searchbutton">
-              <input type="button" class="inputsearchbutton" id="searchdata" style="background-color: <?=$bgcolor?>" value="Search">
+              <!-- <input type="button" class="inputsearchbutton" id="searchdata" style="background-color: <?=$bgcolor?>" value="Search"> -->
               <img class="buttonloader" src="<?php echo esc_url( plugins_url( 'assets/img/buttonloader.gif', dirname(__FILE__) ) ) ?>" >
             </div>  
 
@@ -165,8 +165,9 @@ else
                           }
                           else
                           {
-                            echo "<p class='product-date'><span class='datetitle'>Earliest Date: </span>".date('D, M d', strtotime($date))."</P>"; 
+                            echo "<p class='product-date'><span class='datetitle'>Earliest Date: </span>".date('D, M d Y', strtotime($date))."</P>"; 
                           }
+                          echo "<p class='locationname'><strong>Location: </strong>".$x_value['location']."</p>";
                           echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
                       echo "</div>";
                       
@@ -263,8 +264,106 @@ jQuery(document).ready(function($) {
    $('#inifiniteLoader').hide();
    console.log(total);
 
-   /*On serach ajax call*/
+   /*Dropdown Ajax call*/
+   $("#alltypeevent").change(function() {
+      count = 2;     
+      event.preventDefault();
+      
+      var eventtype = $(this).val();
+      var eventstatus = jQuery('#allstatus').val();
+      var evtlocation = jQuery('#evtlocation').val();
+      var pageslug = jQuery('#inputpageslug').val();
+      var pageid = jQuery('#inputpageid').val();
 
+      var eventperpg = <?php echo $blockdata['event_pagination']; ?>;
+      console.log(eventperpg);
+
+      jQuery.ajax({
+            url: amsjs_ajax_url.ajaxurl,
+            type: 'post',
+            data: { action: 'searcheventdata_action', eventtype: eventtype, eventstatus: eventstatus, evtlocation: evtlocation, pageslug: pageslug, pageid: pageid,eventperpg: eventperpg},
+            beforeSend: function(){
+            // Show image container
+                jQuery(".buttonloader").css("display","initial");
+            },
+            success: function(data) {
+              jQuery('.right-col-wrap').html(data);
+              //jQuery('#seemore').hide();
+              jQuery('#getevent').val('');
+              jQuery(".buttonloader").css("display","none");
+              AjaxInitProgram()
+            }
+        });
+
+    });
+
+    $("#allstatus").change(function() {
+      count = 2;     
+      event.preventDefault();
+      
+      var eventtype = jQuery('#alltypeevent').val();
+      var eventstatus = $(this).val();
+      var evtlocation = jQuery('#evtlocation').val();
+      var pageslug = jQuery('#inputpageslug').val();
+      var pageid = jQuery('#inputpageid').val();
+
+
+      var eventperpg = <?php echo $blockdata['event_pagination']; ?>;
+      console.log(eventperpg);
+
+      jQuery.ajax({
+            url: amsjs_ajax_url.ajaxurl,
+            type: 'post',
+            data: { action: 'searcheventdata_action', eventtype: eventtype, eventstatus: eventstatus, evtlocation: evtlocation, pageslug: pageslug, pageid: pageid,eventperpg: eventperpg},
+            beforeSend: function(){
+            // Show image container
+                jQuery(".buttonloader").css("display","initial");
+            },
+            success: function(data) {
+              jQuery('.right-col-wrap').html(data);
+              //jQuery('#seemore').hide();
+              jQuery('#getevent').val('');
+              jQuery(".buttonloader").css("display","none");
+              AjaxInitProgram()
+            }
+        });
+
+    });
+
+    $("#evtlocation").change(function() {
+      count = 2;     
+      event.preventDefault();
+      
+      var eventtype = jQuery('#alltypeevent').val();
+      var eventstatus = jQuery('#allstatus').val();
+      var evtlocation = $(this).val();
+      var pageslug = jQuery('#inputpageslug').val();
+      var pageid = jQuery('#inputpageid').val();
+
+      var eventperpg = <?php echo $blockdata['event_pagination']; ?>;
+      console.log(eventperpg);
+
+      jQuery.ajax({
+            url: amsjs_ajax_url.ajaxurl,
+            type: 'post',
+            data: { action: 'searcheventdata_action', eventtype: eventtype, eventstatus: eventstatus, evtlocation: evtlocation, pageslug: pageslug, pageid: pageid,eventperpg: eventperpg},
+            beforeSend: function(){
+            // Show image container
+                jQuery(".buttonloader").css("display","initial");
+            },
+            success: function(data) {
+              jQuery('.right-col-wrap').html(data);
+              //jQuery('#seemore').hide();
+              jQuery('#getevent').val('');
+              jQuery(".buttonloader").css("display","none");
+              AjaxInitProgram()
+            }
+        });
+
+    });
+   /* End Dropdown ajax*/
+
+    /*On serach ajax call =====================*/
     $('#searchdata').click(function(){
       count = 2;     
       event.preventDefault();
@@ -296,7 +395,7 @@ jQuery(document).ready(function($) {
             }
         });
     });
-    /*End On serach ajax call*/
+    /*End On serach ajax call =================*/
 
    
 
@@ -308,6 +407,10 @@ jQuery(document).ready(function($) {
     {
       jQuery('#seemore').show();
       jQuery(".para").hide();
+    }
+    else
+    {
+      jQuery('#seemore').hide();
     }
   }  
     

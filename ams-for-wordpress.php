@@ -1127,9 +1127,10 @@ function search_event_action()
                             }
                             else
                             {
-                                echo "<p class='product-date'> <span class='datetitle'>Earliest Date: </span>".date('D, M d', strtotime($date))."</P>"; 
+                                echo "<p class='product-date'> <span class='datetitle'>Earliest Date: </span>".date('D, M d Y', strtotime($date))."</P>"; 
                             }
                           }
+                          echo "<p class='locationname'><strong>Location: </strong>".$x_value['location']."</p>";
                           echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
                       echo "</div>";
                       
@@ -1518,8 +1519,9 @@ function geteventonclick_action()
                           }
                           else
                           {
-                            echo "<p class='product-date'><span class='datetitle'>Earliest Date: </span>".date('D, M d', strtotime($date))."</P>"; 
+                            echo "<p class='product-date'><span class='datetitle'>Earliest Date: </span>".date('D, M d Y', strtotime($date))."</P>"; 
                           }
+                          echo "<p class='locationname'><strong>Location: </strong>".$x_value['location']."</p>";
                           echo "<a href='".site_url('/'.$pageslug.'/'.$pageslugid.'-'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
                       echo "</div>";
                       

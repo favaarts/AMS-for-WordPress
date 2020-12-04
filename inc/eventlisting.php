@@ -131,7 +131,7 @@ else
             $pageslug = $post->post_name;
 
             if($blockdata['radio_attr_event'] == "list_view")
-        {
+            {
                 foreach($arrayResult['programs'] as $x_value) 
                 { 
                   if(isset($x_value['id']))
@@ -278,7 +278,19 @@ jQuery(document).ready(function($) {
       var eventperpg = <?php echo $blockdata['event_pagination']; ?>;
       console.log(eventperpg);
 
-      jQuery.ajax({
+      // Testing
+        jQuery.ajax({
+            url: amsjs_ajax_url.ajaxurl,
+            type: 'post',
+            data: { action: 'get_eventlocation', eventtype: eventtype, eventstatus: eventstatus},
+            success: function(data) {
+              jQuery('#evtlocation').html(data);
+              //jQuery('#seemore').hide();
+            }
+        });
+      //
+
+        jQuery.ajax({
             url: amsjs_ajax_url.ajaxurl,
             type: 'post',
             data: { action: 'searcheventdata_action', eventtype: eventtype, eventstatus: eventstatus, evtlocation: evtlocation, pageslug: pageslug, pageid: pageid,eventperpg: eventperpg},
@@ -311,7 +323,19 @@ jQuery(document).ready(function($) {
       var eventperpg = <?php echo $blockdata['event_pagination']; ?>;
       console.log(eventperpg);
 
-      jQuery.ajax({
+      // Testing
+        jQuery.ajax({
+            url: amsjs_ajax_url.ajaxurl,
+            type: 'post',
+            data: { action: 'get_eventlocation', eventtype: eventtype, eventstatus: eventstatus},
+            success: function(data) {
+              jQuery('#evtlocation').html(data);
+              //jQuery('#seemore').hide();
+            }
+        });
+      //
+
+        jQuery.ajax({
             url: amsjs_ajax_url.ajaxurl,
             type: 'post',
             data: { action: 'searcheventdata_action', eventtype: eventtype, eventstatus: eventstatus, evtlocation: evtlocation, pageslug: pageslug, pageid: pageid,eventperpg: eventperpg},

@@ -359,9 +359,22 @@ function get_eventlocation()
 {
     $apiurl = get_option('wpams_url_btn_label');
     $apikey = get_option('wpams_apikey_btn_label');
-    $url = "https://".$apiurl.".amsnetwork.ca/api/v3/";
 
-    $carurl = $url ."/programs/filters?access_token=".$apikey."&method=get&format=json";
+    //echo $_POST['eventtype'];
+    $eventtype = $_POST['eventtype'];
+    $eventstatus = $_POST['eventstatus'];
+
+    if(isset($_POST['eventtype']))
+    {
+        $url = "https://".$apiurl.".amsnetwork.ca/api/v3/";
+        $carurl = $url ."/programs/filters?type=".$eventtype."&status=".$eventstatus."&access_token=".$apikey."&method=get&format=json";
+    }
+    else
+    {
+        $url = "https://".$apiurl.".amsnetwork.ca/api/v3/";
+        $carurl = $url ."/programs/filters?type=All&status=1&access_token=".$apikey."&method=get&format=json";
+    }
+
 
     $catch = curl_init();
     curl_setopt($catch,CURLOPT_URL,$carurl);
@@ -374,7 +387,19 @@ function get_eventlocation()
     }
     curl_close($catch);
 
-    return $catArrayResultData = json_decode($json, true);
+    $locationArrayResult = json_decode($json, true);
+
+    if(isset($_POST['eventtype']))
+    {   
+        echo "<option value=''>All Location</option>";
+        foreach($locationArrayResult['json']['locations'] as $c => $c_value) {
+          echo "<option  value='".$c_value."'>".$c_value."</option>";     
+        }
+    }
+    else
+    {
+       return $locationArrayResult;
+    }
 }
 
 add_action('wp_ajax_get_eventlocation','get_eventlocation');

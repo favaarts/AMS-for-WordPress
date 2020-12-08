@@ -1139,6 +1139,7 @@ function search_event_action()
                       }
 
                       echo "<div class='product-content'>";
+                        echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
                         $date=$x_value['earliest_scheduled_program_date'];
                           if(empty($date))
                           {
@@ -1156,7 +1157,28 @@ function search_event_action()
                             }
                           }
                           echo "<p class='locationname'><strong>Location: </strong>".$x_value['location']."</p>";
-                          echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+                          
+                          //earlybird_cutoff
+                          $earlybirddate=$x_value['earlybird_cutoff'];
+                          if(empty($earlybirddate))
+                          {
+                            echo "<p>No Date Scheduled</P>";
+                          }
+                          else
+                          {
+                            echo "<p class='product-date'><span class='datetitle'><strong>Early Bird Registration Deadline: </strong> </span>".date('D, M d Y', strtotime($earlybirddate))."</P>"; 
+                          }
+
+                          //drop_cutoff
+                          $dropdate=$x_value['drop_cutoff'];
+                          if(empty($dropdate))
+                          {
+                            echo "<p>No Date Scheduled</P>";
+                          }
+                          else
+                          {
+                            echo "<p class='product-date'><span class='datetitle'><strong>Final Registration Deadline: </strong> </span>".date('D, M d Y', strtotime($dropdate))."</P>"; 
+                          }
                       echo "</div>";
                       
                         

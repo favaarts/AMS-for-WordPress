@@ -1424,6 +1424,14 @@ function member_ajax()
     $page = $_POST['page'];
     $newslugname = $_POST['slugname'];
 
+    $newslugname = $_POST['slugname'];
+    //
+    $post_data = get_page_by_path($newslugname);
+    $pageid = $post_data->ID;
+    $post = get_post($pageid);
+    $blocks = parse_blocks($post->post_content);
+    $layout_type = $blocks[0]['attrs']['layout_type'];
+
     $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/users?access_token=".$apikey."&method=get&format=json&type=search_and_browse&sub_type=active_members&page=".$page;
 
     if (!is_null($member_type) && $member_type != "") {
@@ -1443,17 +1451,17 @@ function member_ajax()
         echo curl_error($ch);
     }
     curl_close($ch);
-    $dummy_image = "https://ssl.gstatic.com/images/branding/product/1x/avatar_square_blue_512dp.png";
+    $dummy_image = plugins_url( 'assets/img/bg-image.png', __FILE__ );
 
     $arrayResult = json_decode($json, true);
-    if (false) {
+    if ($layout_type == 'list_view') {
         foreach ($arrayResult["users"] as $member) {
             echo '<a class="member-item" href="'.site_url('/members/'.$member["id"].'/details' ).'">';
-            echo '<div class="row member-entry">';
-                echo '<div class="col-xs-12 col-sm-3 col-md-3 user-image">';
+            echo '<div class="fx-row member-entry">';
+                echo '<div class="fx-col-xs-12 fx-col-sm-3 fx-col-md-3 user-image">';
                     echo '<img src="'.$member['photo'] .'" onerror=\'this.src="'.$dummy_image.'"\' alt="'.$member["email"].'" style="height:150px; border-radius:5px">';
                 echo "</div>";
-                echo '<div class="col-xs-12 col-sm-9 col-md-9">';
+                echo '<div class="fx-col-xs-12 fx-col-sm-9 fx-col-md-9">';
                     echo '<div class="name">';
                         echo '<h5> '.$member["first_name"].' '.$member["last_name"].' </h5>';
                         echo '<p>';
@@ -1473,10 +1481,16 @@ function member_ajax()
         }
     } else {
         foreach ($arrayResult["users"] as $member) {
-            echo '<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">';
+            $grid_size_class = "fx-col-xs-12 fx-col-sm-6 fx-col-md-4 fx-col-lg-3";
+            if ($layout_type == 'two_col') {
+                $grid_size_class = "fx-col-xs-12 fx-col-sm-6 fx-col-md-6 fx-col-lg-6";
+            } else if($layout_type == 'three') {
+                $grid_size_class = "fx-col-xs-12 fx-col-sm-6 fx-col-md-4 fx-col-lg-4";
+            }
+            echo '<div class="'.$grid_size_class.' member-grid-entry">';
                 echo '<div class="member">';
                     echo '<a class="member-item" href="'.site_url('/members/'.$member["id"].'/details' ).'">';
-                        echo '<div class="col-lg-12 member-overlay"></div>';
+                        echo '<div class="fx-col-lg-12 member-overlay"></div>';
                         echo '<img class="member-image-tile" src="'.$member['photo'] .'" onerror=\'this.src="'.$dummy_image.'"\' alt="'.$member["email"].'">';
                         echo '<div class="member-details fadeIn-bottom">';
                             echo '<h4 class="member-title">'.$member["first_name"].' '.$member["last_name"].'</h3>';

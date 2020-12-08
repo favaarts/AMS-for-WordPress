@@ -67,7 +67,7 @@ else
         ?>
           <div class="assetssidebar">
             <div class="searchbox">
-                <h4>Search Box</h4>
+                <h4>Search</h4>
                 <input type="text" class="searrch-input" name="keyword" id="keyword" onkeyup="fetchequipment()"></input>
             </div>
 

@@ -4,15 +4,17 @@ function members_function($slug)
 {
     global $post;
     $post_slug = $post->post_name;
+    $blocks = parse_blocks($post->post_content);
     $catArrayResult = get_member_types();
     $member_type = get_query_var("member_type");
     $arrayResult = get_members($member_type, NULL);
+    $layout_type = $blocks[0]['attrs']['layout_type'];
     
     ob_start();
 ?>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" integrity="sha512-YHuwZabI2zi0k7c9vtg8dK/63QB0hLvD4thw44dFo/TfBFVVQOqEG9WpviaEpbyvgOIYLXF1n7xDUfU3GDs0sw==" crossorigin="anonymous" />
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-3">
+    <link rel="stylesheet" href="<?= plugin_dir_url( dirname( __FILE__ ) ) . 'assets/css/flexboxgrid.css' ?>" />
+    <div class="fx-row">
+        <div class="fx-col-xs-12 fx-col-sm-12 fx-col-md-3">
             <div class="search">
                 <h4>Search</h4>
                 <input type="text" style="width:100%" class="search-input" name="keyword" id="keyword" onkeyup="searchMembers()"></input>
@@ -51,20 +53,20 @@ function members_function($slug)
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-9">
+        <div class="fx-col-xs-12 fx-col-sm-12 fx-col-md-9">
 
-            <?php  if(false) { ?>
+            <?php if($layout_type == "list_view") { ?>
             <div class="members-list">
                 <?php
-                    $dummy_image = "https://ssl.gstatic.com/images/branding/product/1x/avatar_square_blue_512dp.png";
+                    $dummy_image = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/img/bg-image.png';
                     foreach ($arrayResult["users"] as $member) {
                 ?>
                     <a class="member-item" href="<?= site_url('/members/'.$member["id"].'/details' )?>">
-                        <div class="row member-entry">
-                            <div class="col-xs-12 col-sm-3 col-md-3 user-image">
+                        <div class="fx-row member-entry">
+                            <div class="fx-col-xs-12 fx-col-sm-3 fx-col-md-3 user-image">
                                 <img src="<?= $member['photo'] ?>" onerror='this.src="<?= $dummy_image ?>"'  alt="<?= $member["email"] ?>" style="height:150px; border-radius:5px">
                             </div>
-                            <div class="col-xs-12 col-sm-9 col-md-9">
+                            <div class="fx-col-xs-12 fx-col-sm-9 fx-col-md-9">
                                 <div class="name">
                                     <h5> <?= $member["first_name"] ?> <?= $member["last_name"] ?></h5>
                                     <p> 
@@ -91,15 +93,21 @@ function members_function($slug)
 
             <?php } else { ?>
 
-            <div class="row members-list">
+            <div class="fx-row members-list <?= $layout_type ?>">
                 <?php
-                    $dummy_image = "https://ssl.gstatic.com/images/branding/product/1x/avatar_square_blue_512dp.png";
+                    $dummy_image = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/img/bg-image.png';
+                    $grid_size_class = "fx-col-xs-12 fx-col-sm-6 fx-col-md-4 fx-col-lg-3";
+                    if ($layout_type == 'two_col') {
+                        $grid_size_class = "fx-col-xs-12 fx-col-sm-6 fx-col-md-6 fx-col-lg-6";
+                    } else if($layout_type == 'three') {
+                        $grid_size_class = "fx-col-xs-12 fx-col-sm-6 fx-col-md-4 fx-col-lg-4";
+                    }
                     foreach ($arrayResult["users"] as $member) {
                 ?>
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="<?= $grid_size_class ?> member-grid-entry">
                         <div class="member">
                             <a class="member-item" href="<?= site_url('/members/'.$member["id"].'/details' )?>">
-                                <div class="col-lg-12 member-overlay"></div>
+                                <div class="fx-col-lg-12 member-overlay"></div>
                                 <img class="member-image-tile" src="<?= $member['photo'] ?>" onerror='this.src="<?= $dummy_image ?>"'  alt="<?= $member["email"] ?>">
                                 <div class="member-details fadeIn-bottom">
                                     <h4 class="member-title"><?= $member["first_name"] ?> <?= $member["last_name"] ?></h3>

@@ -190,4 +190,3 @@ $bgcolor = get_option('wpams_button_colour_btn_label');
 
 <?php
 get_footer();
-

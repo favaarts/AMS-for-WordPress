@@ -123,32 +123,23 @@ $bgcolor = get_option('wpams_button_colour_btn_label');
                                                     </p>
                                                 </div>
                                                  
-                                                <div class="tab-wraps">
-                                                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                                                        <!-- <li class="nav-item">
-                                                        <a class="nav-link" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Photos</a>
-                                                        </li> -->
-                                                        <li class="nav-item">
-                                                        <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Filmography</a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                        <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Downloads </a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                        <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-project" role="tab" aria-controls="pills-contact" aria-selected="false">Projects</a>
-                                                        </li>
-                                                    </ul>
-                                                    <div class="tab-content" id="pills-tabContent">
-                                                      <!-- <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                                                        <div class="row">
-                                                            
-                                                        </div>
-                                                      </div> -->
-                                                      <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it t
+                                                 <!-- Start html tab --> 
+                                                <div class="event-detail-sec">
+                                                <div class="memberdetail">    
+                                                <div class="tabs effect-3">
+                                                    <input type="radio" id="tab-1" name="tab-effect-3" checked="checked">
+                                                    <span style="color: <?=$bgcolor;?>">Filmography</span>
+                                                    <input type="radio" id="tab-2" name="tab-effect-3">
+                                                    <span style="color: <?=$bgcolor;?>">Downloads</span>
+                                                    <input type="radio" id="tab-3" name="tab-effect-3">
+                                                    <span style="color: <?=$bgcolor;?>">Projects</span>
+                                                    <div class="line ease" style="background-color: <?=$bgcolor;?>"></div>
+                                                    <div class="tab-content">
+                                                    <section id="tab-item-1">
+                                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it t
                                                         </p>
-                                                      </div>
-                                                      <div class="tab-pane tabdownload fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                                                    </section>
+                                                    <section id="tab-item-2" class="tabdownload" style="">
                                                         <div class="downloadimg">
                                                           <?php 
                                                            if($member['file_attachments'][0]['file']['url'])   
@@ -162,13 +153,15 @@ $bgcolor = get_option('wpams_button_colour_btn_label');
                                                             
                                                            ?> 
                                                         </div>
-                                                      </div>
-                                                      <div class="tab-pane fade" id="pills-project" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                                          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it t</p>
-                                                      </div>
-
+                                                    </section>
+                                                    <section id="tab-item-3" style="">
+                                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it t</p>
+                                                    </section>
                                                     </div>
                                                 </div>
+                                                </div>
+                                                </div>    
+                                                <!-- end html tab -->   
                                             </div>
                                         </div>
                                         <?php

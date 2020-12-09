@@ -402,7 +402,7 @@ p.price-non-mem {
 .ragister-sec  .timeclass{padding: 2px 0px 2px 0px;}
 
 
-.fx-row.member-entry {
+.row.member-entry {
     border: 1px solid #f1f1f1;
     margin-top: 1rem;
     border-radius: 3px;
@@ -722,6 +722,31 @@ line-height: 28px;
     font-size: 18px;
 }
 
+/*New for member*/
+.event-detail-sec .memberdetail .tabs > input,
+.event-detail-sec .memberdetail .tabs > span {
+    width: 30%;
+    height: 60px;
+    line-height: 60px;
+    position: absolute;
+    top: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.event-detail-sec .memberdetail #tab-1, .event-detail-sec .memberdetail #tab-1 + span {
+    left: 0;
+}
+
+.event-detail-sec .memberdetail #tab-2, .event-detail-sec .memberdetail #tab-2 + span {
+    left: 30%;
+}
+
+.event-detail-sec .memberdetail #tab-3, .event-detail-sec .memberdetail #tab-3 + span {
+    left: 60%;
+    font-size: 18px;
+}
+/*End for member*/
 
 .event-detail-sec .tab-content {
     padding: 60px 0px 20px;
@@ -755,6 +780,28 @@ line-height: 28px;
     padding: 0px 25px;
 }
 
+/*New for member*/
+.event-detail-sec .memberdetail #tab-1:checked ~ .tab-content #tab-item-1  {
+    display: block;
+    white-space: pre-line;
+    font-size: 16px;
+    padding: 0px 25px;
+}
+
+.event-detail-sec .memberdetail #tab-2:checked ~ .tab-content #tab-item-2  {
+    display: block;
+    white-space: pre-line;
+    font-size: 16px;
+    padding: 0px 25px;
+}
+
+.event-detail-sec .memberdetail #tab-3:checked ~ .tab-content #tab-item-3  {
+    display: block;
+    white-space: pre-line;
+    font-size: 16px;
+    padding: 0px 25px;
+}
+/*End fo member*/
 
 /* effect-3 */
 
@@ -773,6 +820,28 @@ line-height: 28px;
 .event-detail-sec #tab-2:checked ~ .line {
     left: 50%;
 }
+
+/*New for member*/
+.event-detail-sec .memberdetail .effect-3 .line{
+    background: #3498DB;
+    width: 30%;
+    height: 4px;
+    position: absolute;
+    top: 56px;
+}
+
+.event-detail-sec .memberdetail #tab-1:checked ~ .line {
+    left: 0;
+}
+
+.event-detail-sec .memberdetail #tab-2:checked ~ .line {
+    left: 30%;
+}
+
+.event-detail-sec .memberdetail #tab-3:checked ~ .line {
+    left: 60%;
+}
+/*End fo member*/
 
 .assetsdetail .btn-common.label-danger {
     border-radius: 5px;
@@ -793,10 +862,9 @@ line-height: 28px;
 .member {
     position: relative;
     width: 100%;
-    height: 100%;
     margin: auto;
     overflow: hidden;
-    border: 1px solid #efefef;
+    margin-bottom: 1em;
 }
 
 .member .member-overlay {
@@ -817,12 +885,8 @@ line-height: 28px;
 }
 
 .member-image-tile{
-    height:100% !important;
-    width:100% !important;
-}
-
-.member-grid-entry {
-    margin-bottom: 1em;
+    height:100%;
+    width:100%;
 }
 
 .member-details {
@@ -880,7 +944,6 @@ line-height: 28px;
     padding-bottom: 12px;
 }
 
-
 /*01-12-20*/
 .member-detail-right{padding-left: 30px !important; border-left: 1px solid #ece5e5 !important;}
 
@@ -888,13 +951,13 @@ line-height: 28px;
 .accordian-wrap .card-header {color: #41acb4; cursor: pointer; padding: 0px; border-radius: 0; background: transparent; border-bottom: none;}
 .accordian-wrap .card {border: none; box-shadow: none; margin-bottom: 15px;}
 .accordian-wrap .card-body-wrap {padding: 0; }
-.accordian-wrap .card-body-wrap p {margin-bottom: 2px; }
+.accordian-wrap .card-body-wrap p {margin-bottom: 2px; padding-bottom: 10px; }
 .tab-wraps li.nav-item {margin: 0; width: -webkit-fill-available; background: #f7f7f7;  border-radius: 0; color: #930606; }
 .tab-wraps .nav-pills .nav-item.show .nav-link, .tab-wraps .nav-pills .nav-link.active {background: #fff;color: #930606; border-radius: 0;border-bottom: 3px solid #930606; font-size: 18px; font-weight: bold; }
 .tab-wraps .nav-pills .nav-link {color: #930606; font-weight: bold; text-align: center; font-size: 18px; }
 .tab-wraps .tab-content>.tab-pane {padding: 10px 20px; }
 .tab-wraps img.photos-gallary {width: 200px; height: 200px; margin: 0 20px 20px 0; }
-.accordian-wrap .card-header p.title-tag {font-weight: bold;position: relative; }
+.accordian-wrap .card-header p.title-tag {font-weight: bold;position: relative;     padding-bottom: 10px; }
 .tab-wraps .nav.nav-pills {box-shadow: 0px 0px 3px 0px #e8e8e8; }
 .tab-wraps .nav-pills .nav-link:hover {background: #fff; border-bottom: 3px solid #fff; /* box-shadow: none; */ }
 .personal-wrap .title span {margin-bottom: 2px; font-weight: bold; font-size: 18px; }
@@ -929,6 +992,7 @@ line-height: 28px;
 .accordian-wrap .title-tag{font-size: 18px;}
 
 .tabdownload{width: 100%;}
+
 .downloadimg
 {
     border: 4px dotted #adadad;
@@ -953,8 +1017,11 @@ line-height: 28px;
 .product-date, .locationname {
     margin-bottom: 5px;
 }
-
-.members_list {
-    width: 100% !important;
+.specializations .personal-wrap .title p.sub-title
+{
+    padding-bottom: 10px;
 }
 
+.detailcontact p {
+    padding-bottom: 10px;
+}

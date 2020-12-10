@@ -963,12 +963,40 @@ line-height: 28px;
 .personal-wrap .title span {margin-bottom: 2px; font-weight: bold; font-size: 18px; }
 .personal-wrap .title p.sub-title {font-weight: normal; color: #5d5d5d; /* margin-bottom: 10px; */ }
 .personal-wrap .title {margin-bottom: 15px; }
-.accordian-wrap .card-header p.title-tag::after{content: '-'; position: absolute; top: -7px; right: 13px; font-size: 22px;}
+/*.accordian-wrap .card-header p.title-tag::after{content: '-'; position: absolute; top: -7px; right: 13px; font-size: 22px;}
 
-.accordian-wrap .card-header p.title-tag.collapsed::after{content: '+';}
+.accordian-wrap .card-header p.title-tag.collapsed::after{content: '+';}*/
 .name p.basic-info {line-height: 28px; }
 
-
+/*New accordian*/
+.biocontainer {
+    width:100%;
+}
+.headingtwonewdiv .title{    
+    font-size: 18px;
+    font-weight: bold;
+}
+.biocontainer div {
+    width:100%;
+    cursor: pointer;
+}
+.biocontainer .header {
+    background-color:#d3d3d3;
+    padding: 2px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.biocontainer .content {
+    display: block;
+    padding : 5px;
+}
+.headicon
+{
+  float:right;
+  font-size: 18px;
+    font-weight: bold;
+}
+/*End New accordian*/
 
 @media (max-width: 1023px){
 

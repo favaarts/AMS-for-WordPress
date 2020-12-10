@@ -49,19 +49,19 @@ $bgcolor = get_option('wpams_button_colour_btn_label');
                                                 <div class="accordian-wrap">
                                                     <div class="accordion" id="accordionExample">
                                                       <div class="card">
-                                                        <div class="card-header" id="headingtwo" style='color: <?=$bgcolor;?>'>
-                                                          
-                                                            <p class="title-tag mb-0"  data-toggle="collapse" data-target="#collapsetwo" aria-expanded="true" aria-controls="collapsetwo">
-                                                              Bio
-                                                            </p>
-                                                         
+                                                        <!-- New accordion -->
+                                                        <div class="biocontainer">
+                                                            <div class="headingtwonewdiv"><span class="title" style='color: <?=$bgcolor;?>'>Bio</span>
+                                                            <span class="headicon" style='color: <?=$bgcolor;?>'>-</span>
+                                                            </div>
+                                                            <div class="content">
+                                                                <div class="card-body-wrap">
+                                                                <p><?= getDataOrDash($member["bio_link"]) ?></p>
+                                                              </div>
+                                                            </div>
                                                         </div>
+                                                        <!-- End New accordion -->
 
-                                                        <div id="collapsetwo" class="collapse show" aria-labelledby="headingtwo" data-parent="#accordionExample">
-                                                          <div class="card-body-wrap">
-                                                            <p><?= getDataOrDash($member["bio_link"]) ?></p>
-                                                          </div>
-                                                        </div>
                                                       </div> 
                                                     </div>
                                                 </div>
@@ -111,8 +111,6 @@ $bgcolor = get_option('wpams_button_colour_btn_label');
                                                         <strong>Location:</strong> <?= getDataOrDash($member["city"]) ?>
                                                         <br>
                                                         <strong>Organization:</strong> <?= getDataOrDash($member["organization_or_name"]) ?>
-                                                        <br>
-                                                        <strong>Address:</strong> <?= getDataOrDash($member["address"]) ?>
                                                         <br>
                                                         <strong>Member since:</strong>
                                                         <?php
@@ -180,6 +178,25 @@ $bgcolor = get_option('wpams_button_colour_btn_label');
         </div><!-- .container no-sidebar -->
     </div><!-- .site-content -->
 </div>
+<script type="text/javascript">
 
+jQuery(".headingtwonewdiv").click(function () {
+
+    $header = jQuery(this);
+    $headicon = jQuery(".headicon");
+    
+    $contentabc = $header.next();
+    
+    $contentabc.slideToggle(500, function () {
+
+        $headicon.text(function () {
+            return $contentabc.is(":visible") ? "-" : "+";
+        });
+    });
+
+});
+
+
+</script> 
 <?php
 get_footer();

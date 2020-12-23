@@ -20,6 +20,7 @@ function amsnetwork_deactivate(){
    delete_option('wpams_url_btn_label');
    delete_option('wpams_apikey_btn_label');
    delete_option('wpams_landing_url_btn_label');
+   delete_option('wpams_landing_register_url_btn_label');
    delete_option('wpams_button_colour_btn_label');
 }
 
@@ -172,9 +173,6 @@ class CategoryRegistration {
         $pageslug = $tokens[sizeof($tokens)-2];
 
         add_rewrite_rule('^'.$pageslug.'/([^/]*)/?', 'index.php?categoryslug=$matches[1]', 'top');
-        //add_rewrite_rule('^ams-assets/([^/]*)/?', 'index.php?categoryslug=$matches[1]', 'top');
-        // add_rewrite_rule('([^/]+)/([^/]*)/?', 'index.php?categoryslug=$matches[2]', 'top');
-        
 
         flush_rewrite_rules();
     }
@@ -242,14 +240,9 @@ class EventDetailsRegistration {
         $post = get_post($post_id); 
         $pageslugurl = $post->post_name;
 
-        
-        //$pageslugurl = 'events';
-         
-        //$slugval = '^'.$sl.'/([^/]*)/?';
+
         add_rewrite_rule('^'.$pageslugurl.'/([^/]*)/?', 'index.php?eventslug=$matches[1]', 'top');
-        //add_rewrite_rule('([^/]+)/([^/]*)/?', 'index.php?eventslug=$matches[2]', 'top');
-        //add_rewrite_rule('^'.$pageslugurl.'/([^/]*)/?','index.php?page_id=1302&eventslug=$matches[1]','top');
-        //add_rewrite_rule('^(.*)?/([A-Za-z0-9-]+-)(\d+)/?','index.php?page_id='.$page_id.'&eventslug=$matches[1]','top');
+
         
         flush_rewrite_rules();
     }
@@ -461,7 +454,6 @@ function wpdams_settings_page_html() {
             <h1 style="padding:10px; background:#333;color:#fff"><?= esc_html(get_admin_page_title()); ?></h1>
             <div id="subdomainerror" class='notice notice-error is-dismissible'></div>
             <?php
-            //echo "fasdfsd";
             $catArrayResult = get_sidebarcategory();
             //print_r($catArrayResult);
             if(isset($catArrayResult['error']))
@@ -650,6 +642,12 @@ if(!empty($apiurlcheck) && !empty($apikeycheck))
           array( 'wp-blocks', 'wp-element', 'wp-plugins', 'wp-editor', 'wp-edit-post', 'wp-i18n', 'wp-components', 'wp-data' )
        );
 
+        wp_enqueue_script(
+          'amsprojects-js',
+          plugins_url( 'assets/js/amsprojects.js', __FILE__ ),
+          array( 'wp-blocks', 'wp-element', 'wp-plugins', 'wp-editor', 'wp-edit-post', 'wp-i18n', 'wp-components', 'wp-data' )
+       );
+
        wp_enqueue_style(
           'amsblockstyle-css',
           plugins_url( 'assets/css/amsblockstyle.css', __FILE__ ),
@@ -692,6 +690,9 @@ require plugin_dir_path( __FILE__ ). 'inc/members.php';
 
 // CTA for Short code event listing
 require plugin_dir_path( __FILE__ ). 'inc/eventlisting.php';
+
+// CTA for Short code project listing
+require plugin_dir_path( __FILE__ ). 'inc/projects.php';
 
 // Get equipment product
 function get_apirequest($categoryid,$productname,$prodictid)
@@ -835,6 +836,172 @@ function get_eventscheduletime($eventid)
 add_action('wp_ajax_get_eventscheduletime','get_eventscheduletime');
 add_action('wp_ajax_nopriv_get_eventscheduletime','get_eventscheduletime');
 // End schedule time
+
+// Poroject Listing
+function get_projectlisting($projectdata = '')
+{
+    
+    $apiurl = get_option('wpams_url_btn_label');
+    $apikey = get_option('wpams_apikey_btn_label');
+
+    $projectlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/projects?page=1&per_page=10&access_token=".$apikey."&method=get&format=json";
+
+    $ch = curl_init();
+    curl_setopt($ch,CURLOPT_URL,$projectlistingurl);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 4);
+    $json = curl_exec($ch);
+    if(!$json) {
+        echo curl_error($ch);
+    }
+    curl_close($ch);
+
+    return $arrayProjectResultData = json_decode($json, true);
+}
+add_action('wp_ajax_get_projectlisting','get_projectlisting');
+add_action('wp_ajax_nopriv_get_projectlisting','get_projectlisting');
+// End Poroject Listing
+
+// Search Project data
+function searchprojectdata_action()
+{   
+
+    $apiurl = get_option('wpams_url_btn_label');
+    $apikey = get_option('wpams_apikey_btn_label');
+    $bgcolor = get_option('wpams_button_colour_btn_label');
+    $prodname = $_POST['projectdata'];
+    $productname = urlencode($prodname);
+
+    $pageslug = $_POST['pageslug'];
+    $pageid = $_POST['pageid'];
+
+    $eventtype = $_POST['eventtype'];
+
+    $locaton = $_POST['evtlocation'];
+    $eventlocaton = urlencode($locaton);
+
+    $eventstatus = $_POST['eventstatus'];
+
+    $eventperpg = $_POST['eventperpg'];
+
+    if(!empty($_POST['projectdata']))
+    {
+
+        $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/projects?query_string=".$productname."&access_token=".$apikey."&method=get&format=json";
+    }
+    else
+    {
+        $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/projects?access_token=".$apikey."&method=get&format=json";
+    }
+
+    $ch = curl_init();
+    curl_setopt($ch,CURLOPT_URL,$producturl);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 4);
+    $json = curl_exec($ch);
+    if(!$json) {
+        echo curl_error($ch);
+    }
+    curl_close($ch);
+
+    $arrayResult = json_decode($json, true);
+
+    
+    if(!empty($arrayResult['projects']))
+    {
+        foreach($arrayResult['projects'] as $x_value) 
+        {
+        
+        $synopsis = mb_strimwidth($x_value['synopsis'], 0, 150, '...');
+            
+        echo "<div class='listview-assets'>";
+        echo "<div class='assets-list-items'>";
+        
+
+        if($x_value['thumbnail'] == NULL || $x_value['thumbnail'] == "")
+          {                                    
+              echo "<div class='product-img'>";
+              
+              echo "<img src=". plugins_url( '../assets/img/bg-image.png', __FILE__ ) .">";
+                
+              echo "</div>";
+          }
+          else
+          {
+               echo "<div class='product-img'>";
+                  echo "<img src=".$x_value['thumbnail'].">";
+               echo "</div>";
+          }
+
+        
+        echo "<div class='assetsproduct-content'><a href='#'>";
+        echo  "<p class='product-title'>".$x_value['name']. " (2005)</p>";
+        echo  "</a>";
+        echo "<div class='assetsprice'>";
+        echo    "<p class='memberprice'><strong>Created By</strong> - ". $x_value['creator']. "</p>";
+
+        if($synopsis != NULL)
+        {
+        echo "<p class='price-non-mem'><strong>Synopsis</strong> - ". $synopsis ."</p>";
+        }
+        else
+        {
+            $attributeResult = get_projectattributes($x_value['id']);
+            if($attributeResult['project_attributes'][0]['value'] != NULL)
+            {
+
+            echo "<p class='price-non-mem'><strong>".$attributeResult['project_attributes'][0]['project_attribute_type_name']."</strong> - ". $attributeResult['project_attributes'][0]['value'] ."</p>";
+            }
+            
+            /*echo "<pre>";
+            print_r($attributeResult);
+            echo "</pre>";*/
+        }
+        echo "</div>";
+        echo "</div>";
+        echo "</div>";
+        echo "</div>";
+
+        
+        }        
+    }
+    else
+    {
+        echo $arrayResult = "No item found";
+    }
+
+
+    die();
+}
+add_action('wp_ajax_searchprojectdata_action','searchprojectdata_action');
+add_action('wp_ajax_nopriv_searchprojectdata_action','searchprojectdata_action');
+// End search project data
+
+//project_attributes
+function get_projectattributes($attribute_id = '')
+{
+/*    echo $member_id;
+    die;*/
+    $apiurl = get_option('wpams_url_btn_label');
+    $apikey = get_option('wpams_apikey_btn_label');
+
+    $projectlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/project_attributes?project_id=".$attribute_id."&type=Long%20Attributes&access_token=".$apikey."&method=get&format=json";
+
+    $ch = curl_init();
+    curl_setopt($ch,CURLOPT_URL,$projectlistingurl);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 4);
+    $json = curl_exec($ch);
+    if(!$json) {
+        echo curl_error($ch);
+    }
+    curl_close($ch);
+
+    return $arrayProjectResultData = json_decode($json, true);
+}
+add_action('wp_ajax_get_projectattributes','get_projectattributes');
+add_action('wp_ajax_nopriv_get_projectattributes','get_projectattributes');
+// End Poroject Listing
 
 // Get data on click id from sidebar menu
 function ams_get_category_action()

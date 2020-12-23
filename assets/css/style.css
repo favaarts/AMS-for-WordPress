@@ -1053,3 +1053,13 @@ line-height: 28px;
 .detailcontact p {
     padding-bottom: 10px;
 }
+
+.memberproject .assetsproduct-content
+{
+    width: 70%;
+}
+
+.projectslisting .assetsproduct-content
+{
+    width: 70%;
+}

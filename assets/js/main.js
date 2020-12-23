@@ -101,3 +101,18 @@ function fetchevent()
 }
 
 
+function fetchproject()
+{
+	console.log("hello");
+	jQuery.ajax({
+        url: amsjs_ajax_url.ajaxurl,
+        type: 'post',
+        data: { action: 'searchprojectdata_action', projectdata: jQuery('#getproject').val()},
+        success: function(data) {
+        	//console.log(data);
+        	
+        	jQuery('.right-col-wrap').html(data);
+        	jQuery('#seemore').hide();
+        }
+    });
+}

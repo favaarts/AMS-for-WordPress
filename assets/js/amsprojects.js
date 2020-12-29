@@ -26,15 +26,11 @@
         selector: 'img',
         attribute: 'src'
       },
-      eventsidebar: {
+      projectsidebar: {
       type: 'boolean',
       default: true
      },
-     eventshowbutton: {
-      type: 'boolean',
-      default: true
-     },
-     radio_attr_event: {
+     radio_attr_project: {
       type: 'string',
       default: 'three_col',
     },
@@ -77,18 +73,11 @@
             el(ToggleControl, {
               label: 'Sidebar',
               onChange: ( value ) => {
-                 props.setAttributes( { eventsidebar: value } );
+                 props.setAttributes( { projectsidebar: value } );
               },
-              checked: props.attributes.eventsidebar,
+              checked: props.attributes.projectsidebar,
             }),
-            el('p', {}, i18n.__('Show hide view more button.', 'amsnetwork-gutenbergproject-block')),
-            el(ToggleControl, {
-              label: 'View More',
-              onChange: ( value ) => {
-                 props.setAttributes( { eventshowbutton: value } );
-              },
-              checked: props.attributes.eventshowbutton,
-            }),
+            
             el( RadioControl,
               {
                 label: 'Grid Layout',
@@ -100,9 +89,9 @@
                   { label: 'List View', value: 'list_view' },
                 ],
                 onChange: ( value ) => {
-                  props.setAttributes( { radio_attr_event: value } );
+                  props.setAttributes( { radio_attr_project: value } );
                 },
-                selected: props.attributes.radio_attr_event
+                selected: props.attributes.radio_attr_project
               }
             ),
 
@@ -144,9 +133,8 @@
            el('div', {className: 'header-right-part wp-block-shortcode'},
                            el( wp.element.RawHTML, null, '['+props.attributes.type+']')
            ),
-           el( 'input', { 'type': 'hidden', 'name' : 'eventsidebar', 'value' : ( props.attributes.eventsidebar == true ? 'yes' : 'no') } ),
-           el( 'input', { 'type': 'hidden', 'name' : 'eventshowbutton', 'value' : ( props.attributes.eventshowbutton == true ? 'yes' : 'no') } ),
-           el( 'input', { 'type': 'hidden', 'name' : 'radio_attr_event', 'value' : ( props.attributes.radio_attr_event) } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'projectsidebar', 'value' : ( props.attributes.projectsidebar == true ? 'yes' : 'no') } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'radio_attr_project', 'value' : ( props.attributes.radio_attr_project) } ),
          )
 
       )

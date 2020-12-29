@@ -508,6 +508,7 @@ img.member-image {
 {
     width: 100%;
     height: 165px;
+    object-fit: contain;
 }
 
 .product-date p{
@@ -1062,4 +1063,11 @@ line-height: 28px;
 .projectslisting .assetsproduct-content
 {
     width: 70%;
+}
+
+.projectbutton
+{
+    text-align: center;
+    top: 30px;
+    position: relative;
 }

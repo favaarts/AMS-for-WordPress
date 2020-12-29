@@ -977,6 +977,99 @@ add_action('wp_ajax_searchprojectdata_action','searchprojectdata_action');
 add_action('wp_ajax_nopriv_searchprojectdata_action','searchprojectdata_action');
 // End search project data
 
+// Onclick button
+function getprojectonclick_action()
+{   
+
+    $apiurl = get_option('wpams_url_btn_label');
+    $apikey = get_option('wpams_apikey_btn_label');
+    $bgcolor = get_option('wpams_button_colour_btn_label');
+    
+    $projectpage = $_POST['page'];
+
+    //$producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/projects?access_token=".$apikey."&method=get&format=json";
+    
+    $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/projects?page=".$projectpage."&per_page=5&access_token=".$apikey."&method=get&format=json";
+
+    $ch = curl_init();
+    curl_setopt($ch,CURLOPT_URL,$producturl);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 4);
+    $json = curl_exec($ch);
+    if(!$json) {
+        echo curl_error($ch);
+    }
+    curl_close($ch);
+
+    $arrayResult = json_decode($json, true);
+
+    
+    if(!empty($arrayResult['projects']))
+    {
+        foreach($arrayResult['projects'] as $x_value) 
+        {
+        
+        $synopsis = mb_strimwidth($x_value['synopsis'], 0, 150, '...');
+            
+        echo "<div class='listview-project'>";
+        echo "<div class='assets-list-items'>";
+        
+
+        if($x_value['thumbnail'] == NULL || $x_value['thumbnail'] == "")
+          {                                    
+              echo "<div class='product-img'>";
+              
+              echo "<img src=". plugins_url( '../assets/img/bg-image.png', __FILE__ ) .">";
+                
+              echo "</div>";
+          }
+          else
+          {
+               echo "<div class='product-img'>";
+                  echo "<img src=".$x_value['thumbnail'].">";
+               echo "</div>";
+          }
+
+        
+        echo "<div class='assetsproduct-content'><a href='#'>";
+        echo  "<p class='product-title'>".$x_value['name']. " (2005)</p>";
+        echo  "</a>";
+        echo "<div class='assetsprice'>";
+        echo    "<p class='memberprice'><strong>Created By</strong> - ". $x_value['creator']. "</p>";
+
+        if($synopsis != NULL)
+        {
+        echo "<p class='price-non-mem'><strong>Synopsis</strong> - ". $synopsis ."</p>";
+        }
+        else
+        {
+            $attributeResult = get_projectattributes($x_value['id']);
+            if($attributeResult['project_attributes'][0]['value'] != NULL)
+            {
+
+            echo "<p class='price-non-mem'><strong>".$attributeResult['project_attributes'][0]['project_attribute_type_name']."</strong> - ". $attributeResult['project_attributes'][0]['value'] ."</p>";
+            }
+            
+            /*echo "<pre>";
+            print_r($attributeResult);
+            echo "</pre>";*/
+        }
+        echo "</div>";
+        echo "</div>";
+        echo "</div>";
+        echo "</div>";
+
+        
+        }        
+    }
+    
+
+    die();
+}
+add_action('wp_ajax_getprojectonclick_action','getprojectonclick_action');
+add_action('wp_ajax_nopriv_getprojectonclick_action','getprojectonclick_action');
+// End onclick button
+
 //project_attributes
 function get_projectattributes($attribute_id = '')
 {

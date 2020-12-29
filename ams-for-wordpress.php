@@ -844,7 +844,7 @@ function get_projectlisting($projectdata = '')
     $apiurl = get_option('wpams_url_btn_label');
     $apikey = get_option('wpams_apikey_btn_label');
 
-    $projectlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/projects?page=1&per_page=10&access_token=".$apikey."&method=get&format=json";
+    $projectlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/projects?page=1&per_page=5&access_token=".$apikey."&method=get&format=json";
 
     $ch = curl_init();
     curl_setopt($ch,CURLOPT_URL,$projectlistingurl);

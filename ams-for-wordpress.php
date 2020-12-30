@@ -906,64 +906,84 @@ function searchprojectdata_action()
 
     $arrayResult = json_decode($json, true);
 
-    
+    $post_id = $_POST['pageid'];
+    $post = get_post($post_id);
+    $blocks = parse_blocks($post->post_content);
+    $gridlayout = $blocks[0]['attrs']['radio_attr_project'];
+
     if(!empty($arrayResult['projects']))
     {
+      if($gridlayout == "list_view")
+      {   
         foreach($arrayResult['projects'] as $x_value) 
         {
         
-        $synopsis = mb_strimwidth($x_value['synopsis'], 0, 150, '...');
-            
-        echo "<div class='listview-assets'>";
-        echo "<div class='assets-list-items'>";
-        
-
-        if($x_value['thumbnail'] == NULL || $x_value['thumbnail'] == "")
-          {                                    
-              echo "<div class='product-img'>";
-              
-              echo "<img src=". plugins_url( '../assets/img/bg-image.png', __FILE__ ) .">";
+            $synopsis = mb_strimwidth($x_value['synopsis'], 0, 150, '...');
                 
-              echo "</div>";
-          }
-          else
-          {
-               echo "<div class='product-img'>";
-                  echo "<img src=".$x_value['thumbnail'].">";
-               echo "</div>";
-          }
-
-        
-        echo "<div class='assetsproduct-content'><a href='#'>";
-        echo  "<p class='product-title'>".$x_value['name']. " (2005)</p>";
-        echo  "</a>";
-        echo "<div class='assetsprice'>";
-        echo    "<p class='memberprice'><strong>Created By</strong> - ". $x_value['creator']. "</p>";
-
-        if($synopsis != NULL)
-        {
-        echo "<p class='price-non-mem'><strong>Synopsis</strong> - ". $synopsis ."</p>";
-        }
-        else
-        {
-            $attributeResult = get_projectattributes($x_value['id']);
-            if($attributeResult['project_attributes'][0]['value'] != NULL)
-            {
-
-            echo "<p class='price-non-mem'><strong>".$attributeResult['project_attributes'][0]['project_attribute_type_name']."</strong> - ". $attributeResult['project_attributes'][0]['value'] ."</p>";
-            }
+            echo "<div class='listview-assets'>";
+            echo "<div class='assets-list-items'>";
             
-            /*echo "<pre>";
-            print_r($attributeResult);
-            echo "</pre>";*/
-        }
-        echo "</div>";
-        echo "</div>";
-        echo "</div>";
-        echo "</div>";
 
-        
-        }        
+            if($x_value['thumbnail'] == NULL || $x_value['thumbnail'] == "")
+              {                                    
+                  echo "<div class='product-img'>";
+                  
+                  echo "<img src=". plugins_url( '../assets/img/bg-image.png', __FILE__ ) .">";
+                    
+                  echo "</div>";
+              }
+              else
+              {
+                   echo "<div class='product-img'>";
+                      echo "<img src=".$x_value['thumbnail'].">";
+                   echo "</div>";
+              }
+
+            
+            echo "<div class='assetsproduct-content'><a href='#'>";
+            echo  "<p class='product-title'>".$x_value['name']. " (2005)</p>";
+            echo  "</a>";
+            echo "<div class='assetsprice'>";
+            echo    "<p class='memberprice'><strong>Created By</strong> - ". $x_value['creator']. "</p>";
+
+            if($synopsis != NULL)
+            {
+            echo "<p class='price-non-mem'><strong>Synopsis</strong> - ". $synopsis ."</p>";
+            }
+            else
+            {
+                $attributeResult = get_projectattributes($x_value['id']);
+                if($attributeResult['project_attributes'][0]['value'] != NULL)
+                {
+
+                echo "<p class='price-non-mem'><strong>".$attributeResult['project_attributes'][0]['project_attribute_type_name']."</strong> - ". $attributeResult['project_attributes'][0]['value'] ."</p>";
+                }
+                
+                /*echo "<pre>";
+                print_r($attributeResult);
+                echo "</pre>";*/
+            }
+            echo "</div>";
+            echo "</div>";
+            echo "</div>";
+            echo "</div>";
+        } 
+      }
+      else
+      {
+        foreach($arrayResult['projects'] as $x_value) 
+        {
+          echo"<div class='productstyle projectdiv'>";
+                echo "<a href='javascript:void(0)'>";
+                echo  "<p class='product-title'>".$x_value['name']. " (2005)</p>";
+                echo "</a>";
+                echo "<div class='product-img-wrap'>";
+                echo  "<img src=".$x_value['thumbnail'].">";
+                echo "</div>";
+                echo "<p class='memberprice'><strong>Created By</strong> - ". $x_value['creator']. "</p>";
+          echo"</div>";
+        }
+      }         
     }
     else
     {
@@ -987,8 +1007,6 @@ function getprojectonclick_action()
     
     $projectpage = $_POST['page'];
 
-    //$producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/projects?access_token=".$apikey."&method=get&format=json";
-    
     $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/projects?page=".$projectpage."&per_page=5&access_token=".$apikey."&method=get&format=json";
 
     $ch = curl_init();
@@ -1003,64 +1021,80 @@ function getprojectonclick_action()
 
     $arrayResult = json_decode($json, true);
 
-    
+    $post_id = $_POST['pageid'];
+    $post = get_post($post_id);
+    $blocks = parse_blocks($post->post_content);
+    $gridlayout = $blocks[0]['attrs']['radio_attr_project'];
+
     if(!empty($arrayResult['projects']))
     {
-        foreach($arrayResult['projects'] as $x_value) 
-        {
-        
-        $synopsis = mb_strimwidth($x_value['synopsis'], 0, 150, '...');
+        if($gridlayout == "list_view")
+        {  
+            foreach($arrayResult['projects'] as $x_value) 
+            {
             
-        echo "<div class='listview-project'>";
-        echo "<div class='assets-list-items'>";
-        
-
-        if($x_value['thumbnail'] == NULL || $x_value['thumbnail'] == "")
-          {                                    
-              echo "<div class='product-img'>";
-              
-              echo "<img src=". plugins_url( '../assets/img/bg-image.png', __FILE__ ) .">";
+                $synopsis = mb_strimwidth($x_value['synopsis'], 0, 150, '...');
+                    
+                echo "<div class='listview-project'>";
+                echo "<div class='assets-list-items'>";
                 
-              echo "</div>";
-          }
-          else
-          {
-               echo "<div class='product-img'>";
-                  echo "<img src=".$x_value['thumbnail'].">";
-               echo "</div>";
-          }
 
-        
-        echo "<div class='assetsproduct-content'><a href='#'>";
-        echo  "<p class='product-title'>".$x_value['name']. " (2005)</p>";
-        echo  "</a>";
-        echo "<div class='assetsprice'>";
-        echo    "<p class='memberprice'><strong>Created By</strong> - ". $x_value['creator']. "</p>";
+                if($x_value['thumbnail'] == NULL || $x_value['thumbnail'] == "")
+                  {                                    
+                      echo "<div class='product-img'>";
+                      
+                      echo "<img src=". plugins_url( '../assets/img/bg-image.png', __FILE__ ) .">";
+                        
+                      echo "</div>";
+                  }
+                  else
+                  {
+                       echo "<div class='product-img'>";
+                          echo "<img src=".$x_value['thumbnail'].">";
+                       echo "</div>";
+                  }
 
-        if($synopsis != NULL)
-        {
-        echo "<p class='price-non-mem'><strong>Synopsis</strong> - ". $synopsis ."</p>";
+                
+                echo "<div class='assetsproduct-content'><a href='javascript:void(0)'>";
+                echo  "<p class='product-title'>".$x_value['name']. " (2005)</p>";
+                echo  "</a>";
+                echo "<div class='assetsprice'>";
+                echo    "<p class='memberprice'><strong>Created By</strong> - ". $x_value['creator']. "</p>";
+
+                if($synopsis != NULL)
+                {
+                echo "<p class='price-non-mem'><strong>Synopsis</strong> - ". $synopsis ."</p>";
+                }
+                else
+                {
+                    $attributeResult = get_projectattributes($x_value['id']);
+                    if($attributeResult['project_attributes'][0]['value'] != NULL)
+                    {
+
+                    echo "<p class='price-non-mem'><strong>".$attributeResult['project_attributes'][0]['project_attribute_type_name']."</strong> - ". $attributeResult['project_attributes'][0]['value'] ."</p>";
+                    }
+                }
+                echo "</div>";
+                echo "</div>";
+                echo "</div>";
+                echo "</div>";
+            }
         }
         else
         {
-            $attributeResult = get_projectattributes($x_value['id']);
-            if($attributeResult['project_attributes'][0]['value'] != NULL)
+            foreach($arrayResult['projects'] as $x_value) 
             {
-
-            echo "<p class='price-non-mem'><strong>".$attributeResult['project_attributes'][0]['project_attribute_type_name']."</strong> - ". $attributeResult['project_attributes'][0]['value'] ."</p>";
+              echo"<div class='productstyle projectdiv'>";
+                    echo "<a href='javascript:void(0)'>";
+                    echo  "<p class='product-title'>".$x_value['name']. " (2005)</p>";
+                    echo "</a>";
+                    echo "<div class='product-img-wrap'>";
+                    echo  "<img src=".$x_value['thumbnail'].">";
+                    echo "</div>";
+                    echo "<p class='memberprice'><strong>Created By</strong> - ". $x_value['creator']. "</p>";
+              echo"</div>";
             }
-            
-            /*echo "<pre>";
-            print_r($attributeResult);
-            echo "</pre>";*/
-        }
-        echo "</div>";
-        echo "</div>";
-        echo "</div>";
-        echo "</div>";
-
-        
-        }        
+        }    
     }
     
 

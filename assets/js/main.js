@@ -103,10 +103,12 @@ function fetchevent()
 
 function fetchproject()
 {
+	var pageid = jQuery("#getpageid").val();
+	
 	jQuery.ajax({
         url: amsjs_ajax_url.ajaxurl,
         type: 'post',
-        data: { action: 'searchprojectdata_action', projectdata: jQuery('#getproject').val()},
+        data: { action: 'searchprojectdata_action', projectdata: jQuery('#getproject').val(), pageid:pageid},
         success: function(data) {
         	//console.log(data);
         	

@@ -15,14 +15,35 @@ main-content - this class is for two columns.
 main-content main-content-three-col - this class is for three columns.
 main-content main-content-four-col - this class is for four columns.
 ======================================================================  -->
+<?php
 
+$blockdata = get_sidebaroption();
+
+$gridlayout = $blockdata['radio_attr_project'];
+
+if($gridlayout == "four_col")
+{
+   $blockclass = 'main-content-four-col';
+}
+elseif($gridlayout == "two_col")
+{
+  $blockclass = '';
+}
+else
+{
+   $blockclass = 'main-content-three-col';
+}
+
+?>
 
 <div class="wp-block-columns main-content <?= $blockclass; ?>" >
 
   <?php
 
-  $blockdata = get_sidebaroption();
-          
+  /*echo "<pre>";
+  print_r($gridlayout);
+  echo "</pre>";*/
+
   if (!isset($blockdata['projectsidebar']))
   {        
   ?>
@@ -38,82 +59,90 @@ main-content main-content-four-col - this class is for four columns.
     </div>  
   <?php } ?> 
    
-  	<!-- Projects -->
-  	<div class="projectslisting right-col" >       
-	    <div class="right-col-wrap">
-	        
-	        <?php
+    <!-- Projects -->
+    <div class="projectslisting right-col" >       
+      <div class="right-col-wrap">
+      <input type="hidden" id="getpageid" value="<?php echo get_the_ID(); ?>">   
+      <?php
 
-	        $arrayResult = get_projectlisting(NULL);
-	        $bgcolor = get_option('wpams_button_colour_btn_label');
+      $arrayResult = get_projectlisting(NULL);
+      $bgcolor = get_option('wpams_button_colour_btn_label');
 
+      if($blockdata['radio_attr_project'] == "list_view")
+      {
+        foreach($arrayResult['projects'] as $x_value) 
+        {
+          
+          $synopsis = mb_strimwidth($x_value['synopsis'], 0, 150, '...');
+            
+          echo "<div class='listview-project'>";
+          echo "<div class='assets-list-items'>";
+          
 
-	        //$projects = get_projectlisting($member_id);
-	       /* echo "<pre>";
-	        print_r($arrayResult['projects']);
-	        echo "</pre>";*/
+          if($x_value['thumbnail'] == NULL || $x_value['thumbnail'] == "")
+                {                                    
+                    echo "<div class='product-img'>";
 
-	        foreach($arrayResult['projects'] as $x_value) 
-	        {
-	        
-	        $synopsis = mb_strimwidth($x_value['synopsis'], 0, 150, '...');
-	        	
-	        echo "<div class='listview-project'>";
-			echo "<div class='assets-list-items'>";
-			
+                    echo "<img src=". esc_url( plugins_url( 'assets/img/bg-image.png', dirname(__FILE__) ) ) .">";
+                      
+                    echo "</div>";
+                }
+                else
+                {
+                     echo "<div class='product-img'>";
+                        echo "<img src=".$x_value['thumbnail'].">";
+                     echo "</div>";
+                }
 
-			if($x_value['thumbnail'] == NULL || $x_value['thumbnail'] == "")
-	          {                                    
-	              echo "<div class='product-img'>";
+          
+          echo "<div class='assetsproduct-content'><a href='javascript:void(0)'>";
+          echo  "<p class='product-title'>".$x_value['name']. " (2005)</p>";
+          echo  "</a>";
+          echo "<div class='assetsprice'>";
+          echo    "<p class='memberprice'><strong>Created By</strong> - ". $x_value['creator']. "</p>";
 
-	              echo "<img src=". esc_url( plugins_url( 'assets/img/bg-image.png', dirname(__FILE__) ) ) .">";
-	                
-	              echo "</div>";
-	          }
-	          else
-	          {
-	               echo "<div class='product-img'>";
-	                  echo "<img src=".$x_value['thumbnail'].">";
-	               echo "</div>";
-	          }
+          if($synopsis != NULL)
+          {
+          echo "<p class='price-non-mem'><strong>Synopsis</strong> - ". $synopsis ."</p>";
+          }
+          else
+          {
+            $attributeResult = get_projectattributes($x_value['id']);
+            if($attributeResult['project_attributes'][0]['value'] != NULL)
+            {
 
-			
-			echo "<div class='assetsproduct-content'><a href='#'>";
-			echo  "<p class='product-title'>".$x_value['name']. " (2005)</p>";
-			echo  "</a>";
-			echo "<div class='assetsprice'>";
-			echo    "<p class='memberprice'><strong>Created By</strong> - ". $x_value['creator']. "</p>";
+            echo "<p class='price-non-mem'><strong>".$attributeResult['project_attributes'][0]['project_attribute_type_name']."</strong> - ". $attributeResult['project_attributes'][0]['value'] ."</p>";
+            }
 
-			if($synopsis != NULL)
-			{
-			echo "<p class='price-non-mem'><strong>Synopsis</strong> - ". $synopsis ."</p>";
-			}
-			else
-			{
-				$attributeResult = get_projectattributes($x_value['id']);
-				if($attributeResult['project_attributes'][0]['value'] != NULL)
-				{
+          }
+          echo "</div>";
+          echo "</div>";
+          echo "</div>";
+          echo "</div>";  
+        }
+      }
+      else
+      {
+        foreach($arrayResult['projects'] as $x_value) 
+        {
+          echo"<div class='productstyle projectdiv'>";
+                echo "<a href='javascript:void(0)'>";
+                echo  "<p class='product-title'>".$x_value['name']. " (2005)</p>";
+                echo "</a>";
+                echo "<div class='product-img-wrap'>";
+                echo  "<img src=".$x_value['thumbnail'].">";
+                echo "</div>";
+                echo "<p class='memberprice'><strong>Created By</strong> - ". $x_value['creator']. "</p>";
+          echo"</div>";
+        }
+          
+      }  
 
-				echo "<p class='price-non-mem'><strong>".$attributeResult['project_attributes'][0]['project_attribute_type_name']."</strong> - ". $attributeResult['project_attributes'][0]['value'] ."</p>";
-				}
+      ?>  
+           
+      </div> 
 
-				/*echo "<pre>";
-				print_r($attributeResult);
-				echo "</pre>";*/
-			}
-			echo "</div>";
-			echo "</div>";
-			echo "</div>";
-			echo "</div>";
-
-	        
-	    	}
-	        ?>
-
-	        
-	    </div> 
-
-	    <div class="projectbutton">
+      <div class="projectbutton">
             
             <p class="para"></p>
             <a id="inifiniteLoader"  data-totalequipment="<?php echo $arrayResult['meta']['total_count']; ?>" ><img src="<?php echo esc_url( plugins_url( 'assets/img/loader.svg', dirname(__FILE__) ) ) ?>" ></a>   
@@ -125,8 +154,8 @@ main-content main-content-four-col - this class is for four columns.
             ?>  
         </div>   
 
-	</div> 
-  	<!-- End projects -->
+  </div> 
+    <!-- End projects -->
 
 </div>
    
@@ -139,6 +168,8 @@ jQuery(document).ready(function($) {
 
    var count = 2;
    var total = jQuery("#inifiniteLoader").data("totalequipment");
+   var pageid = jQuery("#getpageid").val();
+
    $('#inifiniteLoader').hide();
 
     $('#seemore').click(function(){
@@ -179,15 +210,12 @@ jQuery(document).ready(function($) {
 
 
     function loadArticle(pageNumber){
-     //$('a#inifiniteLoader').show();
-
-     /*console.log(amsjs_ajax_url.ajaxurl);
-     console.log("hello");*/
+     
 
      $.ajax({
        url: amsjs_ajax_url.ajaxurl,
        type:'POST',
-       data: { action: 'getprojectonclick_action', page:pageNumber},
+       data: { action: 'getprojectonclick_action', page:pageNumber, pageid:pageid},
        beforeSend: function(){
         // Show image container
             $("#inifiniteLoader").show();

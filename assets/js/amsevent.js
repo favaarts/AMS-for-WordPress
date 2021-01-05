@@ -34,6 +34,10 @@
       type: 'boolean',
       default: true
      },
+     displaypastevents: {
+      type: 'boolean',
+      default: true
+     },
      radio_attr_event: {
       type: 'string',
       default: 'three_col',
@@ -103,6 +107,14 @@
                  props.setAttributes( { eventshowbutton: value } );
               },
               checked: props.attributes.eventshowbutton,
+            }),
+            el('p', {}, i18n.__('( On / Off ) Display past events.', 'amsnetwork-gutenbergevent-block')),
+            el(ToggleControl, {
+              label: 'Display Past Events',
+              onChange: ( value ) => {
+                 props.setAttributes( { displaypastevents: value } );
+              },
+              checked: props.attributes.displaypastevents,
             }),
             el( RadioControl,
               {
@@ -205,6 +217,7 @@
            ),
            el( 'input', { 'type': 'hidden', 'name' : 'eventsidebar', 'value' : ( props.attributes.eventsidebar == true ? 'yes' : 'no') } ),
            el( 'input', { 'type': 'hidden', 'name' : 'eventshowbutton', 'value' : ( props.attributes.eventshowbutton == true ? 'yes' : 'no') } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'displaypastevents', 'value' : ( props.attributes.displaypastevents == true ? 'yes' : 'no') } ),
            el( 'input', { 'type': 'hidden', 'name' : 'radio_attr_event', 'value' : ( props.attributes.radio_attr_event) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'event_pagination', 'value' : ( props.attributes.event_pagination) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'member', 'value' : ( props.attributes.member == true ? 'yes' : 'no') } ),

@@ -39,7 +39,7 @@ function members_function($slug)
                             ?>
                             <li>
                                 <a 
-                                    href='<?= site_url('/' . $post_slug . '/?member_type='. $c_value['id']); ?>'
+                                    href='<?= site_url('/' . $post_slug . '/?type='.$c_value['name'].'&member_type='. $c_value['id']); ?>'
                                     <?php if ($c_value["id"] == $member_type) {
                                         echo "class='active-member-type'";
                                     } 

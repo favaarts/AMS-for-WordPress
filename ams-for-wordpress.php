@@ -790,7 +790,21 @@ function get_eventlisting($eventid)
         {
             $totalevents = 8;
         }
-        $eventlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=All&per_page=".$totalevents."&access_token=".$apikey."&method=get&format=json";
+
+        if (!isset($blockdata['displaypastevents']))
+        {
+            $eventlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=All&per_page=".$totalevents."&access_token=".$apikey."&method=get&format=json";
+        }
+        else
+        {
+            
+            $day = date("d");
+            $month = date("m");
+            $year = date("Y");
+            $eventdate = $day."%2F".$month."%2F".$year;
+
+            $eventlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=All&per_page=".$totalevents."&after=".$eventdate."&access_token=".$apikey."&method=get&format=json";
+        }
     }
 
 
@@ -1373,17 +1387,65 @@ function search_event_action()
 
     $eventperpg = $_POST['eventperpg'];
 
+    $post = get_post($pageid);
+    $blocks = parse_blocks($post->post_content);
+
     if(!empty($_POST['getevent']))
     {
-        $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=All&query=".$productname."&access_token=".$apikey."&method=get&format=json";
+        
+        if (!isset($blocks[0]['attrs']['displaypastevents']))
+        {
+            
+            $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=All&query=".$productname."&access_token=".$apikey."&method=get&format=json";
+        }
+        else
+        {
+            $day = date("d");
+            $month = date("m");
+            $year = date("Y");
+            $eventdate = $day."%2F".$month."%2F".$year;
+            
+            $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=All&query=".$productname."&after=".$eventdate."&access_token=".$apikey."&method=get&format=json";
+        }
     }
     else if(isset($eventtype))
     {
-       $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&page=".$page."&per_page=".$eventperpg."&access_token=".$apikey."&method=get&format=json";
+       
+        if (!isset($blocks[0]['attrs']['displaypastevents']))
+        {
+            $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&page=".$page."&per_page=".$eventperpg."&access_token=".$apikey."&method=get&format=json";
+        }
+        else
+        {
+            
+            $day = date("d");
+            $month = date("m");
+            $year = date("Y");
+            $eventdate = $day."%2F".$month."%2F".$year;
+            
+            $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&after=".$eventdate."&page=".$page."&per_page=".$eventperpg."&access_token=".$apikey."&method=get&format=json";
+
+            
+        }
     }
     else
     {
-        $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=All&access_token=".$apikey."&method=get&format=json";
+
+        if (!isset($blocks[0]['attrs']['displaypastevents']))
+        {
+
+            $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=All&access_token=".$apikey."&method=get&format=json";
+        }
+        else
+        {
+
+            $day = date("d");
+            $month = date("m");
+            $year = date("Y");
+            $eventdate = $day."%2F".$month."%2F".$year;
+            
+            $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=All&after=".$eventdate."&access_token=".$apikey."&method=get&format=json"; 
+        }
     }
 
     $ch = curl_init();
@@ -1434,7 +1496,16 @@ function search_event_action()
 
                       echo "<div class='product-content'>";
                         echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
-                        $date=$x_value['earliest_scheduled_program_date'];
+
+                        if (!isset($blocks[0]['attrs']['displaypastevents']))
+                        {
+                            $date=$x_value['earliest_scheduled_program_date'];
+                        }
+                        else
+                        {
+                            $date=$x_value['upcoming_scheduled_program_date'];
+                        }
+
                           if(empty($date))
                           {
                             echo "<p>No Date Scheduled</P>";
@@ -1512,7 +1583,16 @@ function search_event_action()
                                 }
 
                                 echo "<div class='eventtitle'>";
+
+                                if (!isset($blocks[0]['attrs']['displaypastevents']))
+                                {
                                     $date=$x_value['earliest_scheduled_program_date'];
+                                }
+                                else
+                                {
+                                    $date=$x_value['upcoming_scheduled_program_date'];
+                                }    
+
                                     if(empty($date))
                                     {
                                       echo "<p>No Date Scheduled</P>";

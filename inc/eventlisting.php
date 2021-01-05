@@ -23,6 +23,15 @@ $blockdata = get_sidebaroption();
 $bgcolor = get_option('wpams_button_colour_btn_label');
 $gridlayout = $blockdata['radio_attr_event'];
 
+if($blockdata['event_pagination'] != NULL)
+{
+  $pagination = $blockdata['event_pagination'];
+}
+else
+{
+  $pagination = 8;
+}
+
 if($gridlayout == "four_col")
 {
    $blockclass = 'main-content-four-col';
@@ -160,14 +169,23 @@ else
 
                       echo "<div class='product-content'>";
                         echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
-                        $date=$x_value['earliest_scheduled_program_date'];
+                          
+                          if (!isset($blockdata['displaypastevents']))
+                          {
+                            $date=$x_value['earliest_scheduled_program_date'];
+                          }
+                          else
+                          {
+                            $date=$x_value['upcoming_scheduled_program_date'];
+                          }
+
                           if(empty($date))
                           {
                             echo "<p>No Date Scheduled</P>";
                           }
                           else
                           {
-                            echo "<p class='product-date'><span class='datetitle'>Earliest Date: </span>".date('D, M d Y', strtotime($date))."</P>"; 
+                            echo "<p class='product-date'><span class='datetitle'><strong>Earliest Date: </strong> </span>".date('D, M d Y', strtotime($date))."</P>"; 
                           }
                           echo "<p class='locationname'><strong>Location: </strong>".$x_value['location']."</p>";
 
@@ -234,14 +252,23 @@ else
                             }
 
                             echo "<div class='eventtitle'>";
-                              $date=$x_value['earliest_scheduled_program_date'];
+                              
+                              if (!isset($blockdata['displaypastevents']))
+                              {
+                                $date=$x_value['earliest_scheduled_program_date'];
+                              }
+                              else
+                              {
+                                $date=$x_value['upcoming_scheduled_program_date'];
+                              }
+
                                 if(empty($date))
                                 {
                                   echo "<p>No Date Scheduled</P>";
                                 }
                                 else
                                 {
-                                  echo "<p><span class='datetitle'>Earliest Date: </span>".date('D, M d', strtotime($date))."</P>"; 
+                                  echo "<p><span class='datetitle'><strong>Earliest Date: </strong> </span>".date('D, M d', strtotime($date))."</P>"; 
                                 }
                                 echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $assetstitle ."</p> </a>";
                             echo "</div>";
@@ -298,7 +325,7 @@ jQuery(document).ready(function($) {
       var pageslug = jQuery('#inputpageslug').val();
       var pageid = jQuery('#inputpageid').val();
 
-      var eventperpg = <?php echo $blockdata['event_pagination']; ?>;
+      var eventperpg = <?php echo $pagination; ?>;
       console.log(eventperpg);
 
       // Testing
@@ -343,7 +370,7 @@ jQuery(document).ready(function($) {
       var pageid = jQuery('#inputpageid').val();
 
 
-      var eventperpg = <?php echo $blockdata['event_pagination']; ?>;
+      var eventperpg = <?php echo $pagination; ?>;
       console.log(eventperpg);
 
       // Testing
@@ -387,7 +414,7 @@ jQuery(document).ready(function($) {
       var pageslug = jQuery('#inputpageslug').val();
       var pageid = jQuery('#inputpageid').val();
 
-      var eventperpg = <?php echo $blockdata['event_pagination']; ?>;
+      var eventperpg = <?php echo $pagination; ?>;
       console.log(eventperpg);
 
       jQuery.ajax({
@@ -422,7 +449,7 @@ jQuery(document).ready(function($) {
       var pageid = jQuery('#inputpageid').val();
 
 
-      var eventperpg = <?php echo $blockdata['event_pagination']; ?>;
+      var eventperpg = <?php echo $pagination; ?>;
       console.log(eventperpg);
 
       jQuery.ajax({

@@ -152,8 +152,70 @@ $bgcolor = get_option('wpams_button_colour_btn_label');
                                                            ?> 
                                                         </div>
                                                     </section>
-                                                    <section id="tab-item-3" style="">
-                                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it t</p>
+                                                    <section id="tab-item-3" class="memberproject memberprojectlisting" style="">
+                                                    <?php
+                                                        //echo $member_id;
+                                                        $projects = get_projectlisting($member_id);
+                                                        /*echo "<pre>";
+                                                        print_r($projects);
+                                                        echo "</pre>";*/
+                                                        foreach($projects['projects'] as $x_value) 
+                                                {
+
+                                                    $synopsis = mb_strimwidth($x_value['synopsis'], 0, 150, '...');
+                                                        
+                                                    echo "<div class='listview-project'>";
+                                                    echo "<div class='assets-list-items'>";
+                                                    
+
+                                                    if($x_value['thumbnail'] == NULL || $x_value['thumbnail'] == "")
+                                                      {                                    
+                                                          echo "<div class='product-img'>";
+                                                          
+                                                          echo "<img src=". plugins_url( '../assets/img/bg-image.png', __FILE__ ) .">";
+                                                            
+                                                          echo "</div>";
+                                                      }
+                                                      else
+                                                      {
+                                                           echo "<div class='product-img'>";
+                                                              echo "<div class='productthumb'>";  
+                                                              echo "<img src=".$x_value['thumbnail'].">";
+                                                              echo "</div>";
+                                                           echo "</div>";
+                                                      }
+
+                                                    
+                                                    echo "<div class='assetsproduct-content'><a href='javascript:void(0)'>";
+                                                    echo  "<p class='product-title'> ". $x_value['name'] ;
+                                                    if($x_value['completed_year'])
+                                                    {
+                                                      echo " (".$x_value['completed_year'].")";
+                                                    }
+                                                    echo "</p>";
+                                                    echo  "</a>";
+                                                    echo "<div class='assetsprice'>";
+                                                    echo    "<p class='memberprice'><strong>Created By</strong> - ". $x_value['creator']. "</p>";
+
+                                                    if($synopsis != NULL)
+                                                    {
+                                                    echo "<p class='price-non-mem'><strong>Synopsis</strong> - ". $synopsis ."</p>";
+                                                    }
+                                                    else
+                                                    {
+                                                        $attributeResult = get_projectattributes($x_value['id']);
+                                                        if($attributeResult['project_attributes'][0]['value'] != NULL)
+                                                        {
+
+                                                        echo "<p class='price-non-mem'><strong>".$attributeResult['project_attributes'][0]['project_attribute_type_name']."</strong> - ". $attributeResult['project_attributes'][0]['value'] ."</p>";
+                                                        }
+                                                    }
+                                                    echo "</div>";
+                                                    echo "</div>";
+                                                    echo "</div>";
+                                                    echo "</div>";
+                                                }
+                                                ?>
                                                     </section>
                                                     </div>
                                                 </div>

@@ -858,7 +858,26 @@ function get_projectlisting($projectdata = '')
     $apiurl = get_option('wpams_url_btn_label');
     $apikey = get_option('wpams_apikey_btn_label');
 
-    $projectlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/projects?page=1&per_page=5&access_token=".$apikey."&method=get&format=json";
+    if(isset($projectdata))
+    {
+        $projectlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/projects?user_id=".$projectdata."&access_token=".$apikey."&method=get&format=json";
+    }
+    else
+    {
+        $blockdata = get_sidebaroption();
+        $numberofprojects = $blockdata['project_pagination'];
+
+        if(isset($numberofprojects))
+        {
+            $totalprojects = $numberofprojects;
+        }
+        else
+        {
+            $totalprojects = 8;
+        }
+
+        $projectlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/projects?page=1&per_page=".$totalprojects."&access_token=".$apikey."&method=get&format=json";
+    }
 
     $ch = curl_init();
     curl_setopt($ch,CURLOPT_URL,$projectlistingurl);
@@ -941,21 +960,28 @@ function searchprojectdata_action()
             if($x_value['thumbnail'] == NULL || $x_value['thumbnail'] == "")
               {                                    
                   echo "<div class='product-img'>";
-                  
+                   echo "<div class='productthumb'>";
                   echo "<img src=". plugins_url( '../assets/img/bg-image.png', __FILE__ ) .">";
-                    
+                  echo "</div>";  
                   echo "</div>";
               }
               else
               {
                    echo "<div class='product-img'>";
+                    echo "<div class='productthumb'>";
                       echo "<img src=".$x_value['thumbnail'].">";
+                    echo "</div>";  
                    echo "</div>";
               }
 
             
             echo "<div class='assetsproduct-content'><a href='#'>";
-            echo  "<p class='product-title'>".$x_value['name']. " (2005)</p>";
+            echo  "<p class='product-title'> ". $x_value['name'] ;
+            if($x_value['completed_year'])
+            {
+              echo " (".$x_value['completed_year'].")";
+            }
+            echo "</p>";
             echo  "</a>";
             echo "<div class='assetsprice'>";
             echo    "<p class='memberprice'><strong>Created By</strong> - ". $x_value['creator']. "</p>";
@@ -989,7 +1015,12 @@ function searchprojectdata_action()
         {
           echo"<div class='productstyle projectdiv'>";
                 echo "<a href='javascript:void(0)'>";
-                echo  "<p class='product-title'>".$x_value['name']. " (2005)</p>";
+                echo  "<p class='product-title'> ". $x_value['name'] ;
+                if($x_value['completed_year'])
+                {
+                  echo " (".$x_value['completed_year'].")";
+                }
+                echo "</p>";
                 echo "</a>";
                 echo "<div class='product-img-wrap'>";
                 echo  "<img src=".$x_value['thumbnail'].">";
@@ -1020,8 +1051,9 @@ function getprojectonclick_action()
     $bgcolor = get_option('wpams_button_colour_btn_label');
     
     $projectpage = $_POST['page'];
+    $projectperpg = $_POST['projectperpg'];
 
-    $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/projects?page=".$projectpage."&per_page=5&access_token=".$apikey."&method=get&format=json";
+    $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/projects?page=".$projectpage."&per_page=".$projectperpg."&access_token=".$apikey."&method=get&format=json";
 
     $ch = curl_init();
     curl_setopt($ch,CURLOPT_URL,$producturl);
@@ -1056,21 +1088,28 @@ function getprojectonclick_action()
                 if($x_value['thumbnail'] == NULL || $x_value['thumbnail'] == "")
                   {                                    
                       echo "<div class='product-img'>";
-                      
+                      echo "<div class='productthumb'>";
                       echo "<img src=". plugins_url( '../assets/img/bg-image.png', __FILE__ ) .">";
-                        
+                      echo "</div>";  
                       echo "</div>";
                   }
                   else
                   {
                        echo "<div class='product-img'>";
+                        echo "<div class='productthumb'>";
                           echo "<img src=".$x_value['thumbnail'].">";
+                        echo "</div>";  
                        echo "</div>";
                   }
 
                 
                 echo "<div class='assetsproduct-content'><a href='javascript:void(0)'>";
-                echo  "<p class='product-title'>".$x_value['name']. " (2005)</p>";
+                echo  "<p class='product-title'> ". $x_value['name'] ;
+                  if($x_value['completed_year'])
+                  {
+                    echo " (".$x_value['completed_year'].")";
+                  }
+                echo "</p>";
                 echo  "</a>";
                 echo "<div class='assetsprice'>";
                 echo    "<p class='memberprice'><strong>Created By</strong> - ". $x_value['creator']. "</p>";
@@ -1100,7 +1139,12 @@ function getprojectonclick_action()
             {
               echo"<div class='productstyle projectdiv'>";
                     echo "<a href='javascript:void(0)'>";
-                    echo  "<p class='product-title'>".$x_value['name']. " (2005)</p>";
+                    echo  "<p class='product-title'> ". $x_value['name'] ;
+                      if($x_value['completed_year'])
+                      {
+                        echo " (".$x_value['completed_year'].")";
+                      }
+                    echo "</p>";
                     echo "</a>";
                     echo "<div class='product-img-wrap'>";
                     echo  "<img src=".$x_value['thumbnail'].">";
@@ -1521,8 +1565,11 @@ function search_event_action()
                                 echo "<p class='product-date'> <span class='datetitle'>Earliest Date: </span>".date('D, M d Y', strtotime($date))."</P>"; 
                             }
                           }
+
+                          if($x_value['location'])
+                          {
                           echo "<p class='locationname'><strong>Location: </strong>".$x_value['location']."</p>";
-                          
+                          }
                           //earlybird_cutoff
                           $earlybirddate=$x_value['earlybird_cutoff'];
                           if(empty($earlybirddate))

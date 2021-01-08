@@ -21,6 +21,15 @@ $blockdata = get_sidebaroption();
 
 $gridlayout = $blockdata['radio_attr_project'];
 
+if($blockdata['project_pagination'] != NULL)
+{
+  $pagination = $blockdata['project_pagination'];
+}
+else
+{
+  $pagination = 8;
+}
+
 if($gridlayout == "four_col")
 {
    $blockclass = 'main-content-four-col';
@@ -82,21 +91,28 @@ else
           if($x_value['thumbnail'] == NULL || $x_value['thumbnail'] == "")
                 {                                    
                     echo "<div class='product-img'>";
-
+                     echo "<div class='productthumb'>";
                     echo "<img src=". esc_url( plugins_url( 'assets/img/bg-image.png', dirname(__FILE__) ) ) .">";
-                      
+                      echo "</div>";
                     echo "</div>";
                 }
                 else
                 {
                      echo "<div class='product-img'>";
+                       echo "<div class='productthumb'>";
                         echo "<img src=".$x_value['thumbnail'].">";
+                      echo "</div>";  
                      echo "</div>";
                 }
 
           
           echo "<div class='assetsproduct-content'><a href='javascript:void(0)'>";
-          echo  "<p class='product-title'>".$x_value['name']. " (2005)</p>";
+          echo  "<p class='product-title'> ". $x_value['name'] ;
+          if($x_value['completed_year'])
+          {
+            echo " (".$x_value['completed_year'].")";
+          }
+          echo "</p>";
           echo  "</a>";
           echo "<div class='assetsprice'>";
           echo    "<p class='memberprice'><strong>Created By</strong> - ". $x_value['creator']. "</p>";
@@ -211,11 +227,12 @@ jQuery(document).ready(function($) {
 
     function loadArticle(pageNumber){
      
-
+    var projectperpg = <?php echo $pagination; ?>;
+      
      $.ajax({
        url: amsjs_ajax_url.ajaxurl,
        type:'POST',
-       data: { action: 'getprojectonclick_action', page:pageNumber, pageid:pageid},
+       data: { action: 'getprojectonclick_action', page:pageNumber, pageid:pageid, projectperpg: projectperpg},
        beforeSend: function(){
         // Show image container
             $("#inifiniteLoader").show();

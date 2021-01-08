@@ -187,8 +187,12 @@ else
                           {
                             echo "<p class='product-date'><span class='datetitle'><strong>Earliest Date: </strong> </span>".date('D, M d Y', strtotime($date))."</P>"; 
                           }
-                          echo "<p class='locationname'><strong>Location: </strong>".$x_value['location']."</p>";
 
+                          if($x_value['location'])
+                          {
+                            echo "<p class='locationname'><strong>Location: </strong>".$x_value['location']."</p>";
+                          }
+                          
                           //earlybird_cutoff
                           $earlybirddate=$x_value['earlybird_cutoff'];
                           if(empty($earlybirddate))

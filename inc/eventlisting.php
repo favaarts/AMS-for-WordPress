@@ -185,7 +185,7 @@ else
                           }
                           else
                           {
-                            echo "<p class='product-date'><span class='datetitle'><strong>Earliest Date: </strong> </span>".date('D, M d Y', strtotime($date))."</P>"; 
+                            echo "<p class='product-date'><span class='datetitle'><strong>Start Day: </strong> </span>".date('D, M d Y', strtotime($date))."</P>"; 
                           }
 
                           if($x_value['location'])

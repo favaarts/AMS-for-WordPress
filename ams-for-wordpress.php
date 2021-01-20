@@ -110,8 +110,12 @@ class Registration {
     }
 
     public function rewrite_rules(){
-       /* add_rewrite_rule('^product/([^/]*)/([^/]*)/?', 'index.php?category=$matches[1]&proname=$matches[2]', 'top');*/
-        add_rewrite_rule('([^/]+)/([^/]*)/([^/]*)/?', 'index.php?category=$matches[2]&proname=$matches[3]', 'top');
+       
+        $urlArray = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $tokens = explode('/', $urlArray);
+        $pagenewslug = $tokens[sizeof($tokens)-3];
+
+        add_rewrite_rule('^'.$pagenewslug.'/([^/]*)/([^/]*)/?', 'index.php?category=$matches[1]&proname=$matches[2]', 'top');
 
         flush_rewrite_rules();
     }
@@ -1562,7 +1566,7 @@ function search_event_action()
                             }
                             else
                             {
-                                echo "<p class='product-date'> <span class='datetitle'>Earliest Date: </span>".date('D, M d Y', strtotime($date))."</P>"; 
+                                echo "<p class='product-date'> <span class='datetitle'><strong>Start Day:</strong> </span>".date('D, M d Y', strtotime($date))."</P>"; 
                             }
                           }
 

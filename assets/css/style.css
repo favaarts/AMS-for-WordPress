@@ -1098,3 +1098,7 @@ line-height: 28px;
 {
     width: 20%;
 }
+
+.eventpage .listview-events p {
+    padding-bottom: 5px;
+}

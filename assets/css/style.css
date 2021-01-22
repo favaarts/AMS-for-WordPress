@@ -460,7 +460,7 @@ img.member-image {
     width: 30%;
 }
 
-.product-content{width: 70%;padding-left: 20px;}
+.product-content{width: 70%;padding-left: 20px; align-self: center;}
 
 .listview-events {
     width: 90%;
@@ -1100,5 +1100,10 @@ line-height: 28px;
 }
 
 .eventpage .listview-events p {
-    padding-bottom: 5px;
+    padding-bottom: 0px;
+}
+
+.eventpage .listview-events p.product-title {
+    margin-top: 5px;
+    margin-bottom: 5px;
 }

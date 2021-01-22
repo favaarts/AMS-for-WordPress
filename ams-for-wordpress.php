@@ -1998,17 +1998,52 @@ function geteventonclick_action()
                       }
 
                       echo "<div class='product-content'>";
-                        $date=$x_value['earliest_scheduled_program_date'];
+
+                        echo "<a href='".site_url('/'.$pageslug.'/'.$pageslugid.'-'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+
+                          if (!isset($blockdata['displaypastevents']))
+                          {
+                            $date=$x_value['earliest_scheduled_program_date'];
+                          }
+                          else
+                          {
+                            $date=$x_value['upcoming_scheduled_program_date'];
+                          }
                           if(empty($date))
                           {
                             echo "<p>No Date Scheduled</P>";
                           }
                           else
                           {
-                            echo "<p class='product-date'><span class='datetitle'>Earliest Date: </span>".date('D, M d Y', strtotime($date))."</P>"; 
+                            echo "<p class='product-date'><span class='datetitle'><strong>Start Day: </strong> </span>".date('D, M d Y', strtotime($date))."</P>"; 
                           }
-                          echo "<p class='locationname'><strong>Location: </strong>".$x_value['location']."</p>";
-                          echo "<a href='".site_url('/'.$pageslug.'/'.$pageslugid.'-'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
+
+                          if($x_value['location'])
+                          {
+                            echo "<p class='locationname'><strong>Location: </strong>".$x_value['location']."</p>";
+                          }
+                          
+                          //earlybird_cutoff
+                          $earlybirddate=$x_value['earlybird_cutoff'];
+                          if(empty($earlybirddate))
+                          {
+                            echo "<p>No Date Scheduled</P>";
+                          }
+                          else
+                          {
+                            echo "<p class='product-date'><span class='datetitle'><strong>Early Bird Registration Deadline: </strong> </span>".date('D, M d Y', strtotime($earlybirddate))."</P>"; 
+                          }
+
+                          //drop_cutoff
+                          $dropdate=$x_value['drop_cutoff'];
+                          if(empty($dropdate))
+                          {
+                            echo "<p>No Date Scheduled</P>";
+                          }
+                          else
+                          {
+                            echo "<p class='product-date'><span class='datetitle'><strong>Final Registration Deadline: </strong> </span>".date('D, M d Y', strtotime($dropdate))."</P>"; 
+                          }
                       echo "</div>";
                       
                         

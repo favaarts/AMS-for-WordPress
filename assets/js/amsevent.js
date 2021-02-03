@@ -38,6 +38,14 @@
       type: 'boolean',
       default: true
      },
+     tagsevents: {
+      type: 'boolean',
+      default: true
+     },
+     organizationevents: {
+      type: 'boolean',
+      default: true
+     },
      radio_attr_event: {
       type: 'string',
       default: 'three_col',
@@ -115,6 +123,22 @@
                  props.setAttributes( { displaypastevents: value } );
               },
               checked: props.attributes.displaypastevents,
+            }),
+            el('p', {}, i18n.__('( On / Off ) Display Labels.', 'amsnetwork-gutenbergevent-block')),
+            el(ToggleControl, {
+              label: 'Labels',
+              onChange: ( value ) => {
+                 props.setAttributes( { tagsevents: value } );
+              },
+              checked: props.attributes.tagsevents,
+            }),
+            el('p', {}, i18n.__('( On / Off ) Display Organizations.', 'amsnetwork-gutenbergevent-block')),
+            el(ToggleControl, {
+              label: 'Organizations',
+              onChange: ( value ) => {
+                 props.setAttributes( { organizationevents: value } );
+              },
+              checked: props.attributes.organizationevents,
             }),
             el( RadioControl,
               {
@@ -218,6 +242,8 @@
            el( 'input', { 'type': 'hidden', 'name' : 'eventsidebar', 'value' : ( props.attributes.eventsidebar == true ? 'yes' : 'no') } ),
            el( 'input', { 'type': 'hidden', 'name' : 'eventshowbutton', 'value' : ( props.attributes.eventshowbutton == true ? 'yes' : 'no') } ),
            el( 'input', { 'type': 'hidden', 'name' : 'displaypastevents', 'value' : ( props.attributes.displaypastevents == true ? 'yes' : 'no') } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'organizationevents', 'value' : ( props.attributes.organizationevents == true ? 'yes' : 'no') } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'tagsevents', 'value' : ( props.attributes.tagsevents == true ? 'yes' : 'no') } ),            
            el( 'input', { 'type': 'hidden', 'name' : 'radio_attr_event', 'value' : ( props.attributes.radio_attr_event) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'event_pagination', 'value' : ( props.attributes.event_pagination) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'member', 'value' : ( props.attributes.member == true ? 'yes' : 'no') } ),

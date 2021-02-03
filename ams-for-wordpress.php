@@ -403,6 +403,59 @@ add_action('wp_ajax_get_eventlocation','get_eventlocation');
 add_action('wp_ajax_nopriv_get_eventlocation','get_eventlocation');
 // End event location
 
+// Event organization tags
+function get_eventorganizationtags()
+{
+    $apiurl = get_option('wpams_url_btn_label');
+    $apikey = get_option('wpams_apikey_btn_label');
+
+    //https://wpd.amsnetwork.ca/api/v3/organization_tags?tag_type=Program&page=1&per_page=10&required_pagination=true
+
+    $eventlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/organization_tags?tag_type=Program&access_token=".$apikey."&method=get&format=json";
+    
+    $ch = curl_init();
+    curl_setopt($ch,CURLOPT_URL,$eventlistingurl);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 4);
+    $json = curl_exec($ch);
+    if(!$json) {
+        echo curl_error($ch);
+    }
+    curl_close($ch);
+
+    return $arrayEventResultData = json_decode($json, true);
+}
+add_action('wp_ajax_get_eventorganizationtags','get_eventorganizationtags');
+add_action('wp_ajax_nopriv_get_eventorganizationtags','get_eventorganizationtags');
+// End Event organization tags
+
+// Event organization
+function get_organizationevents()
+{
+    $apiurl = get_option('wpams_url_btn_label');
+    $apikey = get_option('wpams_apikey_btn_label');
+
+    //https://wpd.amsnetwork.ca/api/v3/organization_tags?tag_type=Program&page=1&per_page=10&required_pagination=true
+
+    //$eventlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/organization_tags?tag_type=Program&access_token=".$apikey."&method=get&format=json";
+
+    $organizations = "https://".$apiurl.".amsnetwork.ca/api/v3/organizations?page=1&per_page=25&access_token=".$apikey."&method=get&format=json";
+    
+    $ch = curl_init();
+    curl_setopt($ch,CURLOPT_URL,$organizations);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 4);
+    $json = curl_exec($ch);
+    if(!$json) {
+        echo curl_error($ch);
+    }
+    curl_close($ch);
+
+    return $arrayEventResultData = json_decode($json, true);
+}
+add_action('wp_ajax_get_organizationevents','get_organizationevents');
+add_action('wp_ajax_nopriv_get_organizationevents','get_organizationevents');
+// End Event organization
 
 //subdomain validation
 function subdomainkey_validation()
@@ -1435,6 +1488,8 @@ function search_event_action()
 
     $eventperpg = $_POST['eventperpg'];
 
+    $taglabels = $_POST['taglabels'];
+
     $post = get_post($pageid);
     $blocks = parse_blocks($post->post_content);
 
@@ -1461,7 +1516,7 @@ function search_event_action()
        
         if (!isset($blocks[0]['attrs']['displaypastevents']))
         {
-            $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&page=".$page."&per_page=".$eventperpg."&access_token=".$apikey."&method=get&format=json";
+            $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&page=".$page."&per_page=".$eventperpg."&tag_name=".$taglabels."&access_token=".$apikey."&method=get&format=json";
         }
         else
         {
@@ -1471,7 +1526,7 @@ function search_event_action()
             $year = date("Y");
             $eventdate = $day."%2F".$month."%2F".$year;
             
-            $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&after=".$eventdate."&page=".$page."&per_page=".$eventperpg."&access_token=".$apikey."&method=get&format=json";
+            $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&after=".$eventdate."&page=".$page."&per_page=".$eventperpg."&tag_name=".$taglabels."&access_token=".$apikey."&method=get&format=json";
 
             
         }

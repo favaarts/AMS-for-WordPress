@@ -73,7 +73,7 @@ get_header();  ?>
                                         }
                                         else
                                         {
-                                            echo $arrayResult['program']['member_enrollment_price'];
+                                            echo "$". $arrayResult['program']['member_enrollment_price'];
                                         }
 
                                         ?>
@@ -87,6 +87,9 @@ get_header();  ?>
                                 {
                                     if (!isset($blocks[0]['attrs']['nonmember']))
                                     { 
+
+                                        if($arrayResult['program']['enrollment_price'] > 0)
+                                        {
                                 ?>
                                 <div class="enrollment">
                                     <h3>Non MemberPrice</h3>
@@ -97,13 +100,17 @@ get_header();  ?>
                                             echo "Free";
                                         }
                                         else
-                                        {
-                                            echo $arrayResult['program']['enrollment_price'];
+                                        {   
+                                            
+
+                                                echo "$". $arrayResult['program']['enrollment_price'];
+                                            
                                         }
                                         ?>    
                                     </p>
                                 </div>
                                 <?php 
+                                        }
                                     }
                                 }
                                 if(!empty($arrayResult['program']['earlybird_discount']))
@@ -121,7 +128,7 @@ get_header();  ?>
                                         }
                                         else
                                         {
-                                            echo $arrayResult['program']['earlybird_discount'];
+                                            echo "$". $arrayResult['program']['earlybird_discount'];
                                         }
                                         ?>    
                                     </p>

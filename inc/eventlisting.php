@@ -114,6 +114,44 @@ else
               ?>
               </select>
             </div>
+
+            <?php
+            if (!isset($blockdata['tagsevents']))
+            {
+            ?>
+            <div class="taglabels">
+              <h4>Labels</h4>
+              <select class='ul-cat-wrap' id='taglabels'>
+                <option value="0">Select Labels</option>
+                <?php 
+                $geteventtags = get_eventorganizationtags();
+                foreach($geteventtags['organization_tags'] as $c_value) 
+                {
+                  echo "<option value='".$c_value['name']."'>".$c_value['name']."</option>";
+                }  
+                ?>
+              </select>
+            </div>
+            <?php 
+            } 
+
+            if (!isset($blockdata['organizationevents']))
+            {
+            ?>
+            <div class="taglabels">
+              <h4>Organizations</h4>
+              <select class='ul-cat-wrap' id='organizations'>
+                <option value="0">Select Organizations</option>
+                <?php 
+                $geteventtags = get_organizationevents();
+                foreach($geteventtags['organizations'] as $c_value) 
+                {
+                  echo "<option value='".$c_value['full_name']."'>".$c_value['full_name']."</option>";
+                }  
+                ?>
+              </select>
+            </div>
+            <?php } ?>
             <div class="searchbutton">
               <!-- <input type="button" class="inputsearchbutton" id="searchdata" style="background-color: <?=$bgcolor?>" value="Search"> -->
               <img class="buttonloader" src="<?php echo esc_url( plugins_url( 'assets/img/buttonloader.gif', dirname(__FILE__) ) ) ?>" >
@@ -440,6 +478,41 @@ jQuery(document).ready(function($) {
 
     });
    /* End Dropdown ajax*/
+
+  /*Select Labels*/
+    $("#taglabels").change(function() {
+      count = 2;     
+      event.preventDefault();
+      
+      var eventtype = jQuery('#alltypeevent').val();
+      var eventstatus = jQuery('#allstatus').val();
+      var evtlocation = jQuery("#evtlocation").val();
+      var taglabels = jQuery(this).val();
+      var pageslug = jQuery('#inputpageslug').val();
+      var pageid = jQuery('#inputpageid').val();
+
+      var eventperpg = <?php echo $pagination; ?>;
+      console.log(eventperpg);
+
+      jQuery.ajax({
+            url: amsjs_ajax_url.ajaxurl,
+            type: 'post',
+            data: { action: 'searcheventdata_action', eventtype: eventtype, eventstatus: eventstatus, evtlocation: evtlocation, pageslug: pageslug, pageid: pageid,eventperpg: eventperpg,taglabels: taglabels},
+            beforeSend: function(){
+            // Show image container
+                jQuery(".buttonloader").css("display","initial");
+            },
+            success: function(data) {
+              jQuery('.right-col-wrap').html(data);
+              //jQuery('#seemore').hide();
+              jQuery('#getevent').val('');
+              jQuery(".buttonloader").css("display","none");
+              AjaxInitProgram()
+            }
+        });
+
+    });
+    /*End Select Labels*/ 
 
     /*On serach ajax call =====================*/
     $('#searchdata').click(function(){

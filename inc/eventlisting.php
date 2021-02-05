@@ -21,6 +21,12 @@ main-content main-content-four-col - this class is for four columns.
 $blockdata = get_sidebaroption();
 
 $bgcolor = get_option('wpams_button_colour_btn_label');
+if(empty($bgcolor))
+{
+    $bgcolor = "#337AB7";
+}
+
+
 $gridlayout = $blockdata['radio_attr_event'];
 
 if($blockdata['event_pagination'] != NULL)
@@ -35,17 +41,17 @@ else
 if($gridlayout == "four_col")
 {
    $blockclass = 'main-content-four-col';
-   $eventperpage = 4;
+   $eventperpage = $pagination;
 }
 elseif($gridlayout == "two_col")
 {
   $blockclass = '';
-  $eventperpage = 2;
+  $eventperpage = $pagination;
 }
 else
 {
    $blockclass = 'main-content-three-col';
-   $eventperpage = 3;
+   $eventperpage = $pagination;
 }
 
 ?>

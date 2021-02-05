@@ -2,6 +2,10 @@
 get_header();  
 
 $bgcolor = get_option('wpams_button_colour_btn_label');
+if(empty($bgcolor))
+{
+    $bgcolor = "#337AB7";
+}
 ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" integrity="sha512-YHuwZabI2zi0k7c9vtg8dK/63QB0hLvD4thw44dFo/TfBFVVQOqEG9WpviaEpbyvgOIYLXF1n7xDUfU3GDs0sw==" crossorigin="anonymous" />
 <div class="container-wrap">

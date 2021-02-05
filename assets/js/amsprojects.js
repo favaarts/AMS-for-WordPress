@@ -118,7 +118,7 @@
                 onChange: ( value ) => {
                   props.setAttributes( { project_pagination: value } );
                 },
-                selected: props.attributes.project_pagination
+                value: props.attributes.project_pagination
               }
             ),
             

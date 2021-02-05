@@ -76,6 +76,10 @@ else
 
       $arrayResult = get_projectlisting(NULL);
       $bgcolor = get_option('wpams_button_colour_btn_label');
+      if(empty($bgcolor))
+      {
+          $bgcolor = "#337AB7";
+      }
 
       if($blockdata['radio_attr_project'] == "list_view")
       {

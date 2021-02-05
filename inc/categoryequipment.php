@@ -194,7 +194,11 @@ else
                 global $post;
                 $pageslug = $post->post_name;
                 $bgcolor = get_option('wpams_button_colour_btn_label');
-
+                if(empty($bgcolor))
+                {
+                    $bgcolor = "#337AB7";
+                }
+  
                 $arrayResult = get_apirequest(NULL,NULL,NULL);
 
               if($blockdata['radio_attr'] == "list_view")

@@ -178,7 +178,7 @@
                 onChange: ( value ) => {
                   props.setAttributes( { event_pagination: value } );
                 },
-                selected: props.attributes.event_pagination
+                value: props.attributes.event_pagination
               }
             ),
             el('p', {}, i18n.__('Hide show programs price.', 'amsnetwork-gutenbergevent-block')),

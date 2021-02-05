@@ -22,6 +22,11 @@ get_header();  ?>
                 
                 $landingurl = get_option('wpams_landing_url_btn_label');
                 $bgcolor = get_option('wpams_button_colour_btn_label');
+                if(empty($bgcolor))
+                {
+                    $bgcolor = "#337AB7";
+                }
+                
                 $targeturl = get_option('url_window');
 
                 //

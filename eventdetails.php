@@ -19,6 +19,12 @@ get_header();  ?>
                     $arrayevid = explode("-",$alleventid);
                     
                     $bgcolor = get_option('wpams_button_colour_btn_label');
+                    if(empty($bgcolor))
+                    {
+                        $bgcolor = "#337AB7";
+                    }
+
+
                     $arrayResult = get_eventlisting($arrayevid[1]);
 
                     // Register URL

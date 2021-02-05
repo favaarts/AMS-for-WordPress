@@ -202,7 +202,11 @@ get_header();  ?>
               
               $catid = searchForId($category, $arraynew);
               $bgcolor = get_option('wpams_button_colour_btn_label');
-              
+              if(empty($bgcolor))
+              {
+                  $bgcolor = "#337AB7";
+              }
+
               $arrayResult = get_apirequest($catid,NULL,NULL);
               //
               if($blocks[0]['attrs']['radio_attr'] == "list_view")

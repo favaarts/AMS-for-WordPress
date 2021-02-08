@@ -20,19 +20,29 @@ get_header();  ?>
 
                 $ab = $wp->query_vars['category'];
                 
-                $landingurl = get_option('wpams_landing_url_btn_label');
+                
                 $bgcolor = get_option('wpams_button_colour_btn_label');
                 if(empty($bgcolor))
                 {
                     $bgcolor = "#337AB7";
                 }
                 
-                $targeturl = get_option('url_window');
-
                 //
                 $post = get_post($prodictid[0]);
                 $blocks = parse_blocks($post->post_content);
-                
+
+                if($blocks[0]['attrs']['register_assets_url'])
+                {
+                    $landingurl = $blocks[0]['attrs']['register_assets_url'];
+                }
+                else
+                {
+                    $apiurl = get_option('wpams_url_btn_label');
+                    $landingurl = "https://".$apiurl.".amsnetwork.ca/login";
+                }
+
+                $targeturl = $blocks[0]['attrs']['register_assets_urltab'];
+
                 $arrayResult = get_apirequest(NULL,NULL,$prodictid[1]);
             ?>
             <div class="wp-block-columns main-content main-content-three-col">

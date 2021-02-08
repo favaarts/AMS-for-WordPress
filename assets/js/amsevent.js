@@ -46,6 +46,13 @@
       type: 'boolean',
       default: true
      },
+    register_url: {
+        type: 'string',
+    },
+    register_urltab: {
+      type: 'string',
+      default: '_self',
+    },
      radio_attr_event: {
       type: 'string',
       default: 'three_col',
@@ -140,6 +147,29 @@
               },
               checked: props.attributes.organizationevents,
             }),
+            el( TextControl,
+              {
+                label: 'Register URL',
+                onChange: ( value ) => {
+                  props.setAttributes( { register_url: value } );
+                },
+                value: props.attributes.register_url
+              }
+            ),
+            el( SelectControl,
+              {
+                label: 'Where to open the Register URL',
+                //help: 'Some kind of description',
+                options : [
+                  { label: 'Same Tab', value: '_self' },
+                  { label: 'New Tab', value: '_blank' },
+                ],
+                onChange: ( value ) => {
+                  props.setAttributes( { register_urltab: value } );
+                },
+                value: props.attributes.register_urltab
+              }
+            ),
             el( RadioControl,
               {
                 label: 'Grid Layout',
@@ -156,7 +186,6 @@
                 selected: props.attributes.radio_attr_event
               }
             ),
-
             el( SelectControl,
               {
                 label: 'Number of programs display in this page.',
@@ -243,6 +272,8 @@
            el( 'input', { 'type': 'hidden', 'name' : 'eventshowbutton', 'value' : ( props.attributes.eventshowbutton == true ? 'yes' : 'no') } ),
            el( 'input', { 'type': 'hidden', 'name' : 'displaypastevents', 'value' : ( props.attributes.displaypastevents == true ? 'yes' : 'no') } ),
            el( 'input', { 'type': 'hidden', 'name' : 'organizationevents', 'value' : ( props.attributes.organizationevents == true ? 'yes' : 'no') } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'register_url', 'value' : ( props.attributes.register_url) } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'register_urltab', 'value' : ( props.attributes.register_urltab) } ), 
            el( 'input', { 'type': 'hidden', 'name' : 'tagsevents', 'value' : ( props.attributes.tagsevents == true ? 'yes' : 'no') } ),            
            el( 'input', { 'type': 'hidden', 'name' : 'radio_attr_event', 'value' : ( props.attributes.radio_attr_event) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'event_pagination', 'value' : ( props.attributes.event_pagination) } ),

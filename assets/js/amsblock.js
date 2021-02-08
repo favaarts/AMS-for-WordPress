@@ -9,6 +9,7 @@
   var TextControl = components.TextControl;
   var ToggleControl = components.ToggleControl;
   var RadioControl = components.RadioControl;
+  var SelectControl = components.SelectControl;
 
   registerBlockType('wpdams-amsnetwork/amsnetwork-block', {
     title: i18n.__('AMS Assets', 'amsnetwork-gutenberg-block'),
@@ -41,6 +42,13 @@
       type: 'boolean',
       default: true
      },
+    register_assets_url: {
+        type: 'string',
+    },
+    register_assets_urltab: {
+      type: 'string',
+      default: '_self',
+    },
      all_items_url: {
         type: 'string',
      },
@@ -130,6 +138,29 @@
               },
               checked: props.attributes.warrantyinfo,
             }),
+            el( TextControl,
+              {
+                label: 'Register URL',
+                onChange: ( value ) => {
+                  props.setAttributes( { register_assets_url: value } );
+                },
+                value: props.attributes.register_assets_url
+              }
+            ),
+            el( SelectControl,
+              {
+                label: 'Where to open the Register URL',
+                //help: 'Some kind of description',
+                options : [
+                  { label: 'Same Tab', value: '_self' },
+                  { label: 'New Tab', value: '_blank' },
+                ],
+                onChange: ( value ) => {
+                  props.setAttributes( { register_assets_urltab: value } );
+                },
+                value: props.attributes.register_assets_urltab
+              }
+            ),
             el( RadioControl,
               {
                 label: 'Grid Layout',
@@ -212,6 +243,8 @@
            el( 'input', { 'type': 'hidden', 'name' : 'sidebar_option_in', 'value' : ( props.attributes.includedacc == true ? 'yes' : 'no' ) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'sidebar_option_in', 'value' : ( props.attributes.warrantyinfo == true ? 'yes' : 'no' ) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'radio_attr', 'value' : ( props.attributes.radio_attr) } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'register_assets_url', 'value' : ( props.attributes.register_assets_url) } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'register_assets_urltab', 'value' : ( props.attributes.register_assets_urltab) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'all_items_url', 'value' : ( props.attributes.all_items_url) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'member', 'value' : ( props.attributes.member == true ? 'yes' : 'no') } ),
            el( 'input', { 'type': 'hidden', 'name' : 'nonmember', 'value' : ( props.attributes.nonmember == true ? 'yes' : 'no') } ),

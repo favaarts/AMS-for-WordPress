@@ -19,8 +19,8 @@ register_deactivation_hook( __FILE__, 'amsnetwork_deactivate' );
 function amsnetwork_deactivate(){
    delete_option('wpams_url_btn_label');
    delete_option('wpams_apikey_btn_label');
-   delete_option('wpams_landing_url_btn_label');
-   delete_option('wpams_landing_register_url_btn_label');
+   //delete_option('wpams_landing_url_btn_label');
+   //delete_option('wpams_landing_register_url_btn_label');
    delete_option('wpams_button_colour_btn_label');
 }
 
@@ -560,8 +560,8 @@ function wpams_plugin_settings(){
 
     register_setting( 'wpams-settings', 'wpams_url_btn_label' );
     register_setting( 'wpams-settings', 'wpams_apikey_btn_label' );
-    register_setting( 'wpams-settings', 'wpams_landing_url_btn_label' );
-    register_setting( 'wpams-settings', 'wpams_landing_register_url_btn_label' );
+    //register_setting( 'wpams-settings', 'wpams_landing_url_btn_label' );
+    //register_setting( 'wpams-settings', 'wpams_landing_register_url_btn_label' );
     register_setting( 'wpams-settings', 'wpams_button_colour_btn_label' );
     
     register_setting('wpams-settings', 'url_window');
@@ -573,9 +573,9 @@ function wpams_plugin_settings(){
 
     add_settings_field( 'wpams_apikey_label_field', 'API  Key', 'wpams_apikey_label_field_cb', 'wpams-settings', 'wpams_label_settings_section' );
    
-    add_settings_field( 'wpams_landing_url_label_field', 'Booking  URL', 'wpams_landing_url_label_field_cb', 'wpams-settings', 'wpams_label_settings_section' );
+    //add_settings_field( 'wpams_landing_url_label_field', 'Booking  URL', 'wpams_landing_url_label_field_cb', 'wpams-settings', 'wpams_label_settings_section' );
 
-    add_settings_field( 'wpams_landing_register_url_label_field', 'Register  URL', 'wpams_landing_register_url_label_field_cb', 'wpams-settings', 'wpams_label_settings_section' );
+    //add_settings_field( 'wpams_landing_register_url_label_field', 'Register  URL', 'wpams_landing_register_url_label_field_cb', 'wpams-settings', 'wpams_label_settings_section' );
 
     add_settings_field( 'wpams_button_colour_label_field', 'Button  colour', 'wpams_button_colour_label_field_cb', 'wpams-settings', 'wpams_label_settings_section' );
 }
@@ -640,26 +640,16 @@ function wpams_landing_url_label_field_cb(){
     <?php
 }
 
-// Field for register url
-function wpams_landing_register_url_label_field_cb()
-{
-    $setting = get_option('wpams_landing_register_url_btn_label');
-    // output the field
-    ?>
-    <input type="url" required="" name="wpams_landing_register_url_btn_label" style="width: 350px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
 
-    <select name="register_url_window" id="urlwindow" style="width: 140px;">
-      <option value="_self" <?php selected(get_option('register_url_window'), "_self"); ?>>Same Tab</option>
-      <option value="_blank" <?php selected(get_option('register_url_window'), "_blank"); ?>>New Tab</option>
-    </select>
-
-    <?php
-}
 
 // Field Button colour url
 function wpams_button_colour_label_field_cb(){ 
     // get the value of the setting we've registered with register_setting()
     $setting = get_option('wpams_button_colour_btn_label');
+    if(empty($setting))
+    {
+        $setting = "#337AB7";
+    }
     // output the field
     ?>
     <input type="color" id="colorpicker" name="color" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$" style="width: 250px;" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">

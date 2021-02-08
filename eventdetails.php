@@ -26,16 +26,24 @@ get_header();  ?>
 
 
                     $arrayResult = get_eventlisting($arrayevid[1]);
-
-                    // Register URL
-                    $registerurl = get_option('wpams_landing_register_url_btn_label');
-                    $eventwindow = get_option('register_url_window');
                     
                     //
                     $post = get_post($arrayevid[0]);
                     $blocks = parse_blocks($post->post_content);
 
-                    ?>    
+                    // Register URL
+                    if($blocks[0]['attrs']['register_url'])
+                    {
+                        $registerurl = $blocks[0]['attrs']['register_url'];
+                    }
+                    else
+                    {
+                        $apiurl = get_option('wpams_url_btn_label');
+                        $registerurl = "https://".$apiurl.".amsnetwork.ca/login";
+                    }
+
+                    $eventwindow = $blocks[0]['attrs']['register_urltab'];
+                ?>    
                         <div class="event-img-sec">
                             <div class="img-sec">
                                 <?php

@@ -187,10 +187,15 @@ get_header();  ?>
                                         foreach ($eventtime['scheduled_program_dates'] as $key => $daytime) {
                                         ?>
                                         <div class="ragister-sec">
+                                            <?php 
+                                            if (!isset($blocks[0]['attrs']['showhideurl']))
+                                            {
+                                            ?>
                                             <div class="reg-sec">
                                                 <a href="<?=$registerurl?>" target="<?=$eventwindow?>" style="background-color: <?=$bgcolor?>">Register</a>
                                             </div>
-                                            
+                                            <?php } ?>
+
                                             <div class="evtdate">
                                                 <p><?=date('D, M d, Y', strtotime($daytime['start']))?></p>
                                             </div>
@@ -225,9 +230,12 @@ get_header();  ?>
                                                 }
                                                 echo "</div>";
                                             echo   "<br>";
+                                            if (!isset($blocks[0]['attrs']['showhideurl']))
+                                            {
                                             echo   "<div class='reg-sec'>";
                                             echo   "<a href=".$registerurl." target=".$eventwindow." style='background-color:".$bgcolor."'>Register</a>";
                                             echo   "</div>";
+                                            }
                                             echo "</div>";
                                         }
                                         else
@@ -235,9 +243,12 @@ get_header();  ?>
                                            
 
                                             echo "<div class='ragister-sec'>";
+                                            if (!isset($blocks[0]['attrs']['showhideurl']))
+                                            {
                                             echo   "<div class='reg-sec'>";
                                             echo   "<a href=".$registerurl." target=".$eventwindow." style='background-color:".$bgcolor."'>Register</a>";
                                             echo   "</div>";
+                                            }
                                                 
                                             echo  "<div class='evtdate'>";
                                                     echo "<p>".date_format($start,"D, M d, Y")."</p>";

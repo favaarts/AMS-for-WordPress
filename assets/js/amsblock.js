@@ -49,6 +49,10 @@
       type: 'string',
       default: '_self',
     },
+    showhidebookurl: {
+      type: 'boolean',
+      default: true
+    },
      all_items_url: {
         type: 'string',
      },
@@ -140,7 +144,7 @@
             }),
             el( TextControl,
               {
-                label: 'Register URL',
+                label: '(Optional) Booking URL',
                 onChange: ( value ) => {
                   props.setAttributes( { register_assets_url: value } );
                 },
@@ -149,7 +153,7 @@
             ),
             el( SelectControl,
               {
-                label: 'Where to open the Register URL',
+                label: 'Where to open the Booking URL',
                 //help: 'Some kind of description',
                 options : [
                   { label: 'Same Tab', value: '_self' },
@@ -161,6 +165,14 @@
                 value: props.attributes.register_assets_urltab
               }
             ),
+            el('p', {}, i18n.__('( On / Off ) Show Hide booking button.', 'amsnetwork-gutenbergevent-block')),
+            el(ToggleControl, {
+              label: 'Display Booking Button',
+              onChange: ( value ) => {
+                 props.setAttributes( { showhidebookurl: value } );
+              },
+              checked: props.attributes.showhidebookurl,
+            }),
             el( RadioControl,
               {
                 label: 'Grid Layout',
@@ -245,6 +257,7 @@
            el( 'input', { 'type': 'hidden', 'name' : 'radio_attr', 'value' : ( props.attributes.radio_attr) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'register_assets_url', 'value' : ( props.attributes.register_assets_url) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'register_assets_urltab', 'value' : ( props.attributes.register_assets_urltab) } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'showhidebookurl', 'value' : ( props.attributes.showhidebookurl) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'all_items_url', 'value' : ( props.attributes.all_items_url) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'member', 'value' : ( props.attributes.member == true ? 'yes' : 'no') } ),
            el( 'input', { 'type': 'hidden', 'name' : 'nonmember', 'value' : ( props.attributes.nonmember == true ? 'yes' : 'no') } ),

@@ -183,14 +183,17 @@ get_header();  ?>
                                 <div class="ragister-sec">
                                     <div class="reg-sec">
                                         <?php
-                                        if($json_value['status_text'] == "Active")
+                                        if (!isset($blocks[0]['attrs']['showhidebookurl']))
                                         {
-                                        echo "<a href='$landingurl' target='$targeturl' style='background-color: $bgcolor;'>Book This Item</a>";
+                                            if($json_value['status_text'] == "Active")
+                                            {
+                                            echo "<a href='$landingurl' target='$targeturl' style='background-color: $bgcolor;'>Book This Item</a>";
+                                            }    
+                                            else
+                                            {
+                                            echo "<p><span class='label label-danger btn-common' disabled>Unavailable</span></p>";
+                                            }
                                         }    
-                                        else
-                                        {
-                                        echo "<p><span class='label label-danger btn-common' disabled>Unavailable</span></p>";
-                                        }
                                         ?>
                                         
                                     </div>

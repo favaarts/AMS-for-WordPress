@@ -53,6 +53,10 @@
       type: 'string',
       default: '_self',
     },
+    showhideurl: {
+      type: 'boolean',
+      default: true
+    },
      radio_attr_event: {
       type: 'string',
       default: 'three_col',
@@ -149,7 +153,7 @@
             }),
             el( TextControl,
               {
-                label: 'Register URL',
+                label: '(Optional) Registration URL',
                 onChange: ( value ) => {
                   props.setAttributes( { register_url: value } );
                 },
@@ -158,7 +162,7 @@
             ),
             el( SelectControl,
               {
-                label: 'Where to open the Register URL',
+                label: 'Where to open the Registration URL',
                 //help: 'Some kind of description',
                 options : [
                   { label: 'Same Tab', value: '_self' },
@@ -170,6 +174,14 @@
                 value: props.attributes.register_urltab
               }
             ),
+            el('p', {}, i18n.__('( On / Off ) Show Hide register button.', 'amsnetwork-gutenbergevent-block')),
+            el(ToggleControl, {
+              label: 'Display Register Button',
+              onChange: ( value ) => {
+                 props.setAttributes( { showhideurl: value } );
+              },
+              checked: props.attributes.showhideurl,
+            }),
             el( RadioControl,
               {
                 label: 'Grid Layout',
@@ -274,6 +286,7 @@
            el( 'input', { 'type': 'hidden', 'name' : 'organizationevents', 'value' : ( props.attributes.organizationevents == true ? 'yes' : 'no') } ),
            el( 'input', { 'type': 'hidden', 'name' : 'register_url', 'value' : ( props.attributes.register_url) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'register_urltab', 'value' : ( props.attributes.register_urltab) } ), 
+           el( 'input', { 'type': 'hidden', 'name' : 'showhideurl', 'value' : ( props.attributes.showhideurl) } ),            
            el( 'input', { 'type': 'hidden', 'name' : 'tagsevents', 'value' : ( props.attributes.tagsevents == true ? 'yes' : 'no') } ),            
            el( 'input', { 'type': 'hidden', 'name' : 'radio_attr_event', 'value' : ( props.attributes.radio_attr_event) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'event_pagination', 'value' : ( props.attributes.event_pagination) } ),

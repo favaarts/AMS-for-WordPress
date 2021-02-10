@@ -1506,7 +1506,7 @@ function search_event_action()
        
         if (!isset($blocks[0]['attrs']['displaypastevents']))
         {
-            $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&page=".$page."&per_page=".$eventperpg."&tag_name=".$taglabels."&access_token=".$apikey."&method=get&format=json";
+            $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?organization_id=".$organizationid."&type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&tag_name=".$taglabels."&page=".$page."&per_page=".$eventperpg."&access_token=".$apikey."&method=get&format=json";
         }
         else
         {
@@ -1516,9 +1516,7 @@ function search_event_action()
             $year = date("Y");
             $eventdate = $day."%2F".$month."%2F".$year;
             
-            $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&after=".$eventdate."&page=".$page."&per_page=".$eventperpg."&tag_name=".$taglabels."&access_token=".$apikey."&method=get&format=json";
-
-            
+            $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?organization_id=".$organizationid."&type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&after=".$eventdate."&page=".$page."&per_page=".$eventperpg."&tag_name=".$taglabels."&access_token=".$apikey."&method=get&format=json";
         }
     }
     else

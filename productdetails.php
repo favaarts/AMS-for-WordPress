@@ -42,6 +42,10 @@ get_header();  ?>
                 }
 
                 $targeturl = $blocks[0]['attrs']['register_assets_urltab'];
+                if(empty($targeturl))
+                {
+                    $targeturl = "_self";
+                }
 
                 $arrayResult = get_apirequest(NULL,NULL,$prodictid[1]);
             ?>

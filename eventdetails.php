@@ -43,6 +43,10 @@ get_header();  ?>
                     }
 
                     $eventwindow = $blocks[0]['attrs']['register_urltab'];
+                    if(empty($eventwindow))
+                    {
+                        $eventwindow = "_self";
+                    }
                 ?>    
                         <div class="event-img-sec">
                             <div class="img-sec">
@@ -220,13 +224,16 @@ get_header();  ?>
                                             echo "<div class='ragister-sec'>";
                                                 echo "<div class='classevent'>"; 
                                                 foreach ($eventtime['scheduled_program_dates'] as $key => $daytime) { 
-                                                echo  "<div class='evtdate'>";
-                                                        echo "<p>".date('D, M d, Y', strtotime($daytime['start']))."</p>";
-                                                echo  "</div>";
-                                                
-                                                echo "<div class='time'>";
-                                                echo "<p>".date('H:i', strtotime($daytime['start'])). " – ".date('H:i', strtotime($daytime['end'])). "</p>";
+                                                echo "<div class='daytimediv'>";    
+                                                    echo  "<div class='evtdate'>";
+                                                    echo "<p>".date('D, M d, Y', strtotime($daytime['start']))."</p>";
+                                                    echo  "</div>";
+                                                    
+                                                    echo "<div class='time'>";
+                                                    echo "<p>".date('H:i', strtotime($daytime['start'])). " – ".date('H:i', strtotime($daytime['end'])). "</p>";
+                                                    echo "</div>";
                                                 echo "</div>";
+
                                                 }
                                                 echo "</div>";
                                             echo   "<br>";

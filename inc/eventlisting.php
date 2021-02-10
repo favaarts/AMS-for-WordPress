@@ -128,7 +128,7 @@ else
             <div class="taglabels">
               <h4>Labels</h4>
               <select class='ul-cat-wrap' id='taglabels'>
-                <option value="0">Select Labels</option>
+                <option value="">Select Labels</option>
                 <?php 
                 $geteventtags = get_eventorganizationtags();
                 foreach($geteventtags['organization_tags'] as $c_value) 
@@ -141,13 +141,13 @@ else
             <?php 
             } 
 
-            if (!isset($blockdata['organizationevents']))
+            if (isset($blockdata['organizationevents']))
             {
             ?>
             <div class="taglabels">
               <h4>Organizations</h4>
               <select class='ul-cat-wrap' id='organizations'>
-                <option value="0">Select Organizations</option>
+                <option value="">Select Organizations</option>
                 <?php 
                 $geteventtags = get_organizationevents();
                 foreach($geteventtags['organizations'] as $c_value) 
@@ -519,6 +519,42 @@ jQuery(document).ready(function($) {
 
     });
     /*End Select Labels*/ 
+
+    /*Select organizations*/
+    $("#organizations").change(function() {
+      count = 2;     
+      event.preventDefault();
+      
+      var eventtype = jQuery('#alltypeevent').val();
+      var eventstatus = jQuery('#allstatus').val();
+      var evtlocation = jQuery("#evtlocation").val();
+      var taglabels = jQuery("#taglabels").val();
+      var pageslug = jQuery('#inputpageslug').val();
+      var pageid = jQuery('#inputpageid').val();
+      var organizations = jQuery('#organizations').val();
+
+      var eventperpg = <?php echo $pagination; ?>;
+      console.log(eventperpg);
+
+      jQuery.ajax({
+            url: amsjs_ajax_url.ajaxurl,
+            type: 'post',
+            data: { action: 'searcheventdata_action', eventtype: eventtype, eventstatus: eventstatus, evtlocation: evtlocation, pageslug: pageslug, pageid: pageid,eventperpg: eventperpg,taglabels: taglabels, organizations: organizations},
+            beforeSend: function(){
+            // Show image container
+                jQuery(".buttonloader").css("display","initial");
+            },
+            success: function(data) {
+              jQuery('.right-col-wrap').html(data);
+              //jQuery('#seemore').hide();
+              jQuery('#getevent').val('');
+              jQuery(".buttonloader").css("display","none");
+              AjaxInitProgram()
+            }
+        });
+
+    });
+    /*End Select organizations*/
 
     /*On serach ajax call =====================*/
     $('#searchdata').click(function(){

@@ -44,7 +44,7 @@
      },
      organizationevents: {
       type: 'boolean',
-      default: true
+      default: false
      },
     register_url: {
         type: 'string',

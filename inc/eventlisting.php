@@ -152,7 +152,7 @@ else
                 $geteventtags = get_organizationevents();
                 foreach($geteventtags['organizations'] as $c_value) 
                 {
-                  echo "<option value='".$c_value['full_name']."'>".$c_value['full_name']."</option>";
+                  echo "<option value='".$c_value['id']."'>".$c_value['full_name']."</option>";
                 }  
                 ?>
               </select>

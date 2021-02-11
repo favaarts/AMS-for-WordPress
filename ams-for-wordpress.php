@@ -1479,6 +1479,7 @@ function search_event_action()
     $eventperpg = $_POST['eventperpg'];
 
     $taglabels = $_POST['taglabels'];
+    $organizationid = $_POST['organizations'];
 
     $post = get_post($pageid);
     $blocks = parse_blocks($post->post_content);

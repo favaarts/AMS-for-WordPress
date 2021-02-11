@@ -185,33 +185,7 @@ get_header();  ?>
                                      $eventtime = get_eventscheduletime($arrayevid[1]);
                                      $keys = $eventtime['scheduled_program_dates'];
 
-                                     //$lastKey = $keys[count($keys)-1];
-                                    if($arrayResult['program']['program_type_name'] != "Class")
-                                    { 
-                                        foreach ($eventtime['scheduled_program_dates'] as $key => $daytime) {
-                                        ?>
-                                        <div class="ragister-sec">
-                                            <?php 
-                                            if (!isset($blocks[0]['attrs']['showhideurl']))
-                                            {
-                                            ?>
-                                            <div class="reg-sec">
-                                                <a href="<?=$registerurl?>" target="<?=$eventwindow?>" style="background-color: <?=$bgcolor?>">Register</a>
-                                            </div>
-                                            <?php } ?>
-
-                                            <div class="evtdate">
-                                                <p><?=date('D, M d, Y', strtotime($daytime['start']))?></p>
-                                            </div>
-                                            
-                                            <div class="time">
-                                                <p><?=date('H:i', strtotime($daytime['start']))?> – <?=date('H:i', strtotime($daytime['end']))?></p>
-                                            </div>
-                                        </div>
-                                        <?php } 
-                                    }    
-                                    else
-                                    {
+                                    
                                          $keys = array_keys($eventtime['scheduled_program_dates']);
                                          $lastKey = $keys[count($keys)-1];
                                          
@@ -266,7 +240,7 @@ get_header();  ?>
                                             echo "</div>";
                                             echo "</div>";
                                         }
-                                    }
+                                    
                                 ?>
 
                                 <div class="location-sec">

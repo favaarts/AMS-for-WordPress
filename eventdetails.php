@@ -182,11 +182,11 @@ get_header();  ?>
                                 </div>
                                 
                                 <?php 
-                                     $eventtime = get_eventscheduletime($arrayevid[1]);
-                                     $keys = $eventtime['scheduled_program_dates'];
-
-                                    
-                                         $keys = array_keys($eventtime['scheduled_program_dates']);
+                                    $eventtime = get_eventscheduletime($arrayevid[1]);
+                                     
+                                    if(isset($eventtime['scheduled_program_dates']))
+                                    {    
+                                        $keys = array_keys($eventtime['scheduled_program_dates']);
                                          $lastKey = $keys[count($keys)-1];
                                          
                                         $total = count($keys);
@@ -200,21 +200,20 @@ get_header();  ?>
                                                 foreach ($eventtime['scheduled_program_dates'] as $key => $daytime) { 
                                                 echo "<div class='daytimediv'>";    
                                                     echo  "<div class='evtdate'>";
-                                                    echo "<p>".date('D, M d, Y', strtotime($daytime['start']))."</p>";
+                                                            echo "<p>".date('D, M d, Y', strtotime($daytime['start']))."</p>";
                                                     echo  "</div>";
                                                     
                                                     echo "<div class='time'>";
                                                     echo "<p>".date('H:i', strtotime($daytime['start'])). " – ".date('H:i', strtotime($daytime['end'])). "</p>";
                                                     echo "</div>";
-                                                echo "</div>";
-
+                                                echo "</div>";    
                                                 }
                                                 echo "</div>";
                                             echo   "<br>";
                                             if (!isset($blocks[0]['attrs']['showhideurl']))
                                             {
-                                            echo   "<div class='reg-sec'>";
-                                            echo   "<a href=".$registerurl." target=".$eventwindow." style='background-color:".$bgcolor."'>Register</a>";
+                                            echo   "<div class='reg-sec 3'>";
+                                            echo   "<a href=".$registerurl." style='background-color:".$bgcolor."' target=".$eventwindow.">Register</a>";
                                             echo   "</div>";
                                             }
                                             echo "</div>";
@@ -226,7 +225,7 @@ get_header();  ?>
                                             echo "<div class='ragister-sec'>";
                                             if (!isset($blocks[0]['attrs']['showhideurl']))
                                             {
-                                            echo   "<div class='reg-sec'>";
+                                            echo   "<div class='reg-sec 1'>";
                                             echo   "<a href=".$registerurl." target=".$eventwindow." style='background-color:".$bgcolor."'>Register</a>";
                                             echo   "</div>";
                                             }
@@ -240,7 +239,7 @@ get_header();  ?>
                                             echo "</div>";
                                             echo "</div>";
                                         }
-                                    
+                                    }
                                 ?>
 
                                 <div class="location-sec">

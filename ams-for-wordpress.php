@@ -435,11 +435,7 @@ function get_organizationevents()
     $apiurl = get_option('wpams_url_btn_label');
     $apikey = get_option('wpams_apikey_btn_label');
 
-    //https://wpd.amsnetwork.ca/api/v3/organization_tags?tag_type=Program&page=1&per_page=10&required_pagination=true
-
-    //$eventlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/organization_tags?tag_type=Program&access_token=".$apikey."&method=get&format=json";
-
-    $organizations = "https://".$apiurl.".amsnetwork.ca/api/v3/organizations?page=1&per_page=25&access_token=".$apikey."&method=get&format=json";
+    $organizations = "https://".$apiurl.".amsnetwork.ca/api/v3/organizations?is_enabled_for_artsevents=true&page=1&per_page=25&access_token=".$apikey."&method=get&format=json";
     
     $ch = curl_init();
     curl_setopt($ch,CURLOPT_URL,$organizations);

@@ -53,9 +53,23 @@ get_header();  ?>
                                 <?php
                                 if($arrayResult['program']['photo']['photo']['medium']['url'] == NULL || $arrayResult['program']['photo']['photo']['medium']['url'] == "")
                                 {  
-                                ?>
-                                <img src="<?= plugins_url( 'assets/img/bg-image.png', __FILE__ )?>">
-                                <?php 
+                                    // Check if organization toogle is ON
+                                  if (isset($blocks[0]['attrs']['organizationevents']))
+                                  { 
+                                    if(empty($arrayResult['program']['organization_logo']))
+                                    {
+                                      echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ ) .">";
+                                    }
+                                    else 
+                                    {
+                                      echo "<img class='organizationlogo' src=".$arrayResult['program']['organization_logo'] .">";
+                                    }
+
+                                  }
+                                  else
+                                  {
+                                    echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ ) .">";
+                                  }
                                 }
                                 else
                                 { 

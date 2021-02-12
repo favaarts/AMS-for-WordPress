@@ -196,20 +196,35 @@ else
                 echo "<div class='listview-events'>";
                   echo "<div class='productstyle-list-items'>";
                      
-                      if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
+                      echo "<div class='product-img'>";
+                        // Check if organization toogle is ON
+                        if (isset($blockdata['organizationevents']))
+                        {
+                          if(empty($x_value['organization_logo']))
+                          {
+                            echo "<img src=".plugin_dir_url( dirname( __FILE__ ) ) ."assets/img/bg-image.png>";
+                          }
+                          else 
+                          {
+                            echo "<img class='organizationlogo' src=".$x_value['organization_logo'] .">";
+                          }
+                        }
+                        else
+                        {
+                          echo "<img src=".plugin_dir_url( dirname( __FILE__ ) ) ."assets/img/bg-image.png>";
+                        }     
+                      echo "</div>";
+                          
+                      /*if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
                       {                                    
-                          echo "<div class='product-img'>";
-                          ?>
-                          <img src="<?php echo plugin_dir_url( dirname( __FILE__ ) ) . 'assets/img/bg-image.png'; ?>">
-                          <?php    
-                          echo "</div>";
+                          
                       }
                       else
                       {
                            echo "<div class='product-img'>";
                               echo "<img src=".$x_value['photo']['photo']['medium']['url'].">";
                            echo "</div>";
-                      }
+                      }*/
 
                       echo "<div class='product-content'>";
                         echo "<a href='".site_url('/'.$pageslug.'/'.$pageid.'-'.$x_value['id'])."'> <p class='product-title'>". $x_value['name'] ."</p> </a>";
@@ -283,21 +298,34 @@ else
                         {
                             $assetstitle = (strlen($x_value['name']) > 43) ? substr($x_value['name'],0,40).'...' : $x_value['name'];
 
-
-                            if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
-                            {                                    
-                                echo "<div class='product-img-wrap'>";
-                                ?>
-                                <img src="<?php echo plugin_dir_url( dirname( __FILE__ ) ) . 'assets/img/bg-image.png'; ?>">
-                                <?php    
+                            echo "<div class='product-img-wrap'>";
+                                  // Check if organization toogle is ON
+                                  if (isset($blockdata['organizationevents']))
+                                  {
+                                    if(empty($x_value['organization_logo']))
+                                    {
+                                      echo "<img src=".plugin_dir_url( dirname( __FILE__ ) ) ."assets/img/bg-image.png>";
+                                    }
+                                    else 
+                                    {
+                                      echo "<img class='organizationlogo' src=".$x_value['organization_logo'] .">";
+                                    }
+                                  }
+                                  else
+                                  {
+                                    echo "<img src=".plugin_dir_url( dirname( __FILE__ ) ) ."assets/img/bg-image.png>";
+                                  }   
                                 echo "</div>";
+                            /*if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
+                            {                                    
+                                
                             }
                             else
                             {
                                  echo "<div class='eventlayout-image'>";
                                     echo "<img src=".$x_value['photo']['photo']['medium']['url'].">";
                                  echo "</div>";
-                            }
+                            }*/
 
                             echo "<div class='eventtitle'>";
                               

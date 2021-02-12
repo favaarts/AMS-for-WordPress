@@ -1107,3 +1107,17 @@ line-height: 28px;
     margin-top: 5px;
     margin-bottom: 5px;
 }
+
+img.organizationlogo {
+    object-fit: contain;
+    -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
+    opacity: 0.8;
+}
+.eventdetail .organizationlogo
+{
+    object-fit: contain !important;
+    -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
+    opacity: 0.8;
+}

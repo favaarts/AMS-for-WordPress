@@ -83,7 +83,7 @@ else
 
             <div class="searchbox">
                 <h4>Search</h4>
-                <input type="text" class="searrch-input" name="getevent" id="getevent" onkeyup="fetchevent()"></input>
+                <input type="text" class="searrch-input" name="getevent" id="getevent"></input>
             </div>
 
           <div class="othersearch">
@@ -196,24 +196,39 @@ else
                 echo "<div class='listview-events'>";
                   echo "<div class='productstyle-list-items'>";
                      
-                      echo "<div class='product-img'>";
+                      
                         // Check if organization toogle is ON
                         if (isset($blockdata['organizationevents']))
                         {
                           if(empty($x_value['organization_logo']))
                           {
-                            echo "<img src=".plugin_dir_url( dirname( __FILE__ ) ) ."assets/img/bg-image.png>";
+                            echo "<div class='product-img-wrap'>";
+                              echo "<img src=".plugin_dir_url( dirname( __FILE__ ) ) ."assets/img/bg-image.png>";
+                            echo "</div>";  
                           }
                           else 
                           {
-                            echo "<img class='organizationlogo' src=".$x_value['organization_logo'] .">";
+                            echo "<div class='product-img'>";
+                              echo "<img class='organizationlogo' src=".$x_value['organization_logo'] .">";
+                            echo "</div>";  
                           }
                         }
                         else
                         {
-                          echo "<img src=".plugin_dir_url( dirname( __FILE__ ) ) ."assets/img/bg-image.png>";
+                          if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
+                          {
+                            echo "<div class='product-img-wrap'>";
+                              echo "<img src=".plugin_dir_url( dirname( __FILE__ ) ) ."assets/img/bg-image.png>";
+                            echo "</div>";  
+                          } 
+                          else
+                          {
+                            echo "<div class='product-img'>";
+                              echo "<img src=".$x_value['photo']['photo']['medium']['url'].">";
+                            echo "</div>";  
+                          }
                         }     
-                      echo "</div>";
+                      
                           
                       /*if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
                       {                                    
@@ -298,24 +313,38 @@ else
                         {
                             $assetstitle = (strlen($x_value['name']) > 43) ? substr($x_value['name'],0,40).'...' : $x_value['name'];
 
-                            echo "<div class='product-img-wrap'>";
-                                  // Check if organization toogle is ON
-                                  if (isset($blockdata['organizationevents']))
-                                  {
-                                    if(empty($x_value['organization_logo']))
-                                    {
-                                      echo "<img src=".plugin_dir_url( dirname( __FILE__ ) ) ."assets/img/bg-image.png>";
-                                    }
-                                    else 
-                                    {
-                                      echo "<img class='organizationlogo' src=".$x_value['organization_logo'] .">";
-                                    }
-                                  }
-                                  else
-                                  {
-                                    echo "<img src=".plugin_dir_url( dirname( __FILE__ ) ) ."assets/img/bg-image.png>";
-                                  }   
+                            // Check if organization toogle is ON
+                            if (isset($blockdata['organizationevents']))
+                            {
+                              if(empty($x_value['organization_logo']))
+                              {
+                                echo "<div class='eventlayout-image'>";
+                                  echo "<img src=".plugin_dir_url( dirname( __FILE__ ) ) ."assets/img/bg-image.png>";
                                 echo "</div>";
+                              }
+                              else 
+                              {
+                                echo "<div class='product-img-wrap'>";
+                                  echo "<img class='organizationlogo' src=".$x_value['organization_logo'] .">";
+                                echo "</div>";  
+                              }
+                            }
+                            else
+                            {
+                              if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
+                              {
+                                echo "<div class='product-img-wrap'>";
+                                  echo "<img src=".plugin_dir_url( dirname( __FILE__ ) ) ."assets/img/bg-image.png>";
+                                echo "</div>";  
+                              } 
+                              else
+                              {
+                                echo "<div class='eventlayout-image'>";
+                                  echo "<img src=".$x_value['photo']['photo']['medium']['url'].">";
+                                echo "</div>";  
+                              }
+                            }
+
                             /*if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
                             {                                    
                                 
@@ -584,6 +613,38 @@ jQuery(document).ready(function($) {
     });
     /*End Select organizations*/
 
+  // On keyup
+  $("#getevent").keyup(function(){
+
+    count = 2;     
+    event.preventDefault();
+
+    var getevent = jQuery('#getevent').val();
+    var eventtype = jQuery('#alltypeevent').val();
+    var eventstatus = jQuery('#allstatus').val();
+    var evtlocation = jQuery("#evtlocation").val();
+    var taglabels = jQuery("#taglabels").val();
+    var pageslug = jQuery('#inputpageslug').val();
+    var pageid = jQuery('#inputpageid').val();
+    var organizations = jQuery('#organizations').val();
+
+    var eventperpg = <?php echo $pagination; ?>;
+    console.log(eventperpg);
+
+    jQuery.ajax({
+        url: amsjs_ajax_url.ajaxurl,
+        type: 'post',
+        data: { action: 'searcheventdata_action', getevent: getevent, organizations: organizations, eventtype: eventtype, eventstatus: eventstatus, evtlocation: evtlocation, pageslug: pageslug, pageid: pageid, eventperpg: eventperpg},
+        success: function(data) {
+          
+          jQuery('.right-col-wrap').html(data);
+          jQuery('#seemore').hide();
+        }
+    });
+
+  });
+  // End keyup
+
     /*On serach ajax call =====================*/
     $('#searchdata').click(function(){
       count = 2;     
@@ -682,12 +743,14 @@ jQuery(document).ready(function($) {
      var eventtype = jQuery('#alltypeevent').val();
       var eventstatus = jQuery('#allstatus').val();
       var evtlocation = jQuery('#evtlocation').val();
+      var taglabels = jQuery("#taglabels").val();
+      var organizations = jQuery('#organizations').val();
      //
 
      $.ajax({
        url: amsjs_ajax_url.ajaxurl,
        type:'POST',
-       data: { action: 'geteventonclick_action', page:pageNumber, eventperpg:eventperpg, eventtype: eventtype, eventstatus: eventstatus, evtlocation: evtlocation, pageslugname: slugvar, pageslugid: slugvarid},
+       data: { action: 'geteventonclick_action', page:pageNumber, eventperpg:eventperpg, eventtype: eventtype, eventstatus: eventstatus, evtlocation: evtlocation, pageslugname: slugvar, pageslugid: slugvarid, taglabels: taglabels, organizations: organizations},
        beforeSend: function(){
         // Show image container
             $("#inifiniteLoader").show();

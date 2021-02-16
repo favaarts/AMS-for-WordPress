@@ -1504,8 +1504,9 @@ function search_event_action()
         
         if (!isset($blocks[0]['attrs']['displaypastevents']))
         {
-            
-            $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?is_enabled_for_artsevents=".$isenable."&type=All&query=".$productname."&access_token=".$apikey."&method=get&format=json";
+            $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?is_enabled_for_artsevents=".$isenable."&organization_id=".$organizationid."&type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&tag_name=".$taglabels."&query=".$productname."&page=".$page."&per_page=".$eventperpg."&access_token=".$apikey."&method=get&format=json";
+
+            /*$producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?is_enabled_for_artsevents=".$isenable."&type=All&query=".$productname."&access_token=".$apikey."&method=get&format=json";*/
         }
         else
         {
@@ -1514,7 +1515,9 @@ function search_event_action()
             $year = date("Y");
             $eventdate = $day."%2F".$month."%2F".$year;
             
-            $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?is_enabled_for_artsevents=".$isenable."&type=All&query=".$productname."&after=".$eventdate."&access_token=".$apikey."&method=get&format=json";
+            //$producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?is_enabled_for_artsevents=".$isenable."&type=All&query=".$productname."&after=".$eventdate."&access_token=".$apikey."&method=get&format=json";
+
+            $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?is_enabled_for_artsevents=".$isenable."&organization_id=".$organizationid."&type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&after=".$eventdate."&query=".$productname."&page=".$page."&per_page=".$eventperpg."&tag_name=".$taglabels."&access_token=".$apikey."&method=get&format=json";
         }
     }
     else if(isset($eventtype))
@@ -1588,24 +1591,37 @@ function search_event_action()
                 echo "<div class='listview-events'>";
                   echo "<div class='productstyle-list-items'>";
                        
-                        echo "<div class='product-img'>";
-                            // Check if organization toogle is ON
-                            if (isset($blocks[0]['attrs']['organizationevents']))
-                            {
-                                if(empty($x_value['organization_logo']))
-                                {
-                                  echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ ) ." alt=".$x_value['name'].">";
-                                }
-                                else 
-                                {
-                                  echo "<img class='organizationlogo' src=".$x_value['organization_logo'] ." alt=".$x_value['name'].">";
-                                }
-                            }
-                            else
-                            {
+                        // Check if organization toogle is ON
+                        if (isset($blocks[0]['attrs']['organizationevents']))
+                        {
+                          if(empty($x_value['organization_logo']))
+                          {
+                            echo "<div class='product-img-wrap'>";
                                 echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ ) ." alt=".$x_value['name'].">";
-                            } 
-                        echo "</div>";   
+                            echo "</div>";    
+                          }
+                          else 
+                          {
+                            echo "<div class='product-img'>";
+                                echo "<img class='organizationlogo' src=".$x_value['organization_logo'] .">";
+                            echo "</div>";    
+                          }
+                        }
+                        else
+                        {
+                          if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
+                          {
+                            echo "<div class='product-img-wrap'>";
+                                echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ ) ." alt=".$x_value['name'].">";
+                            echo "</div>";    
+                          } 
+                          else
+                          {
+                            echo "<div class='product-img'>";
+                                echo "<img src=".$x_value['photo']['photo']['medium']['url'].">";
+                            echo "</div>";    
+                          }
+                        }   
                       /*if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
                       {                                    
                           
@@ -1693,24 +1709,38 @@ function search_event_action()
                             {
                                 $assetstitle = (strlen($x_value['name']) > 43) ? substr($x_value['name'],0,40).'...' : $x_value['name'];
 
-                                echo "<div class='product-img-wrap'>";
+                                
                                 // Check if organization toogle is ON
                                 if (isset($blocks[0]['attrs']['organizationevents']))
                                 {
-                                    if(empty($x_value['organization_logo']))
-                                    {
+                                  if(empty($x_value['organization_logo']))
+                                  {
+                                    echo "<div class='eventlayout-image'>";
                                       echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ ) ." alt=".$x_value['name'].">";
-                                    }
-                                    else 
-                                    {
-                                      echo "<img class='organizationlogo' src=".$x_value['organization_logo'] ." alt=".$x_value['name'].">";
-                                    }
-                                    }
-                                    else
-                                    {
-                                        echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ ) ." alt=".$x_value['name'].">";
-                                    }  
-                                echo "</div>";
+                                    echo "</div>";
+                                  }
+                                  else 
+                                  {
+                                    echo "<div class='product-img-wrap'>";
+                                      echo "<img class='organizationlogo' src=".$x_value['organization_logo'] .">";
+                                    echo "</div>";  
+                                  }
+                                }
+                                else
+                                {
+                                  if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
+                                  {
+                                    echo "<div class='product-img-wrap'>";
+                                      echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ ) ." alt=".$x_value['name'].">";
+                                    echo "</div>";  
+                                  } 
+                                  else
+                                  {
+                                    echo "<div class='eventlayout-image'>";
+                                      echo "<img src=".$x_value['photo']['photo']['medium']['url'].">";
+                                    echo "</div>";  
+                                  }
+                                }
 
                                 /*if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
                                 {                                    
@@ -2044,6 +2074,9 @@ function geteventonclick_action()
     $locaton = $_POST['evtlocation'];
     $eventlocaton = urlencode($locaton);
 
+    $taglabels = $_POST['taglabels'];
+    $organizationid = $_POST['organizations'];
+
     $post = get_post($pageslugid);
     $blocks = parse_blocks($post->post_content);
     $gridlayout = $blocks[0]['attrs']['radio_attr_event'];
@@ -2057,7 +2090,7 @@ function geteventonclick_action()
         $isenable = "false";
     }
 
-    $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?is_enabled_for_artsevents=".$isenable."&type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&page=".$page."&per_page=".$eventperpg."&access_token=".$apikey."&method=get&format=json";
+    $producturl = "https://".$apiurl.".amsnetwork.ca/api/v3/programs?is_enabled_for_artsevents=".$isenable."&organization_id=".$organizationid."&type=".$eventtype."&location=".$eventlocaton."&status=".$eventstatus."&tag_name=".$taglabels."&page=".$page."&per_page=".$eventperpg."&access_token=".$apikey."&method=get&format=json";
 
         $ch = curl_init();
         curl_setopt($ch,CURLOPT_URL,$producturl);
@@ -2085,24 +2118,40 @@ function geteventonclick_action()
                 echo "<div class='listview-events'>";
                   echo "<div class='productstyle-list-items'>";
                        
-                        echo "<div class='product-img'>";
-                              // Check if organization toogle is ON
-                              if (isset($blocks[0]['attrs']['organizationevents']))
-                              {
-                                if(empty($x_value['organization_logo']))
-                                {
-                                  echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ ) ." alt=".$x_value['name'].">";
-                                }
-                                else 
-                                {
-                                  echo "<img class='organizationlogo' src=".$x_value['organization_logo'] ." alt=".$x_value['name'].">";
-                                }
-                              }
-                              else
-                              {
+                        
+                        
+                        // Check if organization toogle is ON
+                        if (isset($blocks[0]['attrs']['organizationevents']))
+                        {
+                          if(empty($x_value['organization_logo']))
+                          {
+                            echo "<div class='product-img-wrap'>";
                                 echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ ) ." alt=".$x_value['name'].">";
-                              }
-                        echo "</div>";  
+                            echo "</div>";    
+                          }
+                          else 
+                          {
+                            echo "<div class='product-img'>";
+                                echo "<img class='organizationlogo' src=".$x_value['organization_logo'] .">";
+                            echo "</div>";    
+                          }
+                        }
+                        else
+                        {
+                          if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
+                          {
+                            echo "<div class='product-img-wrap'>";
+                                echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ ) ." alt=".$x_value['name'].">";
+                            echo "</div>";    
+                          } 
+                          else
+                          {
+                            echo "<div class='product-img'>";
+                                echo "<img src=".$x_value['photo']['photo']['medium']['url'].">";
+                            echo "</div>";    
+                          }
+                        }     
+                        
                       /*if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
                       {                                    
                           
@@ -2185,24 +2234,38 @@ function geteventonclick_action()
                         {
                             $assetstitle = (strlen($x_value['name']) > 43) ? substr($x_value['name'],0,40).'...' : $x_value['name'];
 
-                                echo "<div class='product-img-wrap'>";
-                                    // Check if organization toogle is ON
-                                    if (isset($blocks[0]['attrs']['organizationevents']))
-                                    {
-                                        if(empty($x_value['organization_logo']))
-                                        {
-                                          echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ ) ." alt=".$x_value['name'].">";
-                                        }
-                                        else 
-                                        {
-                                          echo "<img class='organizationlogo' src=".$x_value['organization_logo'] ." alt=".$x_value['name'].">";
-                                        }
-                                    }
-                                    else
-                                    {
-                                        echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ ) ." alt=".$x_value['name'].">";
-                                    }     
-                                echo "</div>";
+
+                                // Check if organization toogle is ON
+                                if (isset($blocks[0]['attrs']['organizationevents']))
+                                {
+                                  if(empty($x_value['organization_logo']))
+                                  {
+                                    echo "<div class='eventlayout-image'>";
+                                      echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ ) ." alt=".$x_value['name'].">";
+                                    echo "</div>";
+                                  }
+                                  else 
+                                  {
+                                    echo "<div class='product-img-wrap'>";
+                                      echo "<img class='organizationlogo' src=".$x_value['organization_logo'] .">";
+                                    echo "</div>";  
+                                  }
+                                }
+                                else
+                                {
+                                  if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
+                                  {
+                                    echo "<div class='product-img-wrap'>";
+                                      echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ ) ." alt=".$x_value['name'].">";
+                                    echo "</div>";  
+                                  } 
+                                  else
+                                  {
+                                    echo "<div class='eventlayout-image'>";
+                                      echo "<img src=".$x_value['photo']['photo']['medium']['url'].">";
+                                    echo "</div>";  
+                                  }
+                                }
                             /*if($x_value['photo']['photo']['medium']['url'] == NULL || $x_value['photo']['photo']['medium']['url'] == "")
                             {                                    
                                 

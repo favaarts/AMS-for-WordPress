@@ -175,7 +175,7 @@ get_header();  ?>
 
                         <div class="event-detail-sec">
                             <div class="left-sec">
-                                <h1>Join us virtually for budget-friendly recipe inspiration or to cook alongside us from the comfort of your home kitchen!</h1>
+                                <h1></h1>
                                 <h2>About this Event</h2>
                                 <div class="text-sec">
                                     <p class="text-italic">

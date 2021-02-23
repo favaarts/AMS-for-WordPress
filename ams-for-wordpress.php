@@ -272,6 +272,74 @@ class EventDetailsRegistration {
 
 // End event details
 
+// Project details
+
+add_action(
+    'plugins_loaded', 
+    array(ProjectDetailsRegistration::get_instance(), 'setup')
+);
+
+class ProjectDetailsRegistration {
+
+    protected static $instance = NULL;
+
+    public function __construct() {}
+
+    public static function get_instance() {
+        NULL === self::$instance and self::$instance = new self;
+        return self::$instance;
+    }    
+
+    public function setup() {
+        add_action('init', array($this, 'projectrewrite_rules'));
+        add_filter('query_vars', array($this, 'query_vars'), 10, 1);
+        add_action('parse_request', array($this, 'parse_request'), 10, 1);
+
+        register_activation_hook(__FILE__, array($this, 'flush_rules' ));
+
+    }
+
+    public function projectrewrite_rules(){
+        
+        $evposid = basename(rtrim($_SERVER["REQUEST_URI"], "/"));
+        
+        $posid = explode("-",$evposid);   
+
+        
+            $post_id = $posid[0];
+            $post = get_post($post_id); 
+        if(isset($post))
+        {    
+            $pageslugurl = $post->post_name; 
+        }
+        
+
+
+        add_rewrite_rule('^project/([^/]*)/?', 'index.php?projectslug=$matches[1]', 'top');
+
+        
+        flush_rewrite_rules();
+    }
+
+    public function query_vars($vars){
+        $vars[] = 'projectslug';
+        return $vars;
+    }
+
+    public function flush_rules(){
+        $this->projectrewrite_rules();
+        flush_rewrite_rules();
+    }
+
+    public function parse_request($wp){
+        if ( array_key_exists( 'projectslug', $wp->query_vars ) ){
+            include plugin_dir_path(__FILE__) . 'projectdetails.php';
+            exit();
+        }
+    }
+
+}
+// End project details
 
 //Include Scripts & Styles
 if( !function_exists('wpdams_plugin_scripts')) {
@@ -1155,7 +1223,7 @@ function getprojectonclick_action()
                   }
 
                 
-                echo "<div class='assetsproduct-content'><a href='javascript:void(0)'>";
+                echo "<div class='assetsproduct-content'><a href='".site_url('/project/'.$x_value['id'].'-'.$x_value['user_id'])."'>";
                 echo  "<p class='product-title'> ". $x_value['name'] ;
                   if($x_value['completed_year'])
                   {
@@ -1214,15 +1282,52 @@ add_action('wp_ajax_getprojectonclick_action','getprojectonclick_action');
 add_action('wp_ajax_nopriv_getprojectonclick_action','getprojectonclick_action');
 // End onclick button
 
+// Project details
+function get_projectdetails($project_id = '')
+{
+
+    $apiurl = get_option('wpams_url_btn_label');
+    $apikey = get_option('wpams_apikey_btn_label');
+
+    /*$projectlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/project_attributes?project_id=".$attribute_id."&access_token=".$apikey."&method=get&format=json";*/
+
+    $projectdetails = "https://".$apiurl.".amsnetwork.ca/api/v3/projects/".$project_id."?access_token=".$apikey."&method=get&format=json";
+
+    $ch = curl_init();
+    curl_setopt($ch,CURLOPT_URL,$projectdetails);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 4);
+    $json = curl_exec($ch);
+    if(!$json) {
+        echo curl_error($ch);
+    }
+    curl_close($ch);
+
+    return $arrayProjectResultData = json_decode($json, true);
+}
+add_action('wp_ajax_get_projectdetails','get_projectdetails');
+add_action('wp_ajax_nopriv_get_projectdetails','get_projectdetails');
+// End Project details
+
 //project_attributes
-function get_projectattributes($attribute_id = '')
+function get_projectattributes($attribute_id = '', $attribute_type = '')
 {
 /*    echo $member_id;
     die;*/
     $apiurl = get_option('wpams_url_btn_label');
     $apikey = get_option('wpams_apikey_btn_label');
 
-    $projectlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/project_attributes?project_id=".$attribute_id."&type=Long%20Attributes&access_token=".$apikey."&method=get&format=json";
+    //$projectlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/project_attributes?project_id=".$attribute_id."&type=Long%20Attributes&access_token=".$apikey."&method=get&format=json";
+
+    if(isset($attribute_type))
+    {
+        $projectlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/project_attributes?project_id=".$attribute_id."&type=".$attribute_type."&access_token=".$apikey."&method=get&format=json";
+    }
+    else
+    {
+
+        $projectlistingurl = "https://".$apiurl.".amsnetwork.ca/api/v3/project_attributes?project_id=".$attribute_id."&type=Long%20Attributes&access_token=".$apikey."&method=get&format=json";
+    }
 
     $ch = curl_init();
     curl_setopt($ch,CURLOPT_URL,$projectlistingurl);

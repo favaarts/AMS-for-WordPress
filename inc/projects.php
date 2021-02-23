@@ -110,7 +110,7 @@ else
                 }
 
           
-          echo "<div class='assetsproduct-content'><a href='javascript:void(0)'>";
+          echo "<div class='assetsproduct-content'><a href='".site_url('/project/'.$x_value['id'].'-'.$x_value['user_id'])."'>";
           echo  "<p class='product-title'> ". $x_value['name'] ;
           if($x_value['completed_year'])
           {

@@ -1121,3 +1121,108 @@ img.organizationlogo {
     filter: grayscale(100%);
     opacity: 0.8;
 }
+
+
+/*Project details page*/
+.projectdetail .project-img-sec {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.projectdetail .project-img-sec .thumbnail {
+    width: 20%;
+}
+
+.projectdetail .project-img-sec .img-sec {
+    width: 50%;
+}
+.projectdetail .project-img-sec .img-sec img {
+    object-fit: cover;
+    height: 310px;
+    width: 100%;
+}
+
+.projectdetail .project-img-sec .ing-title {
+    width: 30%;
+    padding: 20px 30px 0;
+    background-color: #ececec;
+}
+
+.projectdetail .project-img-sec .ing-title h1 {
+    font-size: 20px;
+    color: #1E0A3C;
+    font-weight: bold;
+    text-transform: capitalize;
+    line-height: 1.5;
+}
+
+.projectdetail .project-detail-sec {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.projectdetail .project-detail-sec .left-sec {
+    width: 70%;
+    padding: 60px 20px;
+}
+
+.projectdetail .project-detail-sec .right-sec {
+    width: 30%;
+    padding: 60px 10px 0;
+}
+
+.projectdetail .project-detail-sec .left-sec h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.projectdetail .prospace p {
+    font-size: 16px;
+    margin-bottom: 0px;
+    color: #000;
+}
+
+.prospace {
+    margin-bottom: 20px;
+}
+
+.column {
+  display: inline-block;
+  width: 23%;
+}
+
+
+/*17-02-2021*/
+
+.crewroles 
+{
+    display: inline-grid;
+}
+
+.rolesdiv
+{
+    display: inline-flex;
+}  
+
+.rolesdiv .typename
+{
+    font-size: 14px;
+    font-weight: 800;
+    padding-right: 12px;
+}
+    
+.longattrval span
+{
+    margin: 0px 5px;
+    background: #2f2e2e;
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 5px; 
+}
+      
+.videos .column {
+    margin-right: 40px;
+}

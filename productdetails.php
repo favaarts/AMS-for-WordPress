@@ -75,19 +75,21 @@ get_header();  ?>
                                 echo "<div class='ing-title'>
                                     <h1>". $json_value['name'] ."</h1>
                                     <span>". $json_value['category_name'] ."</span>";
-                                echo "<div class='enrollment enrtop'>
-                                        <h3>Member Price</h3>";
+                                echo "<div class='enrollment enrtop'>";
                                         if (!isset($blocks[0]['attrs']['member']))
                                         {
+                                            echo "<h3>Member Price</h3>";
+                                        
                                             echo "<p>". $priceone[1] ."</p>";
                                         } 
                                       
                                 echo "</div>";
                                 
-                                echo "<div class='enrollment enrtop'>
-                                        <h3>Non - Member Price</h3>";
+                                echo "<div class='enrollment enrtop'>";
                                         if (!isset($blocks[0]['attrs']['member']))
-                                        {
+                                        {    
+                                            echo "<h3>Non - Member Price</h3>";
+                                        
                                             echo "<p>". $pricetwo[2] ."</p>";
                                         } 
                                       

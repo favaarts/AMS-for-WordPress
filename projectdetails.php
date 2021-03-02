@@ -10,15 +10,8 @@ global $wp, $wpdb;
 $alleventid = $wp->query_vars['projectslug'];
 $arrayevid = explode("-",$alleventid);
 
-//echo $arrayevid[0];
-//echo "-";
-//echo $arrayevid[1];
-
 $arrayResult = get_projectdetails($arrayevid[0]);
 
-/*echo "<pre>";
-print_r($arrayResult);
-echo "</pre>";*/
 $crewrole = "Crew%20Role";
 $attributeCrewResult = get_projectattributes($arrayevid[0],$crewrole);
 
@@ -27,15 +20,13 @@ $attributePhoto = get_projectattributes($arrayevid[0],$photo);
 
 $longattributes = "Long%20Attributes";
 $longAttribute = get_projectattributes($arrayevid[0],$longattributes);
-//echo $longAttribute['project_attributes'][0]['value'];
-//echo $attributeCrewResult['project_attributes'][0]['value'];
-/*echo "<pre>";
-print_r($attributeCrewResult);
-echo "</pre>";*/
-/*echo $attributePhoto['project_attributes'][0]['file_attachment'];
-echo "<pre>";
-print_r($attributePhoto);
-echo "</pre>";*/
+
+$post = get_post($arrayevid[2]);
+$blocks = parse_blocks($post->post_content);
+
+// Connect to member
+$connectmember = get_post($blocks[0]['attrs']['projectconnectmemberid']);
+$connectmemberblocks = parse_blocks($connectmember->post_content);
 
 ?>
 
@@ -58,10 +49,9 @@ echo "</pre>";*/
                             </div>
                             <div class="img-sec">
 
-                                <video poster="<?= plugins_url( 'assets/img/video_poster.jpg', __FILE__ )?>" controls="controls" controlsList="nodownload" width="517" height="310">
+                                <video poster="<?= plugins_url( 'assets/img/video_poster.jpg', __FILE__ )?>" controls="controls" controlsList="nodownload" width="517">
                                     <source src="<?php echo $attributePhoto['project_attributes'][0]['file_attachment']; ?>" type="video/mp4">
                                 </video>
-                                <!-- <img src="http://localhost/wp/wp6/wp-content/plugins/ams-for-wordpress/assets/img/bg-image.png"> -->
                             </div>
 
                             <div class="ing-title">
@@ -76,26 +66,58 @@ echo "</pre>";*/
                                 if($arrayResult['project']['creator'])
                                 {
                                     echo "<div class='enrollment enrtop'>
-                                        <h3>Author</h3>
-                                        <p><a target='_blank' href='".site_url('/members/'.$arrayResult['project']['user_id'].'/details' )."'>".$arrayResult['project']['creator']."</a></p>
-                                    </div>";
+                                        <h3>Author</h3>";
+                                      if ($blocks[0]['attrs']['projecttomember'] && $connectmemberblocks[0]['blockName'] == "wpdams-amsnetwork-member/amsnetwork-block-member")  
+                                      {
+                                       
+                                            echo "<p><a target='_blank' href='".site_url('/members/'.$arrayResult['project']['user_id'].'-'.$blocks[0]['attrs']['projectconnectmemberid'].'/details' )."'>".$arrayResult['project']['creator']."</a></p>";
+                                        
+                                      }
+                                      else
+                                      {
+                                        echo "<p>".$arrayResult['project']['creator']."</p>";
+                                      }
+                                        
+                                    "</div>";
                                 }
 
-                                if($attributeCrewResult['project_attributes'][0]['value'])
-                                {     
-                                    echo "<div class='enrollment'>
-                                        <h3>Director(s)</h3>
-                                        <p>".$attributeCrewResult['project_attributes'][0]['value']."</p>
-                                    </div>";
-                                }    
-
-                                if($attributeCrewResult['project_attributes'][1]['value'])
+                                foreach($attributeCrewResult['project_attributes'] as $x_value) 
                                 {
-                                    echo "<div class='enrollment'>
-                                        <h3>Writer(s)</h3>
-                                        <p>".$attributeCrewResult['project_attributes'][1]['value']."</p>
-                                    </div>";
+                                    if($x_value['project_attribute_type_name'] == "Director")
+                                    {
+                                        echo "<div class='enrollment'>
+                                        <h3>Director(s)</h3>";
+                                        if ($blocks[0]['attrs']['projecttomember'] && $connectmemberblocks[0]['blockName'] == "wpdams-amsnetwork-member/amsnetwork-block-member")  
+                                        {
+                                            echo "<p><a target='_blank' href='".site_url('/members/'.$attributeCrewResult['project_attributes'][0]['value_2'].'-'.$blocks[0]['attrs']['projectconnectmemberid'].'/details' )."'>".$attributeCrewResult['project_attributes'][0]['value']."</a></p>";
+                                        }
+                                        else
+                                        {   
+                                            echo "<p>".$attributeCrewResult['project_attributes'][0]['value']."</p>";
+                                        }
+                                        echo "</div>";
+                                    }
+                                } 
+
+                                foreach($attributeCrewResult['project_attributes'] as $x_value) 
+                                {
+                                    if($x_value['project_attribute_type_name'] == "Writer")
+                                    {
+                                        echo "<div class='enrollment'>
+                                        <h3>Writer(s)</h3>";
+                                        if ($blocks[0]['attrs']['projecttomember'] && $connectmemberblocks[0]['blockName'] == "wpdams-amsnetwork-member/amsnetwork-block-member")  
+                                        {
+                                            echo "<p><a target='_blank' href='".site_url('/members/'.$x_value['value_2'].'-'.$blocks[0]['attrs']['projectconnectmemberid'].'/details' )."'>".$x_value['value']."</a></p>";
+                                        }
+                                        else
+                                        {
+                                            echo "<p>".$x_value['value']."</p>";
+                                        }
+                                        echo "</div>";
+                                    }
                                 }
+
+                                
                                     
                                 ?>
                             </div>
@@ -133,18 +155,7 @@ echo "</pre>";*/
                                             }
                                         }    
                                         ?>
-                                        <!-- <div class="column">
-                                            <img src="https://www.w3schools.com/howto/img_nature.jpg" style="width:100%" onclick="openModal();currentSlide(1)" class="hover-shadow cursor">
-                                        </div>
-                                        <div class="column">
-                                            <img src="https://www.w3schools.com/howto/img_snow.jpg" style="width:100%" onclick="openModal();currentSlide(1)" class="hover-shadow cursor">
-                                        </div>
-                                        <div class="column">
-                                            <img src="https://www.w3schools.com/howto/img_mountains.jpg" style="width:100%" onclick="openModal();currentSlide(1)" class="hover-shadow cursor">
-                                        </div>
-                                        <div class="column">
-                                            <img src="https://www.w3schools.com/howto/img_lights.jpg" style="width:100%" onclick="openModal();currentSlide(1)" class="hover-shadow cursor">
-                                        </div> -->
+                                        
                                     </div>
                                 </div>
 

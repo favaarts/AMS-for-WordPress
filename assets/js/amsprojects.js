@@ -30,7 +30,14 @@
       type: 'boolean',
       default: true
      },
-     radio_attr_project: {
+     projecttomember: {
+      type: 'boolean',
+      default: false
+     },
+    projectconnectmemberid: {
+        type: 'string',
+    },
+    radio_attr_project: {
       type: 'string',
       default: 'three_col',
     },
@@ -72,7 +79,7 @@
               className: 'block-content',
               initialOpen: true
             },
-            el('p', {}, i18n.__('Add custom meta options for programs.', 'amsnetwork-gutenbergproject-block')),
+            el('p', {}, i18n.__('Add custom meta options for project.', 'amsnetwork-gutenbergproject-block')),
             el(ToggleControl, {
               label: 'Sidebar',
               onChange: ( value ) => {
@@ -80,7 +87,23 @@
               },
               checked: props.attributes.projectsidebar,
             }),
-            
+            el('p', {}, i18n.__('Add member page ID, connect to member.', 'amsnetwork-gutenbergproject-block')),
+            el( TextControl,
+              {
+                label: 'Member page ID',
+                onChange: ( value ) => {
+                  props.setAttributes( { projectconnectmemberid: value } );
+                },
+                value: props.attributes.projectconnectmemberid,
+              }
+            ),            
+            el(ToggleControl, {
+              label: 'Connect Projects to Members',
+              onChange: ( value ) => {
+                 props.setAttributes( { projecttomember: value } );
+              },
+              checked: props.attributes.projecttomember,
+            }),
             el( RadioControl,
               {
                 label: 'Grid Layout',
@@ -160,6 +183,8 @@
                            el( wp.element.RawHTML, null, '['+props.attributes.type+']')
            ),
            el( 'input', { 'type': 'hidden', 'name' : 'projectsidebar', 'value' : ( props.attributes.projectsidebar == true ? 'yes' : 'no') } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'projecttomember', 'value' : ( props.attributes.projecttomember == true ? 'yes' : 'no') } ),
+           el( 'input', { 'type': 'hidden', 'name' : 'projectconnectmemberid', 'value' : ( props.attributes.projectconnectmemberid) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'radio_attr_project', 'value' : ( props.attributes.radio_attr_project) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'project_pagination', 'value' : ( props.attributes.project_pagination) } ),
          )

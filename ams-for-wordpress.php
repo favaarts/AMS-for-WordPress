@@ -1095,7 +1095,7 @@ function searchprojectdata_action()
               }
 
             
-            echo "<div class='assetsproduct-content'><a href='#'>";
+            echo "<div class='assetsproduct-content'><a href='".site_url('/project/'.$x_value['id'].'-'.$x_value['user_id'].'-'.$post_id)."'>";
             echo  "<p class='product-title'> ". $x_value['name'] ;
             if($x_value['completed_year'])
             {
@@ -1134,7 +1134,7 @@ function searchprojectdata_action()
         foreach($arrayResult['projects'] as $x_value) 
         {
           echo"<div class='productstyle projectdiv'>";
-                echo "<a href='javascript:void(0)'>";
+                echo "<a href='".site_url('/project/'.$x_value['id'].'-'.$x_value['user_id'].'-'.$post_id)."'>";
                 echo  "<p class='product-title'> ". $x_value['name'] ;
                 if($x_value['completed_year'])
                 {
@@ -1223,7 +1223,7 @@ function getprojectonclick_action()
                   }
 
                 
-                echo "<div class='assetsproduct-content'><a href='".site_url('/project/'.$x_value['id'].'-'.$x_value['user_id'])."'>";
+                echo "<div class='assetsproduct-content'><a href='".site_url('/project/'.$x_value['id'].'-'.$x_value['user_id'].'-'.$post_id)."'>";
                 echo  "<p class='product-title'> ". $x_value['name'] ;
                   if($x_value['completed_year'])
                   {
@@ -1258,7 +1258,7 @@ function getprojectonclick_action()
             foreach($arrayResult['projects'] as $x_value) 
             {
               echo"<div class='productstyle projectdiv'>";
-                    echo "<a href='javascript:void(0)'>";
+                    echo "<a href='".site_url('/project/'.$x_value['id'].'-'.$x_value['user_id'].'-'.$post_id)."'>";
                     echo  "<p class='product-title'> ". $x_value['name'] ;
                       if($x_value['completed_year'])
                       {
@@ -2107,7 +2107,7 @@ function member_ajax()
     $arrayResult = json_decode($json, true);
     if ($layout_type == 'list_view') {
         foreach ($arrayResult["users"] as $member) {
-            echo '<a class="member-item" href="'.site_url('/members/'.$member["id"].'/details' ).'">';
+            echo '<a class="member-item" href="'.site_url('/members/'.$member["id"].'-'.$pageid.'/details' ).'">';
             echo '<div class="fx-row member-entry">';
                 echo '<div class="fx-col-xs-12 fx-col-sm-3 fx-col-md-3 user-image">';
                     echo '<img src="'.$member['photo'] .'" onerror=\'this.src="'.$dummy_image.'"\' alt="'.$member["email"].'" style="height:150px; border-radius:5px">';
@@ -2140,7 +2140,7 @@ function member_ajax()
             }
             echo '<div class="'.$grid_size_class.' member-grid-entry">';
                 echo '<div class="member">';
-                    echo '<a class="member-item" href="'.site_url('/members/'.$member["id"].'/details' ).'">';
+                    echo '<a class="member-item" href="'.site_url('/members/'.$member["id"].'-'.$pageid.'/details' ).'">';
                         echo '<div class="fx-col-lg-12 member-overlay"></div>';
                         echo '<img class="member-image-tile" src="'.$member['photo'] .'" onerror=\'this.src="'.$dummy_image.'"\' alt="'.$member["email"].'">';
                         echo '<div class="member-details fadeIn-bottom">';

@@ -9,7 +9,11 @@ function members_function($slug)
     $member_type = get_query_var("member_type");
     $arrayResult = get_members($member_type, NULL);
     $layout_type = $blocks[0]['attrs']['layout_type'];
+
     
+    $pageid = $post->ID;
+            
+
     ob_start();
 ?>
     <link rel="stylesheet" href="<?= plugin_dir_url( dirname( __FILE__ ) ) . 'assets/css/flexboxgrid.css' ?>" />
@@ -61,7 +65,7 @@ function members_function($slug)
                     $dummy_image = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/img/bg-image.png';
                     foreach ($arrayResult["users"] as $member) {
                 ?>
-                    <a class="member-item" href="<?= site_url('/members/'.$member["id"].'/details' )?>">
+                    <a class="member-item" href="<?= site_url('/members/'.$member["id"].'-'.$pageid.'/details' )?>">
                         <div class="fx-row member-entry">
                             <div class="fx-col-xs-12 fx-col-sm-3 fx-col-md-3 user-image">
                                 <img src="<?= $member['photo'] ?>" onerror='this.src="<?= $dummy_image ?>"'  alt="<?= $member["email"] ?>" style="height:150px; border-radius:5px">
@@ -106,7 +110,7 @@ function members_function($slug)
                 ?>
                     <div class="<?= $grid_size_class ?> member-grid-entry">
                         <div class="member">
-                            <a class="member-item" href="<?= site_url('/members/'.$member["id"].'/details' )?>">
+                            <a class="member-item" href="<?= site_url('/members/'.$member["id"].'-'.$pageid.'/details' )?>">
                                 <div class="fx-col-lg-12 member-overlay"></div>
                                 <img class="member-image-tile" src="<?= $member['photo'] ?>" onerror='this.src="<?= $dummy_image ?>"'  alt="<?= $member["email"] ?>">
                                 <div class="member-details fadeIn-bottom">

@@ -17,6 +17,9 @@ main-content main-content-four-col - this class is for four columns.
 ======================================================================  -->
 <?php
 
+global $post;
+$pageid = $post->ID;
+
 $blockdata = get_sidebaroption();
 
 $gridlayout = $blockdata['radio_attr_project'];
@@ -110,7 +113,7 @@ else
                 }
 
           
-          echo "<div class='assetsproduct-content'><a href='".site_url('/project/'.$x_value['id'].'-'.$x_value['user_id'])."'>";
+          echo "<div class='assetsproduct-content'><a href='".site_url('/project/'.$x_value['id'].'-'.$x_value['user_id'].'-'.$pageid)."'>";
           echo  "<p class='product-title'> ". $x_value['name'] ;
           if($x_value['completed_year'])
           {
@@ -146,7 +149,7 @@ else
         foreach($arrayResult['projects'] as $x_value) 
         {
           echo"<div class='productstyle projectdiv'>";
-                echo "<a href='javascript:void(0)'>";
+                echo "<a href='".site_url('/project/'.$x_value['id'].'-'.$x_value['user_id'].'-'.$pageid)."'>";
                 echo  "<p class='product-title'>".$x_value['name']. " (2005)</p>";
                 echo "</a>";
                 echo "<div class='product-img-wrap'>";

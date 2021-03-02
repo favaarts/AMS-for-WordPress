@@ -6,6 +6,20 @@ if(empty($bgcolor))
 {
     $bgcolor = "#337AB7";
 }
+
+global $wp, $wpdb;
+
+$allmemberid = $wp->query_vars['member_id'];
+$arrayevid = explode("-",$allmemberid);
+
+$member_id = $arrayevid[0];
+
+$post = get_post($arrayevid[1]);
+$blocks = parse_blocks($post->post_content);
+
+$connectproject = get_post($blocks[0]['attrs']['memberconnecttoprojectid']);
+$connectprojectblocks = parse_blocks($connectproject->post_content);
+
 ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" integrity="sha512-YHuwZabI2zi0k7c9vtg8dK/63QB0hLvD4thw44dFo/TfBFVVQOqEG9WpviaEpbyvgOIYLXF1n7xDUfU3GDs0sw==" crossorigin="anonymous" />
 <div class="container-wrap">
@@ -22,9 +36,7 @@ if(empty($bgcolor))
 
                                         <?php
 
-                                        global $wp, $wpdb;
-
-                                        $member_id = $wp->query_vars['member_id'];
+                                        
 
                                         $landingurl = get_option('wpams_landing_url_btn_label');
                                         $bgcolor = get_option('wpams_button_colour_btn_label');
@@ -133,8 +145,17 @@ if(empty($bgcolor))
                                                     <span style="color: <?=$bgcolor;?>">Filmography</span>
                                                     <input type="radio" id="tab-2" name="tab-effect-3">
                                                     <span style="color: <?=$bgcolor;?>">Downloads</span>
+                                                    <?php
+                                                    if ($connectprojectblocks[0]['blockName'] == "wpdams-amsnetwork-project/amsnetwork-block-project")
+                                                    {
+                                                        if ($blocks[0]['attrs']['membertoproject'])
+                                                        {
+                                                    ?>
                                                     <input type="radio" id="tab-3" name="tab-effect-3">
                                                     <span style="color: <?=$bgcolor;?>">Projects</span>
+                                                    <?php } 
+                                                    }
+                                                    ?>
                                                     <div class="line ease" style="background-color: <?=$bgcolor;?>"></div>
                                                     <div class="tab-content">
                                                     <section id="tab-item-1">
@@ -156,6 +177,13 @@ if(empty($bgcolor))
                                                            ?> 
                                                         </div>
                                                     </section>
+
+                                                    <?php
+                                                    if ($connectprojectblocks[0]['blockName'] == "wpdams-amsnetwork-project/amsnetwork-block-project")
+                                                    {
+                                                        if ($blocks[0]['attrs']['membertoproject'])
+                                                        {
+                                                    ?>
                                                     <section id="tab-item-3" class="memberproject memberprojectlisting" style="">
                                                     <?php
                                                         //echo $member_id;
@@ -164,7 +192,7 @@ if(empty($bgcolor))
                                                         print_r($projects);
                                                         echo "</pre>";*/
                                                         foreach($projects['projects'] as $x_value) 
-                                                {
+                                                    {
 
                                                     $synopsis = mb_strimwidth($x_value['synopsis'], 0, 150, '...');
                                                         
@@ -190,7 +218,7 @@ if(empty($bgcolor))
                                                       }
 
                                                     
-                                                    echo "<div class='assetsproduct-content'><a href='".site_url('/project/'.$x_value['id'].'-'.$x_value['user_id'])."'>";
+                                                    echo "<div class='assetsproduct-content'><a target='_blank' href='".site_url('/project/'.$x_value['id'].'-'.$x_value['user_id'].'-'.$blocks[0]['attrs']['memberconnecttoprojectid'])."'>";
                                                     echo  "<p class='product-title'> ". $x_value['name'] ;
                                                     if($x_value['completed_year'])
                                                     {
@@ -220,7 +248,11 @@ if(empty($bgcolor))
                                                     echo "</div>";
                                                 }
                                                 ?>
-                                                    </section>
+                                                </section>
+                                                <?php 
+                                                    }
+                                                } ?>
+
                                                     </div>
                                                 </div>
                                                 </div>

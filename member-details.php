@@ -17,7 +17,9 @@ $member_id = $arrayevid[0];
 $post = get_post($arrayevid[1]);
 $blocks = parse_blocks($post->post_content);
 
-$connectproject = get_post($blocks[0]['attrs']['memberconnecttoprojectid']);
+$memberconnecttoprojectid = $wpdb->get_var('SELECT ID FROM '.$wpdb->prefix.'posts WHERE post_content LIKE "%[amsproject]%" AND post_parent = 0 AND post_status = "publish"');
+
+$connectproject = get_post($memberconnecttoprojectid);
 $connectprojectblocks = parse_blocks($connectproject->post_content);
 
 ?>
@@ -218,7 +220,7 @@ $connectprojectblocks = parse_blocks($connectproject->post_content);
                                                       }
 
                                                     
-                                                    echo "<div class='assetsproduct-content'><a target='_blank' href='".site_url('/project/'.$x_value['id'].'-'.$x_value['user_id'].'-'.$blocks[0]['attrs']['memberconnecttoprojectid'])."'>";
+                                                    echo "<div class='assetsproduct-content'><a target='_blank' href='".site_url('/project/'.$x_value['id'].'-'.$x_value['user_id'].'-'.$memberconnecttoprojectid)."'>";
                                                     echo  "<p class='product-title'> ". $x_value['name'] ;
                                                     if($x_value['completed_year'])
                                                     {

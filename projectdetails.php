@@ -24,8 +24,10 @@ $longAttribute = get_projectattributes($arrayevid[0],$longattributes);
 $post = get_post($arrayevid[2]);
 $blocks = parse_blocks($post->post_content);
 
+$projectconnectmemberid = $wpdb->get_var('SELECT ID FROM '.$wpdb->prefix.'posts WHERE post_content LIKE "%[members_list]%" AND post_parent = 0 AND post_status = "publish"');
+
 // Connect to member
-$connectmember = get_post($blocks[0]['attrs']['projectconnectmemberid']);
+$connectmember = get_post($projectconnectmemberid);
 $connectmemberblocks = parse_blocks($connectmember->post_content);
 
 ?>
@@ -70,7 +72,7 @@ $connectmemberblocks = parse_blocks($connectmember->post_content);
                                       if ($blocks[0]['attrs']['projecttomember'] && $connectmemberblocks[0]['blockName'] == "wpdams-amsnetwork-member/amsnetwork-block-member")  
                                       {
                                        
-                                            echo "<p><a target='_blank' href='".site_url('/members/'.$arrayResult['project']['user_id'].'-'.$blocks[0]['attrs']['projectconnectmemberid'].'/details' )."'>".$arrayResult['project']['creator']."</a></p>";
+                                            echo "<p><a target='_blank' href='".site_url('/members/'.$arrayResult['project']['user_id'].'-'.$projectconnectmemberid.'/details' )."'>".$arrayResult['project']['creator']."</a></p>";
                                         
                                       }
                                       else
@@ -89,7 +91,7 @@ $connectmemberblocks = parse_blocks($connectmember->post_content);
                                         <h3>Director(s)</h3>";
                                         if ($blocks[0]['attrs']['projecttomember'] && $connectmemberblocks[0]['blockName'] == "wpdams-amsnetwork-member/amsnetwork-block-member")  
                                         {
-                                            echo "<p><a target='_blank' href='".site_url('/members/'.$attributeCrewResult['project_attributes'][0]['value_2'].'-'.$blocks[0]['attrs']['projectconnectmemberid'].'/details' )."'>".$attributeCrewResult['project_attributes'][0]['value']."</a></p>";
+                                            echo "<p><a target='_blank' href='".site_url('/members/'.$attributeCrewResult['project_attributes'][0]['value_2'].'-'.$projectconnectmemberid.'/details' )."'>".$attributeCrewResult['project_attributes'][0]['value']."</a></p>";
                                         }
                                         else
                                         {   
@@ -107,7 +109,7 @@ $connectmemberblocks = parse_blocks($connectmember->post_content);
                                         <h3>Writer(s)</h3>";
                                         if ($blocks[0]['attrs']['projecttomember'] && $connectmemberblocks[0]['blockName'] == "wpdams-amsnetwork-member/amsnetwork-block-member")  
                                         {
-                                            echo "<p><a target='_blank' href='".site_url('/members/'.$x_value['value_2'].'-'.$blocks[0]['attrs']['projectconnectmemberid'].'/details' )."'>".$x_value['value']."</a></p>";
+                                            echo "<p><a target='_blank' href='".site_url('/members/'.$x_value['value_2'].'-'.$projectconnectmemberid.'/details' )."'>".$x_value['value']."</a></p>";
                                         }
                                         else
                                         {
@@ -139,23 +141,34 @@ $connectmemberblocks = parse_blocks($connectmember->post_content);
                                 ?>
                                  
 
-                                <div class="videos prospace">
+                                <div class="videos prospace amsvideos">
                                     <h3>Videos:</h3>
-                                    <div class="text-sec">
+                                    <div class="video-row">
                                         <?php
-                                        foreach($attributePhoto['project_attributes'] as $x_value) 
+                                        $i = 1;                                        
+                                         foreach($attributePhoto['project_attributes'] as $x_value) 
                                         {
                                             if($x_value['project_attribute_type_name'] == "Video")
                                             {
-                                                echo "<div class='column'>";
-                                                echo "<video poster='".plugins_url( 'assets/img/video_poster.jpg', __FILE__ )."' controls='controls' controlsList='nodownload' width='180' height='150'>
-                                                    <source src=".$x_value['file_attachment'] ." type='video/mp4'>
-                                                </video>";
+                                            echo "<div class='video-col'>";
+                                                echo "<div class='video-thumb'>";
+                                                  echo  "<img src='".plugins_url( 'assets/img/video_poster.jpg', __FILE__ )."'>";
+                                                    echo "<a class='open-button' popup-open='popup-".$i."' href='javascript:void(0)'></a>";
                                                 echo "</div>";
+                                                echo "<div class='popup' popup-name='popup-".$i."'>";
+                                                    echo "<div class='popup-content'>";
+                                                        echo "<video  width='600' controls>";
+                                                            echo "<source src='".$x_value['file_attachment'] ."' type='video/mp4'>";
+                                                        echo "</video>";
+                                                        echo "<a class='close-button' popup-close='popup-".$i."' href='javascript:void(0)''>x</a>";
+                                                    echo "</div>";
+                                                echo "</div>";
+                                            echo "</div>";
                                             }
-                                        }    
+                                          $i++;      
+                                        }     
                                         ?>
-                                        
+
                                     </div>
                                 </div>
 
@@ -244,5 +257,37 @@ $connectmemberblocks = parse_blocks($connectmember->post_content);
      </div><!-- .container no-sidebar -->
     </div><!-- .site-content -->
 </div>    
+
+<script type="text/javascript">
+    jQuery( document ).ready(function() {
+
+    /**/
+    // Open Popup
+        jQuery('[popup-open]').on('click', function() {
+            var popup_name = jQuery(this).attr('popup-open');
+            jQuery('[popup-name="' + popup_name + '"]').fadeIn(300);
+        });
+     
+        // Close Popup
+    jQuery('[popup-close]').on('click', function() {
+        var popup_name = jQuery(this).attr('popup-close');
+     
+        jQuery("[popup-name="+popup_name+"]").find('video').get(0).pause();
+
+        jQuery('[popup-name="' + popup_name + '"]').fadeOut(300);
+        });
+     
+        // Close Popup When Click Outside
+        jQuery('.popup').on('click', function() {
+        var popup_name = jQuery(this).find('[popup-close]').attr('popup-close');
+        jQuery("[popup-name="+popup_name+"]").find('video').get(0).pause();
+        jQuery('[popup-name="' + popup_name + '"]').fadeOut(300);
+        }).children().click(function() {
+            return false;
+    });
+
+});        
+</script>
+
 <?php
 get_footer();

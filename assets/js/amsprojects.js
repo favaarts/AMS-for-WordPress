@@ -34,9 +34,6 @@
       type: 'boolean',
       default: false
      },
-    projectconnectmemberid: {
-        type: 'string',
-    },
     radio_attr_project: {
       type: 'string',
       default: 'three_col',
@@ -86,17 +83,7 @@
                  props.setAttributes( { projectsidebar: value } );
               },
               checked: props.attributes.projectsidebar,
-            }),
-            el('p', {}, i18n.__('Add member page ID, connect to member.', 'amsnetwork-gutenbergproject-block')),
-            el( TextControl,
-              {
-                label: 'Member page ID',
-                onChange: ( value ) => {
-                  props.setAttributes( { projectconnectmemberid: value } );
-                },
-                value: props.attributes.projectconnectmemberid,
-              }
-            ),            
+            }),            
             el(ToggleControl, {
               label: 'Connect Projects to Members',
               onChange: ( value ) => {
@@ -184,7 +171,6 @@
            ),
            el( 'input', { 'type': 'hidden', 'name' : 'projectsidebar', 'value' : ( props.attributes.projectsidebar == true ? 'yes' : 'no') } ),
            el( 'input', { 'type': 'hidden', 'name' : 'projecttomember', 'value' : ( props.attributes.projecttomember == true ? 'yes' : 'no') } ),
-           el( 'input', { 'type': 'hidden', 'name' : 'projectconnectmemberid', 'value' : ( props.attributes.projectconnectmemberid) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'radio_attr_project', 'value' : ( props.attributes.radio_attr_project) } ),
            el( 'input', { 'type': 'hidden', 'name' : 'project_pagination', 'value' : ( props.attributes.project_pagination) } ),
          )

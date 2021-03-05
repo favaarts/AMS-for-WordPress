@@ -20,9 +20,6 @@
           type: 'string',
           default: 'members_list'
         },
-        memberconnecttoprojectid: {
-          type: 'string',
-        },
         membertoproject: {
           type: 'boolean',
           default: false
@@ -50,16 +47,6 @@
                 className: 'block-content',
                 initialOpen: true
               },
-              el('p', {}, i18n.__('Add project page ID, connect to project.', 'amsnetwork-gutenbergproject-block')),
-              el( TextControl,
-                {
-                  label: 'Project page ID',
-                  onChange: ( value ) => {
-                    props.setAttributes( { memberconnecttoprojectid: value } );
-                  },
-                  value: props.attributes.memberconnecttoprojectid,
-                }
-              ),
               el('p', {}, i18n.__('Add custom meta options to show or hide sidebar', 'amsnetwork-gutenbergmember-block')),
               el(ToggleControl, {
                 label: 'Connect Members to Projects',
@@ -105,7 +92,6 @@
           el('div', null, '['+props.attributes.type+']'),
           el( 'input', { 'type': 'hidden', 'name' : 'layout_type', 'value' : props.attributes.layout_type } ),
           el( 'input', { 'type': 'hidden', 'name' : 'membertoproject', 'value' : ( props.attributes.membertoproject == true ? 'yes' : 'no') } ),
-          el( 'input', { 'type': 'hidden', 'name' : 'memberconnecttoprojectid', 'value' : ( props.attributes.memberconnecttoprojectid) } ),          
         );
       }
     })

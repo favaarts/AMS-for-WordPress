@@ -1386,3 +1386,19 @@ img.organizationlogo {
     width:90%;
     } 
 }
+
+/*Video*/
+
+.amsvideo-thumb { position: relative; }
+
+.amsvideo-thumb a {
+  position: absolute;
+  display: block;
+  background: url(../img/amsplay-btn.png);
+  height: 100%;
+  width: 100%;
+  top: 20px;
+  left: 60px;
+  background-size: 50px 50px;
+  background-repeat: no-repeat;
+}

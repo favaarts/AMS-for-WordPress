@@ -1,7 +1,7 @@
 <?php
 
 get_header();  ?>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.5.14/hls.min.js"></script>
 <div class="container-wrap">
 
 <?php
@@ -51,8 +51,7 @@ $connectmemberblocks = parse_blocks($connectmember->post_content);
                             </div>
                             <div class="img-sec">
 
-                                <video poster="<?= plugins_url( 'assets/img/video_poster.jpg', __FILE__ )?>" controls="controls" controlsList="nodownload" width="517">
-                                    <source src="<?php echo $attributePhoto['project_attributes'][0]['file_attachment']; ?>" type="video/mp4">
+                                <video id="videobanner" poster="<?= plugins_url( 'assets/img/video_poster.jpg', __FILE__ )?>" controls="controls" controlsList="nodownload" width="517">
                                 </video>
                             </div>
 
@@ -146,24 +145,24 @@ $connectmemberblocks = parse_blocks($connectmember->post_content);
                                     <div class="video-row">
                                         <?php
                                         $i = 1;                                        
-                                         foreach($attributePhoto['project_attributes'] as $x_value) 
+                                        foreach($attributePhoto['project_attributes'] as $x_value) 
                                         {
                                             if($x_value['project_attribute_type_name'] == "Video")
                                             {
-                                            echo "<div class='video-col'>";
-                                                echo "<div class='video-thumb'>";
-                                                  echo  "<img src='".plugins_url( 'assets/img/video_poster.jpg', __FILE__ )."'>";
-                                                    echo "<a class='open-button' popup-open='popup-".$i."' href='javascript:void(0)'></a>";
-                                                echo "</div>";
-                                                echo "<div class='popup' popup-name='popup-".$i."'>";
-                                                    echo "<div class='popup-content'>";
-                                                        echo "<video  width='600' controls>";
-                                                            echo "<source src='".$x_value['file_attachment'] ."' type='video/mp4'>";
-                                                        echo "</video>";
-                                                        echo "<a class='close-button' popup-close='popup-".$i."' href='javascript:void(0)''>x</a>";
-                                                    echo "</div>";
-                                                echo "</div>";
-                                            echo "</div>";
+
+                                            echo "<div class='video-col'>
+                                                 <div class='amsvideo-thumb'>
+                                                  <img src='".$x_value['file_attachment_thumbnail'] ."'>
+                                                    <a class='open-button' popup-open='popup-".$i."' href='javascript:void(0)' data-img='".$x_value['value_4']."' data-id='".$x_value['id']."'></a>
+                                                    </div>
+                                                    <div class='popup' popup-name='popup-".$i."'>
+                                                    <div class='popup-content'>
+                                                        <video id='amspopupvideo".$x_value['id']."' width='600' controls>
+                                                        </video>
+                                                        <a class='close-button' popup-close='popup-".$i."' href='javascript:void(0)' data-id='".$x_value['id']."'>x</a>
+                                                    </div>
+                                                </div>
+                                            </div>";
                                             }
                                           $i++;      
                                         }     
@@ -259,32 +258,42 @@ $connectmemberblocks = parse_blocks($connectmember->post_content);
 </div>    
 
 <script type="text/javascript">
-    jQuery( document ).ready(function() {
+jQuery( document ).ready(function() {
 
+    var video = document.getElementById('videobanner');
+    if(Hls.isSupported()) {
+        var hls = new Hls();
+        hls.loadSource('<?php echo $attributePhoto['project_attributes'][0]['value_4']; ?>');
+        hls.attachMedia(video);
+    }    
     /**/
-    // Open Popup
-        jQuery('[popup-open]').on('click', function() {
-            var popup_name = jQuery(this).attr('popup-open');
-            jQuery('[popup-name="' + popup_name + '"]').fadeIn(300);
-        });
-     
-        // Close Popup
+    
+    jQuery('[popup-open]').on('click', function() {
+        var videourl = jQuery(this).data("img");
+        var videourlid = jQuery(this).data("id");
+
+        var videonew = document.getElementById('amspopupvideo'+videourlid);
+        if(Hls.isSupported()) {
+            var hls = new Hls();
+            hls.loadSource(videourl);
+            hls.attachMedia(videonew);
+        } 
+
+        console.log(videourl);
+        var popup_name = jQuery(this).attr('popup-open');
+        jQuery('[popup-name="' + popup_name + '"]').fadeIn(300);
+    });
+
+
+    // Close Popup
     jQuery('[popup-close]').on('click', function() {
         var popup_name = jQuery(this).attr('popup-close');
-     
-        jQuery("[popup-name="+popup_name+"]").find('video').get(0).pause();
+        var videourlid = jQuery(this).data("id");
+
+        jQuery("[popup-name="+popup_name+"]").find('#amspopupvideo'+videourlid).get(0).pause();
 
         jQuery('[popup-name="' + popup_name + '"]').fadeOut(300);
-        });
-     
-        // Close Popup When Click Outside
-        jQuery('.popup').on('click', function() {
-        var popup_name = jQuery(this).find('[popup-close]').attr('popup-close');
-        jQuery("[popup-name="+popup_name+"]").find('video').get(0).pause();
-        jQuery('[popup-name="' + popup_name + '"]').fadeOut(300);
-        }).children().click(function() {
-            return false;
-    });
+    });    
 
 });        
 </script>

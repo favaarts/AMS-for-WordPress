@@ -173,7 +173,7 @@ $connectprojectblocks = parse_blocks($connectproject->post_content);
                                                            }
                                                            else
                                                            {
-                                                             echo "<img src=". plugins_url( 'assets/img/download.png', __FILE__ ).">";
+                                                             echo "<p>No downloads available</p>";
                                                            }
                                                             
                                                            ?> 

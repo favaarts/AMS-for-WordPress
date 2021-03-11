@@ -47,11 +47,19 @@ $connectmemberblocks = parse_blocks($connectmember->post_content);
                         <div class="project-img-sec">
 
                             <div class="thumbnail">
-                                <img src="<?php echo $arrayResult['project']['thumbnail']; ?>">
+                                <?php
+                                if($arrayResult['project']['thumbnail'] == NULL || $arrayResult['project']['thumbnail'] == "")
+                                {  
+                                     echo "<img src=".plugins_url( 'assets/img/bg-page-image.jpg', __FILE__ )." alt=".$json_value['name'].">";
+                                }
+                                else
+                                {
+                                    echo "<img src=".$arrayResult['project']['thumbnail'].">";
+                                } 
+                                ?>
                             </div>
                             <div class="img-sec">
-
-                                <video id="videobanner" poster="<?= plugins_url( 'assets/img/video_poster.jpg', __FILE__ )?>" controls="controls" controlsList="nodownload" width="517">
+                                <video id="videobanner" poster="<?php echo $attributePhoto['project_attributes'][0]['file_attachment_thumbnail']; ?>" controls="controls" controlsList="nodownload" width="517">
                                 </video>
                             </div>
 

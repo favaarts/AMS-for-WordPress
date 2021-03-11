@@ -152,9 +152,18 @@ else
                 echo "<a href='".site_url('/project/'.$x_value['id'].'-'.$x_value['user_id'].'-'.$pageid)."'>";
                 echo  "<p class='product-title'>".$x_value['name']. " (2005)</p>";
                 echo "</a>";
-                echo "<div class='product-img-wrap'>";
-                echo  "<img src=".$x_value['thumbnail'].">";
-                echo "</div>";
+                if($x_value['thumbnail'] == NULL || $x_value['thumbnail'] == "")
+                {                                    
+                    echo "<div class='product-img-wrap'>";
+                      echo "<img src=". esc_url( plugins_url( 'assets/img/bg-image.png', dirname(__FILE__) ) ) .">";
+                    echo "</div>";
+                }
+                else
+                {
+                     echo "<div class='product-img-wrap'>";
+                        echo "<img src=".$x_value['thumbnail'].">";
+                     echo "</div>";
+                }
                 echo "<p class='memberprice'><strong>Created By</strong> - ". $x_value['creator']. "</p>";
           echo"</div>";
         }

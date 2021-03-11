@@ -1142,9 +1142,19 @@ function searchprojectdata_action()
                 }
                 echo "</p>";
                 echo "</a>";
-                echo "<div class='product-img-wrap'>";
-                echo  "<img src=".$x_value['thumbnail'].">";
-                echo "</div>";
+                if($x_value['thumbnail'] == NULL || $x_value['thumbnail'] == "")
+                {                                    
+                    echo "<div class='product-img-wrap'>";
+                        echo "<img src=". plugins_url( '../assets/img/bg-image.png', __FILE__ ) .">";
+                    echo "</div>";  
+                  
+                }
+                else
+                {
+                    echo "<div class='product-img-wrap'>";
+                      echo "<img src=".$x_value['thumbnail'].">";
+                    echo "</div>";  
+                }
                 echo "<p class='memberprice'><strong>Created By</strong> - ". $x_value['creator']. "</p>";
           echo"</div>";
         }
@@ -1209,7 +1219,7 @@ function getprojectonclick_action()
                   {                                    
                       echo "<div class='product-img'>";
                       echo "<div class='productthumb'>";
-                      echo "<img src=". plugins_url( '../assets/img/bg-image.png', __FILE__ ) .">";
+                      echo "<img src=". plugins_url( 'assets/img/bg-image.png', __FILE__ ) .">";
                       echo "</div>";  
                       echo "</div>";
                   }
@@ -1266,9 +1276,18 @@ function getprojectonclick_action()
                       }
                     echo "</p>";
                     echo "</a>";
-                    echo "<div class='product-img-wrap'>";
-                    echo  "<img src=".$x_value['thumbnail'].">";
-                    echo "</div>";
+                    if($x_value['thumbnail'] == NULL || $x_value['thumbnail'] == "")
+                    {                                    
+                        echo "<div class='product-img-wrap'>";
+                          echo "<img src=".plugins_url( 'assets/img/bg-image.png', __FILE__ ).">";
+                        echo "</div>";
+                    }
+                    else
+                    {
+                         echo "<div class='product-img-wrap'>";
+                            echo "<img src=".$x_value['thumbnail'].">";
+                         echo "</div>";
+                    }
                     echo "<p class='memberprice'><strong>Created By</strong> - ". $x_value['creator']. "</p>";
               echo"</div>";
             }
